@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Helpdesk_Sys(仮)</title>
+
+    {{-- Fonts --}}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
+
+    {{-- Styles --}}
+    <link rel="stylesheet" href="{{ URL::asset('css/bootstrap.css') }}" />
+    <link rel="stylesheet" href="{{ URL::asset('css/common.css') }}" />
+
+    @yield('css')
+</head>
+<body id="app-layout">
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+
+                <!-- Collapsed Hamburger -->
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
+                    <span class="sr-only">Toggle Navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <!-- Branding Image -->
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    Helpdesk
+                </a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                <!-- Left Side Of Navbar -->
+                @if (!Auth::guest())
+                    <ul class="nav navbar-nav">
+                        <li><a href="{{ url('/lost-item') }}">落し物関連</a></li>
+                        {{-- 管理人かマネージャーのみ表示 (スタッフは除く) --}}
+                        @if(in_array(Auth::user()->role, ['admin', 'manager']))
+                            <li><a href="{{ url('/registration-staff') }}">スタッフ登録/編集</a></li>
+                        @endif
+                    </ul>
+                @endif
+
+                <!-- Right Side Of Navbar -->
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Authentication Links -->
+                    @if (Auth::guest())
+                        <li><a href="{{ url('/login') }}">Login</a></li>
+                    @else
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                {{ Auth::user()->staff_no }} / {{ Auth::user()->name }}<span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
+                            </ul>
+                        </li>
+                    @endif
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {{-- main --}}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            {{-- フラッシュメッセージの表示 --}}
+            {{-- お知らせメッセージ --}}
+            @if(Session::has('info_message'))
+                <div class="alert alert-info">{!! Session::get('info_message') !!}</div>
+            @endif
+            {{-- 成功メッセージ --}}
+            @if(Session::has('success_message'))
+                <div class="alert alert-success">{!! Session::get('success_message') !!}</div>
+            @endif
+            {{-- 警告メッセージ --}}
+            @if(Session::has('alert_message'))
+                <div class="alert alert-danger">{!! Session::get('alert_message') !!}</div>
+            @endif
+
+            {{-- content --}}
+            @yield('content')
+            </div>
+        </div>
+    </div>
+
+    {{-- footer --}}
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">&copy; nakajima.lab {{ date("Y") }}</p>
+        </div>
+    </footer>
+
+    {{-- JavaScripts --}}
+    <script type="text/javascript" src="{{URL::asset('/js/jquery-2.1.1.min.js')}}"></script>
+    <script type="text/javascript" src="{{URL::asset('/js/bootstrap.min.js')}}"></script>
+
+    @yield('script')
+</body>
+</html>
