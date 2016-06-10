@@ -36,14 +36,12 @@ class RegistrationStaffController extends Controller
     {
         $this->validate($request, $this->validation_rules);
         $post = $request->all();
-
-
         $staff_name = $post['staff_name'];
-        $staff_no   = $post['staff_no'];
+        $staff_no   = mb_convert_kana($post['staff_no'], 'sa');
         $password   = $post['password'];
         $role       = $post['role'];
-        $phone_no   = $post['phone_no'];
-        $email      = $post['staff_no'] . '@s.do-johodai.ac.jp';
+        $phone_no   = mb_convert_kana($post['phone_no'], 'sa');
+        $email      = $staff_no . '@s.do-johodai.ac.jp';
 
         try{
             $staff = new User;

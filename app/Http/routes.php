@@ -28,11 +28,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::resource('lost-item', 'LostItemController');
         Route::resource('lost-item-api', 'LostItemApiController');
         Route::controller('lost-item-export', 'ExportController');
-        // Route::controller('lost-item', 'LostItemController');
 
     });
-
-
 
     // スタッフ・学生・品(カメラ・三脚など)の登録
     Route::group(['namespace' => 'Management'], function(){
@@ -46,11 +43,5 @@ Route::group(['middleware' => ['auth']], function(){
             Route::resource('registration-staff', 'RegistrationStaffController');
 
         });
-
     });
-
-
-
-
-
 });

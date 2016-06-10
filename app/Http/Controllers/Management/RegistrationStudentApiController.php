@@ -32,15 +32,15 @@ class RegistrationStudentApiController extends Controller
         if($validation->fails()) return false;
 
         $post           = $request->all();
-        $student_name   = $post['student_name'];
-        $student_no     = $post['student_no'];
-        $phone_no       = $post['phone'];
+        $student_name   = mb_convert_kana($post['student_name'], 'as');
+        $student_no     = mb_convert_kana($post['student_no'], 'as');
+        $phone_no       = mb_convert_kana($post['phone'], 'as');
 
         try{
             $student = new Student;
-            $student->student_name  = $post['student_name'];
-            $student->student_no    = $post['student_no'];
-            $student->phone_no      = $post['phone'];
+            $student->student_name  = $student_name;
+            $student->student_no    = $student_no;
+            $student->phone_no      = $phone_no;
             $student->save();
         } catch(\PDOException $e) {
             return false;
@@ -58,7 +58,7 @@ class RegistrationStudentApiController extends Controller
     public function show($student_no)
     {
 
-        $data = Student::where('student_no', '=', $student_no)->first();
+        $data = Student::where('student_no', '=', mb_convert_kana($student_no, 'as'))->first();
 
         if (!$data) return null;
 
@@ -81,8 +81,8 @@ class RegistrationStudentApiController extends Controller
         if($validation->fails()) return false;
 
         $post = $request->all();
-        $student_no = $post['student_no'];
-        $phone = $post['phone'];
+        $student_no     = mb_convert_kana($post['student_no'], 'as');
+        $phone_no       = mb_convert_kana($post['phone'], 'as');
 
         $id = Student::where('student_no', '=', $student_no)->first();
         try{

@@ -118,30 +118,16 @@ class LostitemController extends Controller
 
         $student_id = $this->registration_student_api->show($request->get('student_no'));
 
-        // dd($student_id);
         // DBに登録されていなければ，新規登録。 あれば情報を更新
         if(!$student_id){
             $this->registration_student_api->store($request);
         }else{
             $this->registration_student_api->update($request);
         }
-        // dd($student_id);
 
         $request['student_id'] = self::convertStudentFromNoToId($request->get('student_no'));
-
-        // dd($request['student_id']);
-
-
-        // if(empty($request['student_id'])){
-        //     // TODO
-        //     // 学生テーブルに登録がなかった場合の処理
-        //     // 登録する
-        //     $this->registration_student_api->store($request);
-        //     // dd('naiyo');
-        // }
-
-
         $success = $this->lost_item_api->destroy($request, $id);
+
         if($success){
             session()->flash('success_message', '<h3>正常に引渡処理が完了しました。</h3>');
         }else{
@@ -161,7 +147,7 @@ class LostitemController extends Controller
      */
     private function convertStudentFromNoToId($no){
 
-        $student = Student::where('student_no', $no)->first();
+        $student = Student::where('student_no', mb_convert_kana($no, 'a'))->first();
 
         if(empty($student)){
             return null;
