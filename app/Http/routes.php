@@ -37,8 +37,8 @@ Route::group(['middleware' => ['auth']], function(){
     // スタッフ・学生・品(カメラ・三脚など)の登録
     Route::group(['namespace' => 'Management'], function(){
 
-
-        Route::resource('registration-student', 'RegistrationStudentController');
+        // 学生登録API
+        Route::resource('registration-student-api', 'RegistrationStudentApiController');
 
         // 権限あるマネージャーのみ
         Route::group(['middleware' => ['management']], function(){

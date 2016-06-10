@@ -11,16 +11,19 @@ use App\Models\LostItem;
 use App\Models\Place;
 use App\Models\User;
 use App\Models\Student;
+use App\Http\Controllers\Management\RegistrationStudentApiController;
 
 class LostitemController extends Controller
 {
-    private $api;
+    private $lost_item_api;
+    private $registration_student_api;
     private $places;
 
     public function __construct()
     {
         parent::__construct();
-        $this->api = new LostItemApiController();
+        $this->lost_item_api = new LostItemApiController();
+        $this->registration_student_api = new RegistrationStudentApiController();
         $this->places = Place::all();
     }
 
@@ -48,7 +51,7 @@ class LostitemController extends Controller
         $this->validate($request, $this->validation_rules);
 
         $post = $request->all();
-        $success = $this->api->store($request);
+        $success = $this->lost_item_api->store($request);
 
         if($success){
             session()->flash('success_message', '<h3>落し物の新規登録しました。</h3>');
@@ -67,7 +70,7 @@ class LostitemController extends Controller
      */
     public function show($id)
     {
-        $json = $this->api->show($id);
+        $json = $this->lost_item_api->show($id);
         $data = json_decode($json->content(), true);
 
         if(empty($data)){
@@ -90,7 +93,7 @@ class LostitemController extends Controller
 
         $this->validate($request, $this->validation_rules);
         
-        $success = $this->api->update($request, $id);
+        $success = $this->lost_item_api->update($request, $id);
 
         if($success){
             session()->flash('success_message', '<h3>正常に更新しました。</h3>');
@@ -112,18 +115,33 @@ class LostitemController extends Controller
     public function destroy(Request $request, $id)
     {
         $this->validate($request, $this->validation_rules);
+
+        $student_id = $this->registration_student_api->show($request->get('student_no'));
+
+        // dd($student_id);
+        // DBに登録されていなければ，新規登録。 あれば情報を更新
+        if(!$student_id){
+            $this->registration_student_api->store($request);
+        }else{
+            $this->registration_student_api->update($request);
+        }
+        // dd($student_id);
+
         $request['student_id'] = self::convertStudentFromNoToId($request->get('student_no'));
 
+        // dd($request['student_id']);
 
 
-        if(empty($student_id)){
-            // TODO
-            // 学生テーブルに登録がなかった場合の処理
-            // 登録する
-        }
+        // if(empty($request['student_id'])){
+        //     // TODO
+        //     // 学生テーブルに登録がなかった場合の処理
+        //     // 登録する
+        //     $this->registration_student_api->store($request);
+        //     // dd('naiyo');
+        // }
 
 
-        $success = $this->api->destroy($request, $id);
+        $success = $this->lost_item_api->destroy($request, $id);
         if($success){
             session()->flash('success_message', '<h3>正常に引渡処理が完了しました。</h3>');
         }else{
