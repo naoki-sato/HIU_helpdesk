@@ -215,12 +215,12 @@
                 { data: "delivery_staff.name", defaultContent: "", "title": "引渡担当"},
                 { data: "student.student_no", defaultContent: "", "title": "落し物主"},
                 { data: "id", "render": function (data, type, row, meta) {
-        return '<a href="{{url('lost-item/show').'/'}}' + data + '" class="btn btn-default btn-block">' + 'link' + '</a>';
+        return '<a href="{{url('lost-item').'/'}}' + data + '" class="btn btn-default btn-block">' + 'link' + '</a>';
                     }, "title": "show & edit"},
             ],
             deferRender: true,
             ajax: {
-               url: "{{url('/lost-item/json-data?year='). app('request')->input('year')}}", 
+               url: "{{url('/lost-item-api?year='). app('request')->input('year')}}", 
                dataSrc: "", {{-- 消してはダメ(わざと空白) --}}
                type: "GET"
             }

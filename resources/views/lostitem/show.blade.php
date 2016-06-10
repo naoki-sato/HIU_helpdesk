@@ -6,10 +6,12 @@
 
 @section('content')
 
+
     <div><a href="{{url('lost-item')}}">ItemList</a> > edit </div>
     <div class="">
-        <form class="form-horizontal" role="form" method="POST" action="{{ url('lost-item/delivery').'/'.$data['id']}}">
+        <form class="form-horizontal" role="form" method="POST" action="{{ url('lost-item').'/'.$data['id']}}">
             {{ csrf_field() }}
+            <input name="_method" type="hidden" value="DELETE">
             <div class="form-group{{ $errors->has('student_no') ? ' has-error' : '' }}">
                 <label for="lost-item-owner" class="col-sm-2 control-label">落し物主</label>
                 <div class="col-xs-4">
@@ -34,14 +36,15 @@
 
     {{-- 更新 --}}
     <div>
-        <form class="form-horizontal" role="form" method="POST" action="{{ url('lost-item/update').'/'.$data['id']}}">
+        <form class="form-horizontal" role="form" method="POST" aaction="{{ url('lost-item').'/'.$data['id']}}">
         {{ csrf_field() }}
+        <input name="_method" type="hidden" value="PUT">
   
             {{-- 受取日 --}}
             <div class="form-group">
                 <label for="created_at" class="col-sm-2 control-label">受取日</label>
                 <div class="col-xs-4">
-                    <input type="text" class="form-control" id="created_at" readonly="readonly" value="{{$data['created_at']}}">
+                    <input type="date" class="form-control" id="created_at" readonly="readonly" value="{{$data['created_at']}}">
                 </div>
             </div>
             {{-- 引渡日 --}}
@@ -49,7 +52,7 @@
                 <div class="form-group">
                     <label for="deleted_at" class="col-sm-2 control-label">引渡日</label>
                     <div class="col-xs-4">
-                        <input type="text" class="form-control" id="deleted_at" readonly="readonly" value="{{$data['deleted_at']}}" readonly>
+                        <input type="date" class="form-control" id="deleted_at" readonly="readonly" value="{{$data['deleted_at']}}" readonly>
                     </div>
                 </div>
 
@@ -93,16 +96,16 @@
             <div class="form-group">
                 <label for="reciept_staff_id" class="col-xs-2 control-label">受取担当者</label>
                 <div class="col-xs-4">
-                    <input type="text" class="form-control" id="reciept_staff_id" value="{{ $data['recieptStaff']['name']}}" readonly="readonly">
+                    <input type="text" class="form-control" id="reciept_staff_id" value="{{ $data['reciept_staff']['name']}}" readonly="readonly">
                 </div>
             </div>
 
             {{-- 引渡担当者 --}}
-            @if(isset($data['deliveryStaff']['name']))
+            @if(isset($data['delivery_staff']['name']))
                 <div class="form-group">
                     <label for="delivery_staff" class="col-xs-2 control-label">引渡担当者</label>
                     <div class="col-xs-4">
-                        <input type="text" class="form-control" id="delivery_staff" value="{{$data['deliveryStaff']['name']}}" readonly="readonly">
+                        <input type="text" class="form-control" id="delivery_staff" value="{{$data['delivery_staff']['name']}}" readonly="readonly">
                     </div>
                 </div>
             @endif

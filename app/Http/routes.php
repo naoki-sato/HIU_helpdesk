@@ -25,8 +25,11 @@ Route::group(['middleware' => ['auth']], function(){
 
     // 落し物関連
     Route::group(['namespace' => 'LostItem'], function(){
-        Route::controller('lost-item', 'LostItemController');
+        Route::resource('lost-item', 'LostItemController');
+        Route::resource('lost-item-api', 'LostItemApiController');
         Route::controller('lost-item-export', 'ExportController');
+        // Route::controller('lost-item', 'LostItemController');
+
     });
 
 

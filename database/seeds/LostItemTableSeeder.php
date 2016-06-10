@@ -14,14 +14,15 @@ class LostItemTableSeeder extends Seeder
      */
     public function run()
     {
-        // 削除
-        DB::table('lost_items')->truncate();
+        // delete
+        LostItem::truncate();
 
+        // insert
         $faker = Faker::create('ja_JP');
         for ($i=0; $i < 300; $i++) { 
             LostItem::create([
                 'lost_item_name' => $faker->word,
-                'reciept_staff_id' => $faker->randomElement([1,2,3]),
+                'reciept_staff_id' => $faker->randomElement([1,2,3,4,5]),
                 'place_id' => $faker->randomElement([1,2,3,4,5,6,7,8,9]),
                 'created_at' => Carbon::now()->subYears(1),
                 'updated_at' => Carbon::now()->subYears(1),
@@ -32,7 +33,7 @@ class LostItemTableSeeder extends Seeder
         for ($i=0; $i < 300; $i++) { 
             LostItem::create([
                 'lost_item_name' => $faker->word,
-                'reciept_staff_id' => $faker->randomElement([1,2,3]),
+                'reciept_staff_id' => $faker->randomElement([1,2,3,4,5]),
                 'place_id' => $faker->randomElement([1,2,3,4,5,6,7,8,9]),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),

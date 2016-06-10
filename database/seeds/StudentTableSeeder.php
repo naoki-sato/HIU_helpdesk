@@ -14,9 +14,10 @@ class StudentTableSeeder extends Seeder
      */
     public function run()
     {
-        // 削除
-        DB::table('students')->truncate();
+        // delete
+        Student::truncate();
 
+        // insert
         $faker = Faker::create('ja_JP');
         for ($i=0; $i < 300; $i++) { 
             Student::create([
