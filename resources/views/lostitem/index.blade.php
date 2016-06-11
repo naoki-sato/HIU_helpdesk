@@ -10,41 +10,15 @@
 
     {{-- タブメニュー --}}
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab1" data-toggle="tab">ItemList</a></li>
-        <li><a href="#tab2" data-toggle="tab">Registration</a></li>
+        <li class="active"><a href="#tab1" data-toggle="tab">Registration</a></li>
+        <li><a href="#tab2" data-toggle="tab">ItemList</a></li>
         <li><a href="#tab3" data-toggle="tab">Export</a></li>
     </ul>
 
     {{-- タブコンテンツ --}}
     <div class="tab-content">
-
-
-        {{-- 落し物リストタブ --}}
-        <div class="tab-pane fade in active" id="tab1">
-            {{-- 検索フォーム --}}
-            <div class="row">
-                <div class="col-sm-12 year_select">
-                    <form method="GET" class="form-inline pull-right">
-                        <div class="form-group form-group-sm">
-                            <select class="form-control" id="year_select" name="year">
-                                @for ($i = 2016; $i <= fiscalYear(); $i++)
-                                    <option value="{{$i}}" selected>{{$i}}</option>
-                                @endfor
-                            </select>
-                        </div>
-                        <input type="submit" value="SUBMIT" class="btn btn-default btn-sm">
-                    </form>
-                </div>
-            </div>
-            {{-- list --}}
-            <table id="lost_item_list" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                <thead></thead>
-                <tbody></tbody>
-            </table>
-        </div>
-
         {{-- 登録タブ --}}
-        <div class="tab-pane fade" id="tab2">
+        <div class="tab-pane fade in active" id="tab1">
             <form class="form-horizontal" role="form" method="POST">
             {{ csrf_field() }}
   
@@ -112,6 +86,30 @@
                     </div>
                 </div>
             </form>
+        </div>
+
+        {{-- 落し物リストタブ --}}
+        <div class="tab-pane fade" id="tab2">
+            {{-- 検索フォーム --}}
+            <div class="row">
+                <div class="col-sm-12 year_select">
+                    <form method="GET" class="form-inline pull-right">
+                        <div class="form-group form-group-sm">
+                            <select class="form-control" id="year_select" name="year">
+                                @for ($i = 2016; $i <= fiscalYear(); $i++)
+                                    <option value="{{$i}}" selected>{{$i}}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <input type="submit" value="SUBMIT" class="btn btn-default btn-sm">
+                    </form>
+                </div>
+            </div>
+            {{-- list --}}
+            <table id="lost_item_list" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead></thead>
+                <tbody></tbody>
+            </table>
         </div>
 
         {{-- 過去の落し物タブ --}}
@@ -237,8 +235,6 @@
                type: "GET"
             }
         });
-
-
     });
     </script>
     <script type="text/javascript" src="{{URL::asset('/js/lost-item.js')}}"></script>
