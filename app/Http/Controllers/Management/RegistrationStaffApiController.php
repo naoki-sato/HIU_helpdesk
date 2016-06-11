@@ -14,14 +14,16 @@ use App\Models\User;
 class RegistrationStaffApiController extends Controller
 {
 
-     private $validation_rules;
+    private $validation_rules;
 
     public function __construct()
     {
         $this->validation_rules = [
-                'start_number' => 'sometimes|required|numeric',
-                'end_number'   => 'sometimes|required|numeric',
-                'year'         => 'sometimes|required|numeric'];
+                'staff_name' => 'sometimes|required',
+                // 'staff_no'   => 'sometimes|required|unique:users',
+                'phone_no'=> 'sometimes|required',
+                // 'email' => 'required|email|max:255|unique:users',
+                'password' => 'required|min:6|confirmed',];
     }
 
 
@@ -32,20 +34,24 @@ class RegistrationStaffApiController extends Controller
      */
     public function index()
     {
-
         $data = User::all();
         return response()->json($data);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    * Store a newly created resource in storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return success : true, fail : false
+    */
     public function store(Request $request)
     {
-        $this->validate($request, $this->validation_rules);
+
+        // バリデーションに引っかかったら, false
+        $validation = Validator::make($request->all(), $this->validation_rules);
+        if($validation->fails()) return false;
+
+
         $post = $request->all();
         $staff_name = $post['staff_name'];
         $staff_no   = mb_convert_kana($post['staff_no'], 'sa');
@@ -64,10 +70,29 @@ class RegistrationStaffApiController extends Controller
             $staff->email      = $email;
             $staff->save();
         } catch(\PDOException $e) {
-            session()->flash('alert_message', '<h3>スタッフを登録できませんでした。</h3>');
-            return redirect()->back();
+            return false;
         }
-        session()->flash('success_message', '<h3>スタッフを登録しました。</h3>');
-        return redirect()->back();
+        return true;
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Json
+     */
+    public function show($id)
+    {
+        $data = User::where('id', '=', $id)
+                ->get();
+        $result = null;
+
+        if (!$data->isEmpty()) {
+            $result = ['data' => $data[0]];
+        }
+
+        return response()->json($result);
+    }
+
+
 }

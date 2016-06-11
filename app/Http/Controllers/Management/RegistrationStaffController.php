@@ -15,7 +15,6 @@ class RegistrationStaffController extends Controller
 
     public function __construct()
     {
-        parent::__construct();
         $this->registration_staff_api = new RegistrationStaffApiController();
     }
 
@@ -39,30 +38,39 @@ class RegistrationStaffController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, $this->validation_rules);
         $post = $request->all();
-        $staff_name = $post['staff_name'];
-        $staff_no   = mb_convert_kana($post['staff_no'], 'sa');
-        $password   = $post['password'];
-        $role       = 'staff';
-        $phone_no   = mb_convert_kana($post['phone_no'], 'sa');
-        $email      = $staff_no . '@s.do-johodai.ac.jp';
+        $success = $this->registration_staff_api->store($request);
 
-        try{
-            $staff = new User;
-            $staff->name       = $staff_name;
-            $staff->staff_no   = $staff_no;
-            $staff->password   = bcrypt($password);
-            $staff->role       = $role;
-            $staff->phone_no   = $phone_no;
-            $staff->email      = $email;
-            $staff->save();
-        } catch(\PDOException $e) {
-            session()->flash('alert_message', '<h3>スタッフを登録できませんでした。</h3>');
-            return redirect()->back();
+        if($success){
+            session()->flash('success_message', '<h3>新規登録しました。</h3>');
+        }else{
+            session()->flash('alert_message', '<h3>新規登録できませんでした。</h3>');
         }
-        session()->flash('success_message', '<h3>スタッフを登録しました。</h3>');
         return redirect()->back();
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return view
+     */
+    public function show($id)
+    {
+        $json = $this->registration_staff_api->show($id);
+        $data = json_decode($json->content(), true);
+
+
+        if(empty($data)){
+            session()->flash('alert_message', '<h3>お探しのスタッフは見つかりませでした。</h3>');
+            return view('errors.error_msg');
+        }
+
+
+        dd($data);
+
+        // TODO::ここのviewを作る
+        // return view('lostitem.show', ['data' => $data['data'], 'places' => $this->places]);
     }
 
 

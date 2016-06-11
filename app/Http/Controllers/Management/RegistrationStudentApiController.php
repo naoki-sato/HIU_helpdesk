@@ -17,9 +17,9 @@ class RegistrationStudentApiController extends Controller
     public function __construct()
     {
         $this->validation_rules = [
-                'start_number' => 'sometimes|required|numeric',
-                'end_number'   => 'sometimes|required|numeric',
-                'year'         => 'sometimes|required|numeric'];
+                'student_name' => 'sometimes|required',
+                'student_no'   => 'sometimes|required',
+                'phone'        => 'sometimes|required'];
     }
 
     /**
