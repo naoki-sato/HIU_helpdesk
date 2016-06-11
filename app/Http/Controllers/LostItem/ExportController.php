@@ -14,9 +14,15 @@ use App\Models\LostItem;
 
 class ExportController extends Controller
 {
+
+    private $validation_rules;
+
     public function __construct()
     {
-        parent::__construct();
+        $this->validation_rules = [
+                'start_number' => 'sometimes|required|numeric',
+                'end_number'   => 'sometimes|required|numeric',
+                'year'         => 'sometimes|required|numeric'];
     }
 
 
@@ -24,11 +30,7 @@ class ExportController extends Controller
     {
 
         $post = $request->all();
-        $validation = Validator::make($post, $this->validation_rules);
-        if($validation->fails()){
-            session()->flash('alert_message', '<h3>Exportの通し番号で不正な値がありました</h3>');
-            return redirect()->route('lost-item.index');
-        }
+        $this->validate($request, $this->validation_rules);
 
         $start = min($post['start_number'], $post['end_number']);
         $end   = max($post['start_number'], $post['end_number']);
@@ -68,14 +70,7 @@ class ExportController extends Controller
     {
 
         $post = $request->all();
-
-        // バリデーションに引っかかったら, error
-        $validation = Validator::make($post, $this->validation_rules);
-        if($validation->fails()){
-            session()->flash('alert_message', '<h3>Exportの履歴年度で不正な値がありました</h3>');
-            return redirect()->route('lost-item.index');
-        }
-
+        $this->validate($request, $this->validation_rules);
         $year = $post['year'];
 
         /* Eloquentだと上手くExcelにexportできないため，queryをゴリゴリ書いた */

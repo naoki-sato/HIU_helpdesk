@@ -146,14 +146,26 @@
                 <div class="col-xs-12 contents_top_margin">
                     <form class="form-horizontal" action="/lost-item-export/serial" method="POST">
                         {{ csrf_field() }}
-                        <div class="form-group">
+                        <div class="form-group{{ $errors->has('start_number') ? ' has-error' : '' }}{{ $errors->has('end_number') ? ' has-error' : '' }}">
                             <label class="control-label col-xs-2">通し番号</label>
                             <div class="col-xs-7"> 
                                 <div class="form-inline">
 
-                                    <input type="number" class="form-control positive-integer antirc" id="start_number" name="start_number" placeholder="ex.1" min="1" required> 〜                          
-                                    <input type="number" class="form-control positive-integer antirc" id="end_number" name="end_number" placeholder="ex.100" min="1" required>
+                                    <input type="number" class="form-control positive-integer antirc" id="start_number" name="start_number" placeholder="ex.1" min="1" value="{{ old('start_number') }}" required> 〜                          
+                                    <input type="number" class="form-control positive-integer antirc" id="end_number" name="end_number" placeholder="ex.100" min="1" value="{{ old('end_number') }}" required>
+                                    @if ($errors->has('start_number'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('start_number') }}</strong>
+                                        </span>
+                                    @endif
+
+                                    @if ($errors->has('end_number'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('end_number') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
+
                                 
                                 <button type="submit" id="serial_submit" class="btn btn-default btn_top_margin">DOWNLOAD</button>
                             </div>

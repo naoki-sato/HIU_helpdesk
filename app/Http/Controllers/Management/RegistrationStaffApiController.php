@@ -3,33 +3,39 @@
 namespace App\Http\Controllers\Management;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
+use Carbon\Carbon;
 use App\Models\User;
 
-class RegistrationStaffController extends Controller
+class RegistrationStaffApiController extends Controller
 {
 
-    private $registration_staff_api;
+     private $validation_rules;
 
     public function __construct()
     {
-        parent::__construct();
-        $this->registration_staff_api = new RegistrationStaffApiController();
+        $this->validation_rules = [
+                'start_number' => 'sometimes|required|numeric',
+                'end_number'   => 'sometimes|required|numeric',
+                'year'         => 'sometimes|required|numeric'];
     }
 
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Json
      */
     public function index()
     {
-        return view('management.index');
-    }
 
+        $data = User::all();
+        return response()->json($data);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -64,6 +70,4 @@ class RegistrationStaffController extends Controller
         session()->flash('success_message', '<h3>スタッフを登録しました。</h3>');
         return redirect()->back();
     }
-
-
 }

@@ -11,11 +11,4 @@ use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 class Controller extends BaseController
 {
     use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
-
-    protected $validation_rules;
-
-    public function __construct()
-    {
-        $this->validation_rules = config('validation.rules');
-    }
 }

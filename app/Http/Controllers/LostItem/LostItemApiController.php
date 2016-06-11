@@ -10,11 +10,25 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use App\Models\LostItem;
 use App\Models\Place;
-use App\Models\Staff;
 
 
 class LostItemApiController extends Controller
 {
+    private $validation_rules;
+
+    public function __construct()
+    {
+        $this->validation_rules = [
+                // store + update
+                'item_name'         => 'sometimes|required|string',
+                'place_id'          => 'sometimes|required|numeric',
+                'staff_id'          => 'sometimes|required|numeric',
+                // destroy
+                'delivery_staff_id' => 'sometimes|required|numeric',
+                'student_id'        => 'sometimes|required|numeric'];
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +59,6 @@ class LostItemApiController extends Controller
      */
     public function store(Request $request)
     {
-
         // バリデーションに引っかかったら, false
         $validation = Validator::make($request->all(), $this->validation_rules);
         if($validation->fails()) return false;

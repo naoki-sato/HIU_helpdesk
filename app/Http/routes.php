@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::group(['middleware' => ['management']], function(){
             // スタッフの登録・編集
             Route::resource('registration-staff', 'RegistrationStaffController');
+            Route::resource('registration-staff-api', 'RegistrationStaffApiController');
 
         });
     });

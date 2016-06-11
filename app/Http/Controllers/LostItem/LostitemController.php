@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\LostItem;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -21,7 +20,6 @@ class LostitemController extends Controller
 
     public function __construct()
     {
-        parent::__construct();
         $this->lost_item_api = new LostItemApiController();
         $this->registration_student_api = new RegistrationStudentApiController();
         $this->places = Place::all();
@@ -34,7 +32,6 @@ class LostitemController extends Controller
      */
     public function index()
     {
-
         return view('lostitem.index', ['places' => $this->places]);
     }
 
@@ -47,8 +44,6 @@ class LostitemController extends Controller
      */
     public function store(Request $request)
     {
-
-        $this->validate($request, $this->validation_rules);
 
         $post = $request->all();
         $success = $this->lost_item_api->store($request);
@@ -90,8 +85,6 @@ class LostitemController extends Controller
      * @return redirect
      */
     public function update(Request $request, $id){
-
-        $this->validate($request, $this->validation_rules);
         
         $success = $this->lost_item_api->update($request, $id);
 
@@ -114,7 +107,6 @@ class LostitemController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $this->validate($request, $this->validation_rules);
 
         $student_id = $this->registration_student_api->show($request->get('student_no'));
 

@@ -12,9 +12,14 @@ use App\Models\Student;
 class RegistrationStudentApiController extends Controller
 {
 
+     private $validation_rules;
+
     public function __construct()
     {
-        parent::__construct();
+        $this->validation_rules = [
+                'start_number' => 'sometimes|required|numeric',
+                'end_number'   => 'sometimes|required|numeric',
+                'year'         => 'sometimes|required|numeric'];
     }
 
     /**
