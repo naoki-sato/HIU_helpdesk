@@ -218,12 +218,12 @@
                 { data: "id", defaultContent: "", "title": "ID"},
                 { data: "created_at", defaultContent: "", "title": "受取日"},
                 { data: "lost_item_name", defaultContent: "", "title": "アイテム" },
-                { data: "place.room_name", defaultContent: "", "title": "場所"},
-                { data: "reciept_staff.name", defaultContent: "", "title": "受取担当" },
+                { data: "room_name", defaultContent: "", "title": "場所"},
+                { data: "reciept_staff_name", defaultContent: "", "title": "受取担当" },
                 { data: "note", defaultContent: "", "title": "備考"},
                 { data: "deleted_at", defaultContent: "", "title": "引渡日"},
-                { data: "delivery_staff.name", defaultContent: "", "title": "引渡担当"},
-                { data: "student.student_no", defaultContent: "", "title": "落し物主"},
+                { data: "delivery_staff_name", defaultContent: "", "title": "引渡担当"},
+                { data: "student_name", defaultContent: "", "title": "落し物主"},
                 { data: "id", "render": function (data, type, row, meta) {
         return '<a href="{{url('lost-item').'/'}}' + data + '" class="btn btn-default btn-block">' + 'link' + '</a>';
                     }, "title": "show & edit"},

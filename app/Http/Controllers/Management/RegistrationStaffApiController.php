@@ -23,7 +23,8 @@ class RegistrationStaffApiController extends Controller
                 // 'staff_no'   => 'sometimes|required|unique:users',
                 'phone_no'=> 'sometimes|required',
                 // 'email' => 'required|email|max:255|unique:users',
-                'password' => 'required|min:6|confirmed',];
+                'password' => 'sometimes|required|min:6|confirmed',
+                'staff_id' => 'sometimes|required'];
     }
 
 
@@ -92,6 +93,34 @@ class RegistrationStaffApiController extends Controller
         }
 
         return response()->json($result);
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return success : true, fail : false
+     */
+    public function destroy($request)
+    {
+
+        // バリデーションに引っかかったら, false
+        $validation = Validator::make($request->all(), $this->validation_rules);
+        if($validation->fails()) return false;
+
+        // 落し物主と引渡担当者noを更新してソフト削除
+        $post = $request->all();
+        $id = $post['staff_id'];
+
+        try{
+            User::find($id)->delete();
+        } catch(\Exception $e) {
+            return false;
+        }
+        
+        return true;
     }
 
 

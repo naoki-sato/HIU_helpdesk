@@ -73,6 +73,11 @@ class LostitemController extends Controller
             return view('errors.error_msg');
         }
 
+        // 引渡の未・済でテンプレートわけ
+        if($data['data']['deleted_at']){
+            return view('lostitem.finished', ['data' => $data['data'], 'places' => $this->places]);
+        }
+
         return view('lostitem.show', ['data' => $data['data'], 'places' => $this->places]);
     }
 

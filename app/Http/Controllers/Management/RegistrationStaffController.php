@@ -66,11 +66,30 @@ class RegistrationStaffController extends Controller
             return view('errors.error_msg');
         }
 
+        return view('management.show', ['data' => $data['data']]);
+    }
 
-        dd($data);
 
-        // TODO::ここのviewを作る
-        // return view('lostitem.show', ['data' => $data['data'], 'places' => $this->places]);
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return redirect
+     */
+    public function destroy(Request $request)
+    {
+
+        $success = $this->registration_staff_api->destroy($request);
+
+        if($success){
+            session()->flash('success_message', '<h3>正常に引渡処理が完了しました。</h3>');
+        }else{
+            session()->flash('alert_message', '<h3>処理ができませんでした。</h3>');
+        }
+        return view('management.index');
+
+        return redirect()->route('lost-item.index');
     }
 
 

@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string("phone_no")->nullable();
             $table->string('password');
             $table->string('role'); // admin, manager , staff
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });
