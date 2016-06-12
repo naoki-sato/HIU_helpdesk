@@ -31,6 +31,16 @@ class AuthController extends Controller
     protected $redirectTo = '/';
 
     /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        return redirect()->route('registration-staff.index');
+    }
+
+    /**
      * Create a new authentication controller instance.
      *
      * @return void

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Auth;
 
 class RegistrationStaffController extends Controller
 {
@@ -71,6 +72,31 @@ class RegistrationStaffController extends Controller
 
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return redirect
+     */
+    public function update(Request $request){
+        
+
+        $post = $request->all();
+
+        $success = $this->registration_staff_api->update($request);
+
+        if($success){
+            session()->flash('success_message', '<h3>正常に更新しました。</h3>');
+        }else{
+            session()->flash('alert_message', '<h3>更新できませんでした。</h3>');
+        }
+
+        return redirect()->back();
+
+    }
+
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -89,7 +115,7 @@ class RegistrationStaffController extends Controller
         }
         return view('management.index');
 
-        return redirect()->route('lost-item.index');
+        // return redirect()->route('lost-item.index');
     }
 
 

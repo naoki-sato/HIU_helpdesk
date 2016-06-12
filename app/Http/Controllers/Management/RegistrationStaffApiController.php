@@ -19,12 +19,12 @@ class RegistrationStaffApiController extends Controller
     public function __construct()
     {
         $this->validation_rules = [
-                'staff_name' => 'sometimes|required',
-                // 'staff_no'   => 'sometimes|required|unique:users',
+                'staff_name' => 'sometimes|required|unique:users,name',
+                'staff_no'   => 'sometimes|required|unique:users,staff_no',
                 'phone_no'=> 'sometimes|required',
-                // 'email' => 'required|email|max:255|unique:users',
+                'email' => 'required|email|max:255|unique:users,email',
                 'password' => 'sometimes|required|min:6|confirmed',
-                'staff_id' => 'sometimes|required'];
+                'staff_id' => 'sometimes|required',];
     }
 
 
@@ -59,7 +59,7 @@ class RegistrationStaffApiController extends Controller
         $password   = $post['password'];
         $role       = 'staff';
         $phone_no   = mb_convert_kana($post['phone_no'], 'sa');
-        $email      = $staff_no . '@s.do-johodai.ac.jp';
+        $email      = $post['email'];
 
         try{
             $staff = new User;
@@ -97,6 +97,42 @@ class RegistrationStaffApiController extends Controller
 
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return success : true, fail : false
+     */
+    public function update(Request $request)
+    {
+
+        // バリデーションに引っかかったら, false
+        $validation = Validator::make($request->all(), 
+            ['email' => 'required|email|max:255',
+             'role' => 'sometimes|required|in:admin,manager,staff']);
+        if($validation->fails()) return false;
+
+        $post       = $request->all();
+        $phone_no   = $post['phone_no'];
+        $email      = $post['email']; //
+        $role       = $post['role'];
+
+        $id = $post['id'];
+
+        try{
+            User::where('id', '=', $id)
+                ->update([
+                    'email'     => $email,
+                    'phone_no'  => $phone_no,
+                    'role'      => $role
+                ]);
+        } catch(\Exception $e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -112,7 +148,7 @@ class RegistrationStaffApiController extends Controller
 
         // 落し物主と引渡担当者noを更新してソフト削除
         $post = $request->all();
-        $id = $post['staff_id'];
+        $id   = $post['staff_id'];
 
         try{
             User::find($id)->delete();

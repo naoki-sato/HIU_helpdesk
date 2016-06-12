@@ -18,7 +18,7 @@ class RegistrationStudentApiController extends Controller
     {
         $this->validation_rules = [
                 'student_name' => 'sometimes|required',
-                'student_no'   => 'sometimes|required',
+                'student_no'   => 'sometimes|required|unique:students,student_no',
                 'phone'        => 'sometimes|required'];
     }
 

@@ -19,73 +19,75 @@
     <div class="tab-content">
         {{-- 登録タブ --}}
         <div class="tab-pane fade in active" id="tab1">
-            <form class="form-horizontal" role="form" method="POST">
-            {{ csrf_field() }}
-  
-                {{-- 受取日 --}}
-                <div class="form-group">
-                    <label for="created_at" class="col-xs-2 control-label">受取日</label>
-                    <div class="col-xs-4">
-                        <input type="date" class="form-control" id="created_at" readonly="readonly" value="{{ date('Y-m-d') }}">
+            <div class="col-md-8 col-md-offset-2">
+                <form class="form-horizontal" role="form" method="POST">
+                {{ csrf_field() }}
+      
+                    {{-- 受取日 --}}
+                    <div class="form-group">
+                        <label for="created_at" class="col-xs-2 control-label">受取日</label>
+                        <div class="col-xs-4">
+                            <input type="date" class="form-control" id="created_at" readonly="readonly" value="{{ date('Y-m-d') }}">
+                        </div>
                     </div>
-                </div>
 
-                {{-- アイテム名 --}}
-                <div class="form-group{{ $errors->has('item_name') ? ' has-error' : '' }}">
-                    <label class="col-xs-2 control-label">アイテム名</label>
-                    <div class="col-xs-9">
-                        <input type="text" class="form-control" id="lost_item_name" name="item_name" value="{{ old('item_name') }}" placeholder="ex. 傘, 目薬, etc...">
+                    {{-- アイテム名 --}}
+                    <div class="form-group{{ $errors->has('item_name') ? ' has-error' : '' }}">
+                        <label class="col-xs-2 control-label">アイテム名</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control" id="lost_item_name" name="item_name" value="{{ old('item_name') }}" placeholder="ex. 傘, 目薬, etc...">
 
-                        @if ($errors->has('item_name'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('item_name') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                </div>
-                
-                {{-- 場所 --}}
-                <div class="form-group">
-                    <label class="control-label col-xs-2">場所</label>
-                    <div class="col-xs-7">
-                        @foreach ($places as $p)
-                            @if ($p->id==1)
-                                <label class="radio-inline" for="{{$p->id}}">
-                                    <input type="radio" name="place_id" id="{{$p->id}}" value="{{$p->id}}" checked="checked">{{$p->room_name}}
-                                </label>
-                            @else
-                                <label class="radio-inline" for="{{$p->id}}">
-                                    <input type="radio" name="place_id" id="{{$p->id}}" value="{{$p->id}}">{{$p->room_name}}
-                                </label>
+                            @if ($errors->has('item_name'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('item_name') }}</strong>
+                                </span>
                             @endif
-                        @endforeach
+                        </div>
                     </div>
-                </div>
+                    
+                    {{-- 場所 --}}
+                    <div class="form-group">
+                        <label class="control-label col-xs-2">場所</label>
+                        <div class="col-xs-7">
+                            @foreach ($places as $p)
+                                @if ($p->id==1)
+                                    <label class="radio-inline" for="{{$p->id}}">
+                                        <input type="radio" name="place_id" id="{{$p->id}}" value="{{$p->id}}" checked="checked">{{$p->room_name}}
+                                    </label>
+                                @else
+                                    <label class="radio-inline" for="{{$p->id}}">
+                                        <input type="radio" name="place_id" id="{{$p->id}}" value="{{$p->id}}">{{$p->room_name}}
+                                    </label>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
 
-                {{-- 受取担当者 --}}
-                <div class="form-group">
-                    <label for="reciept_staff_id" class="col-xs-2 control-label">受取担当者</label>
-                    <div class="col-xs-4">
-                        <input type="text" class="form-control" id="reciept_staff_id" value="{{Auth::user()->staff_no}}" name="staff_no" readonly="readonly">
-                        <input type="hidden" value="{{Auth::user()->id}}" name="staff_id">
+                    {{-- 受取担当者 --}}
+                    <div class="form-group">
+                        <label for="reciept_staff_id" class="col-xs-2 control-label">受取担当者</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" id="reciept_staff_id" value="{{Auth::user()->staff_no}}" name="staff_no" readonly="readonly">
+                            <input type="hidden" value="{{Auth::user()->id}}" name="staff_id">
+                        </div>
                     </div>
-                </div>
-                
-                {{-- 備考 --}}
-                <div class="form-group">
-                    <label for="note" class="col-xs-2 control-label">備考</label>
-                    <div class="col-xs-9">
-                        <textarea name="note" class="form-control" rows="3" id="note" placeholder="備考"></textarea>
+                    
+                    {{-- 備考 --}}
+                    <div class="form-group">
+                        <label for="note" class="col-xs-2 control-label">備考</label>
+                        <div class="col-xs-9">
+                            <textarea name="note" class="form-control" rows="3" id="note" placeholder="備考"></textarea>
+                        </div>
                     </div>
-                </div>
 
-                {{-- 送信ボタン (アイテム名を記入しないと押せない)--}}
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" id="submit" class="btn btn-default">SUBMIT</button>
+                    {{-- 送信ボタン (アイテム名を記入しないと押せない)--}}
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" id="submit" class="btn btn-default">SUBMIT</button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
 
         {{-- 落し物リストタブ --}}
