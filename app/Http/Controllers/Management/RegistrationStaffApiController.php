@@ -112,7 +112,7 @@ class RegistrationStaffApiController extends Controller
 
         $post       = $request->all();
         $role       = $post['role'];
-        $id = $post['id'];
+        $id         = $post['id'];
 
         try{
             User::where('id', '=', $id)

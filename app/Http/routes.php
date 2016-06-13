@@ -31,7 +31,9 @@ Route::group(['middleware' => ['auth']], function(){
 
     });
 
-    // スタッフ・学生・品(カメラ・三脚など)の登録
+
+
+    // スタッフ・学生・品(カメラ・三脚など)の登録や編集
     Route::group(['namespace' => 'Management'], function(){
 
         // 学生登録API
@@ -44,5 +46,13 @@ Route::group(['middleware' => ['auth']], function(){
             Route::resource('registration-staff-api', 'RegistrationStaffApiController');
 
         });
+        
+    });
+
+
+    // 
+    // スタッフ各自がメアド・電話番号を変更
+    Route::group(['namespace' => 'Auth', 'prefix' => 'setting'], function(){
+        Route::resource('/', 'SettingController');
     });
 });
