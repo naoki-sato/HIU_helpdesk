@@ -125,7 +125,7 @@
             @if((Auth::user()->role === 'admin') || (Auth::user()->role === 'manager') && ($data['role'] !== 'admin'))
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-4">
-                        <button type="submit" id="submit" class="btn btn-default">SUBMIT</button>
+                        <button type="submit" id="submit" class="btn btn-default">UPDATE</button>
                     </div>
                 </div>
             @endif
@@ -139,7 +139,7 @@
 
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-4">
-                        <button type="submit" id="submit" class="btn btn-default">DELETE</button>
+                        <button type="submit" id="delete" class="btn btn-default">DELETE</button>
                     </div>
                 </div>
             </form>

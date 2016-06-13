@@ -22,9 +22,10 @@ class RegistrationStaffApiController extends Controller
                 'staff_name' => 'sometimes|required|unique:users,name',
                 'staff_no'   => 'sometimes|required|unique:users,staff_no',
                 'phone_no'=> 'sometimes|required',
-                'email' => 'required|email|max:255|unique:users,email',
+                'email' => 'sometimes|required|email|max:255|unique:users,email',
                 'password' => 'sometimes|required|min:6|confirmed',
-                'staff_id' => 'sometimes|required',];
+                'staff_id' => 'sometimes|required',
+                'role' => 'sometimes|required|in:admin,manager,staff'];
     }
 
 
@@ -105,27 +106,17 @@ class RegistrationStaffApiController extends Controller
      */
     public function update(Request $request)
     {
-
         // バリデーションに引っかかったら, false
-        $validation = Validator::make($request->all(), 
-            ['email' => 'required|email|max:255',
-             'role' => 'sometimes|required|in:admin,manager,staff']);
+        $validation = Validator::make($request->all(), $this->validation_rules);
         if($validation->fails()) return false;
 
         $post       = $request->all();
-        $phone_no   = $post['phone_no'];
-        $email      = $post['email']; //
         $role       = $post['role'];
-
         $id = $post['id'];
 
         try{
             User::where('id', '=', $id)
-                ->update([
-                    'email'     => $email,
-                    'phone_no'  => $phone_no,
-                    'role'      => $role
-                ]);
+                ->update(['role' => $role]);
         } catch(\Exception $e) {
             return false;
         }

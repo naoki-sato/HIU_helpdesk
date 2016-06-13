@@ -1,3 +1,9 @@
+$('#delete').click(function(){
+    if(!confirm('本当に削除しますか？')){
+        return false;
+    }
+});
+
 $(function() {
     if ($('#lost_item_name').val().length == 0) {
         $('#submit').prop('disabled', true);
@@ -47,5 +53,4 @@ $(function() {
             }
         });      
     });
-
 });

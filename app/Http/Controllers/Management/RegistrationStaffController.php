@@ -113,9 +113,8 @@ class RegistrationStaffController extends Controller
         }else{
             session()->flash('alert_message', '<h3>処理ができませんでした。</h3>');
         }
-        return view('management.index');
-
-        // return redirect()->route('lost-item.index');
+        
+        return redirect()->route('registration-staff.index');
     }
 
 
