@@ -6,17 +6,14 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Auth;
 
-class RegistrationStaffController extends Controller
+class RegistrationItemController extends Controller
 {
-
-    private $registration_staff_api;
+    private $registration_item_api;
 
     public function __construct()
     {
-        $this->registration_staff_api = new RegistrationStaffApiController();
+        $this->registration_item_api = new RegistrationItemApiController();
     }
 
 
@@ -27,7 +24,7 @@ class RegistrationStaffController extends Controller
      */
     public function index()
     {
-        return view('management.staff.index');
+        return view('management.item.index');
     }
 
 
@@ -40,7 +37,7 @@ class RegistrationStaffController extends Controller
     public function store(Request $request)
     {
         $post = $request->all();
-        $success = $this->registration_staff_api->store($request);
+        $success = $this->registration_item_api->store($request);
 
         if($success){
             session()->flash('success_message', '<h3>新規登録しました。</h3>');
@@ -58,16 +55,16 @@ class RegistrationStaffController extends Controller
      */
     public function show($id)
     {
-        $json = $this->registration_staff_api->show($id);
+        $json = $this->registration_item_api->show($id);
         $data = json_decode($json->content(), true);
 
 
         if(empty($data)){
-            session()->flash('alert_message', '<h3>お探しのスタッフは見つかりませでした。</h3>');
+            session()->flash('alert_message', '<h3>お探しのアイテムは見つかりませでした。</h3>');
             return view('errors.error_msg');
         }
 
-        return view('management.staff.show', ['data' => $data['data']]);
+        return view('management.item.show', ['data' => $data['data']]);
     }
 
 
@@ -81,9 +78,10 @@ class RegistrationStaffController extends Controller
     public function update(Request $request){
         
 
+
         $post = $request->all();
 
-        $success = $this->registration_staff_api->update($request);
+        $success = $this->registration_item_api->update($request);
 
         if($success){
             session()->flash('success_message', '<h3>正常に更新しました。</h3>');
@@ -94,28 +92,5 @@ class RegistrationStaffController extends Controller
         return redirect()->back();
 
     }
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @param  \Illuminate\Http\Request  $request
-     * @return redirect
-     */
-    public function destroy(Request $request)
-    {
-
-        $success = $this->registration_staff_api->destroy($request);
-
-        if($success){
-            session()->flash('success_message', '<h3>正常に引渡処理が完了しました。</h3>');
-        }else{
-            session()->flash('alert_message', '<h3>処理ができませんでした。</h3>');
-        }
-        
-        return redirect()->route('registration-staff.index');
-    }
-
 
 }

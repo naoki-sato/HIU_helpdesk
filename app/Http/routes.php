@@ -31,26 +31,26 @@ Route::group(['middleware' => ['auth']], function(){
 
     });
 
-
-
     // スタッフ・学生・品(カメラ・三脚など)の登録や編集
     Route::group(['namespace' => 'Management'], function(){
 
         // 学生登録API
         Route::resource('registration-student-api', 'RegistrationStudentApiController');
 
-        // 権限あるマネージャーのみ
+        // 権限ある管理者マネージャーのみ (一般スタッフは除く)
         Route::group(['middleware' => ['management']], function(){
-            // スタッフの登録・編集
+            // スタッフの登録・編集・削除
             Route::resource('registration-staff', 'RegistrationStaffController');
             Route::resource('registration-staff-api', 'RegistrationStaffApiController');
+
+            // 貸出アイテムの登録・編集・削除
+            Route::resource('registration-item', 'RegistrationItemController');
+            Route::resource('registration-item-api', 'RegistrationItemApiController');
 
         });
         
     });
 
-
-    // 
     // スタッフ各自がメアド・電話番号を変更
     Route::group(['namespace' => 'Auth', 'prefix' => 'setting'], function(){
         Route::resource('/', 'SettingController');

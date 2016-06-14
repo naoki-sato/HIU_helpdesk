@@ -42,6 +42,7 @@
                         <li><a href="{{ url('/lost-item') }}">落し物関連</a></li>
                         {{-- 管理人かマネージャーのみ表示 (スタッフは除く) --}}
                         @if(in_array(Auth::user()->role, ['admin', 'manager']))
+                            <li><a href="{{ url('/registration-item') }}">アイテム登録/編集</a></li>
                             <li><a href="{{ url('/registration-staff') }}">スタッフ登録/編集</a></li>
                         @endif
                     </ul>
