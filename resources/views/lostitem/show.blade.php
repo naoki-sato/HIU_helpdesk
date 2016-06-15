@@ -53,8 +53,8 @@
 
 
                 <input type="hidden" name="delivery_staff_id" value="{{Auth::user()->id}}">
-                    <button type="submit" id="submit_delete" class="btn btn-default">SUBMIT</button>
             </div>
+            <button type="submit" id="submit_delete" class="btn btn-default">SUBMIT</button>
         </form>
     </div>
 

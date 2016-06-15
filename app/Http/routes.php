@@ -17,11 +17,17 @@ Route::get('/', function () {
 
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
-
 
 
 Route::group(['middleware' => ['auth']], function(){
+
+    // 貸出アイテム関連
+    Route::group(['namespace' => 'Lending'], function(){
+        Route::resource('lend-item', 'StatusController');
+        Route::resource('lend-item-api', 'StatusApiController');
+        Route::controller('lend-item-export', 'ExportController');
+        
+    });
 
     // 落し物関連
     Route::group(['namespace' => 'LostItem'], function(){

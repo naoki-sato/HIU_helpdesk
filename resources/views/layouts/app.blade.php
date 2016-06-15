@@ -39,6 +39,7 @@
                 <!-- Left Side Of Navbar -->
                 @if (!Auth::guest())
                     <ul class="nav navbar-nav">
+                        <li><a href="{{ url('/lend-item') }}">貸出関連</a></li>
                         <li><a href="{{ url('/lost-item') }}">落し物関連</a></li>
                         {{-- 管理人かマネージャーのみ表示 (スタッフは除く) --}}
                         @if(in_array(Auth::user()->role, ['admin', 'manager']))

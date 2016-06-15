@@ -122,7 +122,7 @@ class LostitemController extends Controller
             $this->registration_student_api->update($request);
         }
 
-        $request['student_id'] = self::convertStudentFromNoToId($request->get('student_no'));
+        $request['student_id'] = convertStudentFromNoToId($request->get('student_no'));
         $success = $this->lost_item_api->destroy($request, $id);
 
         if($success){
@@ -136,22 +136,5 @@ class LostitemController extends Controller
     }
 
 
-    /**
-     * 学生NOからID取得
-     *
-     * @param  int  $no
-     * @return id or null
-     */
-    private function convertStudentFromNoToId($no){
 
-        $student = Student::where('student_no', mb_convert_kana($no, 'a'))->first();
-
-        if(empty($student)){
-            return null;
-        }
-
-        return $student->id;
-
-
-    }
 }
