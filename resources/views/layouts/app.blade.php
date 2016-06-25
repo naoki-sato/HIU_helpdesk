@@ -39,14 +39,37 @@
                 <!-- Left Side Of Navbar -->
                 @if (!Auth::guest())
                     <ul class="nav navbar-nav">
-                        <li><a href="{{ url('/lend-item') }}">貸出関連</a></li>
-                        <li><a href="{{ url('/lost-item') }}">落し物関連</a></li>
-                        {{-- 管理人かマネージャーのみ表示 (スタッフは除く) --}}
-                        @if(in_array(Auth::user()->role, ['admin', 'manager']))
-                            <li><a href="{{ url('/registration-item') }}">アイテム登録/編集</a></li>
-                            <li><a href="{{ url('/registration-staff') }}">スタッフ登録/編集</a></li>
-                        @endif
+                        <li><a href="{{ url('/lend-item') }}"><i class="glyphicon glyphicon-transfer"></i> 貸出 / 返却</a></li>
+                        <li><a href="{{ url('/lost-item') }}"><i class="glyphicon glyphicon-question-sign"></i> 落し物</a></li>
                     </ul>
+
+                    <ul class="nav navbar-nav">         
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <i class="glyphicon glyphicon-list"></i> 管理関連<span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                {{-- 管理人かマネージャーのみ表示 (スタッフは除く) --}}
+                                @if(in_array(Auth::user()->role, ['admin', 'manager']))
+                                    <li>
+                                        <a href="{{ url('/registration-item') }}"><i class="glyphicon glyphicon-share-alt"></i> 貸出アイテム</a></li>
+                                    <li>
+                                        <a href="{{ url('/registration-staff') }}">
+                                        <i class="glyphicon glyphicon-user"></i> スタッフ</a>
+                                    </li>
+                                @endif
+                                {{-- 管理人のみ表示 (マネージャ，スタッフは除く) --}}
+                                @if(in_array(Auth::user()->role, ['admin']))
+                                    <li>
+                                        <a href="{{ url('/registration-user') }}">
+                                        <i class="glyphicon glyphicon-education"></i> 学生</a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </li>
+                    </ul>
+
                 @endif
 
                 <!-- Right Side Of Navbar -->
@@ -58,7 +81,8 @@
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                {{ Auth::user()->staff_no }} / {{ Auth::user()->name }}<span class="caret"></span>
+                            <i class="glyphicon glyphicon-user"></i>
+                                {{ Auth::user()->staff_cd }} / {{ Auth::user()->name }}<span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
@@ -99,7 +123,7 @@
     {{-- footer --}}
     <footer class="footer">
         <div class="container">
-            <p class="text-muted">&copy; nakajima.lab {{ date("Y") }}</p>
+            <p class="text-muted">&copy; nakajima.lab 2016 - {{ date("Y") }}</p>
         </div>
     </footer>
 

@@ -36,6 +36,9 @@ class RegistrationItemController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, $this->registration_item_api->validation_rules);
+
+
         $post = $request->all();
         $success = $this->registration_item_api->store($request);
 

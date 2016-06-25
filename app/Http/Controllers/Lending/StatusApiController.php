@@ -9,25 +9,25 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 // use Carbon\Carbon;
-use App\Models\Student;
+use App\Models\User;
 use App\Models\Status;
 use App\Models\Item;
-use App\Http\Controllers\Management\RegistrationStudentApiController;
+use App\Http\Controllers\Management\RegistrationUserApiController;
 
 class StatusApiController extends Controller
 {
     
-    private $validation_rules;
-    private $registration_student_api;
+    public $validation_rules;
+    private $registration_user_api;
 
     public function __construct()
     {
         $this->validation_rules = [
-                'student_name' => 'sometimes|required',
-                'student_no'   => 'sometimes|required',
-                'phone_no'=> 'sometimes|required'];
+                'user_name'   => 'sometimes|required',
+                'user_cd'     => 'sometimes|required',
+                'phone_no'    => 'sometimes|required|numeric'];
 
-        $this->registration_student_api = new RegistrationStudentApiController();
+        $this->registration_user_api = new RegistrationUserApiController();
     }
 
 
@@ -40,18 +40,19 @@ class StatusApiController extends Controller
     {
         $data = Status::select(
                     'statuses.id AS id',
-                    'users.name AS lended_staff_name',
-                    'students.student_name AS student_name',
-                    'students.student_no AS student_no',
-                    'students.phone_no AS phone_no',
-                    'statuses.item_code AS item_code',
-                    'statuses.comment AS comment',
+                    'statuses.item_cd AS item_cd',
+                    'items.description AS description',
+                    'users.user_cd AS user_cd',
+                    'users.user_name AS user_name',
+                    'users.phone_no AS phone_no',
+                    'admins.name AS lended_staff_name',
                     'statuses.created_at AS created_at',
-                    'items.description AS description'
+                    'statuses.comment AS comment'
                     )
-                ->leftJoin('users', 'users.id', '=', 'statuses.lended_staff_id')
-                ->leftJoin('items', 'items.item_code', '=', 'statuses.item_code')
-                ->leftJoin('students', 'students.id', '=', 'statuses.lended_student_id')
+                ->leftJoin('admins', 'admins.id', '=', 'statuses.lended_staff_id')
+                ->leftJoin('items', 'items.item_cd', '=', 'statuses.item_cd')
+                ->leftJoin('users', 'users.user_cd', '=', 'statuses.lended_user_cd')
+                ->whereNull('statuses.deleted_at')
                 ->get();
 
         return response()->json($data);
@@ -70,19 +71,19 @@ class StatusApiController extends Controller
         $validation = Validator::make($request->all(), $this->validation_rules);
         if($validation->fails()) return false;
 
-
         $post = $request->all();
-        $student_name = $post['student_name'];
-        $student_no   = mb_convert_kana($post['student_no'], 'sa');
-        $phone_no = $post['phone'];
+        $user_name  = $post['user_name'];
+        $user_cd    = mb_convert_kana($post['user_cd'], 'sa');
+        $phone_no   = $post['phone_no'];
         $lend_items = $post['lend_item'];
-        $student_id = convertStudentFromNoToId($student_no);
         $lended_staff_id = $request->user()['id'];
-        $comment = $post['note'];
+        $comment    = $post['note'];
+        $is_already_user = User::where('user_cd', '=', $user_cd)->first();
 
-        if(!$student_id){
-            $this->registration_student_api->store($request);
-            $student_id = convertStudentFromNoToId($student_no);
+        if(!$is_already_user){
+            $this->registration_user_api->store($request);
+        }else{
+            $this->registration_user_api->update($request);
         }
 
         $checked_list = self::checkLendedItems($lend_items);
@@ -96,9 +97,9 @@ class StatusApiController extends Controller
                 $status = new Status;
 
                 $status->lended_staff_id   = $lended_staff_id;
-                $status->lended_student_id = $student_id;
-                $status->item_code   = $value;
-                $status->comment       = $comment;
+                $status->lended_user_cd    = $user_cd;
+                $status->item_cd           = $value;
+                $status->comment           = $comment;
                 $status->save();
             } catch(\PDOException $e) {
                 return false;
@@ -107,51 +108,6 @@ class StatusApiController extends Controller
         return true;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Json
-     */
-    public function show($id)
-    {
-        // $data = User::where('id', '=', $id)
-        //         ->get();
-        // $result = null;
-
-        // if (!$data->isEmpty()) {
-        //     $result = ['data' => $data[0]];
-        // }
-
-        // return response()->json($result);
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return success : true, fail : false
-     */
-    public function update(Request $request)
-    {
-        // // バリデーションに引っかかったら, false
-        // $validation = Validator::make($request->all(), $this->validation_rules);
-        // if($validation->fails()) return false;
-
-        // $post       = $request->all();
-        // $role       = $post['role'];
-        // $id         = $post['id'];
-
-        // try{
-        //     User::where('id', '=', $id)
-        //         ->update(['role' => $role]);
-        // } catch(\Exception $e) {
-        //     return false;
-        // }
-        // return true;
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -163,21 +119,32 @@ class StatusApiController extends Controller
     public function destroy($request)
     {
 
-    //     // バリデーションに引っかかったら, false
-    //     $validation = Validator::make($request->all(), $this->validation_rules);
-    //     if($validation->fails()) return false;
+        // バリデーションに引っかかったら, false
+        $validation = Validator::make($request->all(), $this->validation_rules);
+        if($validation->fails()) return false;
 
-    //     // 落し物主と引渡担当者noを更新してソフト削除
-    //     $post = $request->all();
-    //     $id   = $post['staff_id'];
+        $return_items = $request->get('return_item');
+        $checked_list = self::checkReturnedItems($return_items);
 
-    //     try{
-    //         User::find($id)->delete();
-    //     } catch(\Exception $e) {
-    //         return false;
-    //     }
-        
-    //     return true;
+
+        if(!$checked_list){
+            return false;
+        }
+
+        // item_cdと引渡担当者noを更新してソフト削除
+        foreach ($checked_list as $key => $value) {
+            try{
+
+                Status::where('item_cd', '=', $value)
+                    ->update(['returned_staff_id' => $request->user()['id']]);
+
+                Status::where('item_cd', '=', $value)->delete();
+            } catch(\Exception $e) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /*
@@ -193,11 +160,35 @@ class StatusApiController extends Controller
 
         foreach ($items as $key => $value) {
             // 貸出中のアイテムが混じっていないか
-            $is_check = Status::where('item_code', '=', $value)->first();
+            $is_check = Status::where('item_cd', '=', $value)->first();
             if($is_check) return false;
 
             // DBに貸出アイテムとして登録されているか
-            $is_check = Item::where('item_code', '=', $value)->first();
+            $is_check = Item::where('item_cd', '=', $value)->first();
+            if(empty($is_check)) return false;
+        }
+        return $items;
+
+    }
+
+    /*
+     * 貸出していないアイテムが混じっていないか、
+     * DBに貸出アイテムとして登録されているか
+     * の２点をチェック
+     * 1つでも混じっていたらfalse
+     */
+    private function checkReturnedItems($items)
+    {
+
+        $items = array_filter($items);
+
+        foreach ($items as $key => $value) {
+            // 貸出中のアイテムが混じっていないか
+            $is_check = Status::where('item_cd', '=', $value)->first();
+            if(!$is_check) return false;
+
+            // DBに貸出アイテムとして登録されているか
+            $is_check = Item::where('item_cd', '=', $value)->first();
             if(empty($is_check)) return false;
         }
         return $items;

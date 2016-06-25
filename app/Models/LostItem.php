@@ -36,7 +36,7 @@ class LostItem extends Model
      */
     public function recieptStaff()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\Admin');
     }
 
     /**
@@ -44,7 +44,7 @@ class LostItem extends Model
      */
     public function deliveryStaff()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\Admin');
     }
 
     /**
@@ -52,6 +52,6 @@ class LostItem extends Model
      */
     public function student()
     {
-        return $this->belongsTo('App\Models\Student');
+        return $this->belongsTo('App\Models\User');
     }
 }

@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        'passwords' => 'admins',
     ],
 
     /*
@@ -38,12 +38,18 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'admin',
         ],
 
         'api' => [
             'driver' => 'token',
-            'provider' => 'users',
+            'provider' => 'admin',
+        ],
+
+        //追加 for admin
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admin',
         ],
 
         //追加//
@@ -71,9 +77,14 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        // 'users' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\User::class,
+        // ],
+        //追加 for admin
+        'admin' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Admin::class,
         ],
 
         // 'users' => [
@@ -102,8 +113,15 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        // 'users' => [
+        //     'provider' => 'users',
+        //     'email' => 'auth.emails.password',
+        //     'table' => 'password_resets',
+        //     'expire' => 60,
+        // ],
+        //追加 for admin
+        'admins' => [
+            'provider' => 'admin',
             'email' => 'auth.emails.password',
             'table' => 'password_resets',
             'expire' => 60,

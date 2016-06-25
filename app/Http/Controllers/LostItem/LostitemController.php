@@ -9,19 +9,19 @@ use App\Http\Controllers\Controller;
 use App\Models\LostItem;
 use App\Models\Place;
 use App\Models\User;
-use App\Models\Student;
-use App\Http\Controllers\Management\RegistrationStudentApiController;
+use App\Models\Admin;
+use App\Http\Controllers\Management\RegistrationUserApiController;
 
 class LostitemController extends Controller
 {
     private $lost_item_api;
-    private $registration_student_api;
+    private $registration_user_api;
     private $places;
 
     public function __construct()
     {
         $this->lost_item_api = new LostItemApiController();
-        $this->registration_student_api = new RegistrationStudentApiController();
+        $this->registration_user_api = new RegistrationUserApiController();
         $this->places = Place::all();
     }
 
@@ -44,7 +44,7 @@ class LostitemController extends Controller
      */
     public function store(Request $request)
     {
-
+        $this->validate($request, $this->lost_item_api->validation_rules);
         $post = $request->all();
         $success = $this->lost_item_api->store($request);
 
@@ -65,6 +65,7 @@ class LostitemController extends Controller
      */
     public function show($id)
     {
+
         $json = $this->lost_item_api->show($id);
         $data = json_decode($json->content(), true);
 
@@ -90,6 +91,8 @@ class LostitemController extends Controller
      * @return redirect
      */
     public function update(Request $request, $id){
+
+        $this->validate($request, $this->lost_item_api->validation_rules);
         
         $success = $this->lost_item_api->update($request, $id);
 
@@ -112,17 +115,18 @@ class LostitemController extends Controller
      */
     public function destroy(Request $request, $id)
     {
+        $this->validate($request, $this->lost_item_api->validation_rules);
 
-        $student_id = $this->registration_student_api->show($request->get('student_no'));
+        $is_empty = $this->registration_user_api->show($request->get('user_cd'));
 
         // DBに登録されていなければ，新規登録。 あれば情報を更新
-        if(!$student_id){
-            $this->registration_student_api->store($request);
+        if($is_empty){
+            $this->registration_user_api->update($request);
         }else{
-            $this->registration_student_api->update($request);
+            $this->registration_user_api->store($request);
         }
 
-        $request['student_id'] = convertStudentFromNoToId($request->get('student_no'));
+        $request['user_cd'] = $request->get('user_cd');
         $success = $this->lost_item_api->destroy($request, $id);
 
         if($success){

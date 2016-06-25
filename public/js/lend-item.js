@@ -1,12 +1,12 @@
 $(function() {
-    $('#student_no').change(function() {
+    $('#user_cd').change(function() {
         $.ajax({
-            url: '/registration-student-api/'+$('#student_no').val(),
+            url: '/registration-user-api/'+$('#user_cd').val(),
             type: "get",
             dataType: "json",
             success: function(data){
-                $('#student_name').val(data['student_name']);
-                $('#phone').val(data['phone_no']);
+                $('#user_name').val(data['user_name']);
+                $('#phone_no').val(data['phone_no']);
                 $('#submit_lend').prop('disabled', false);
             }
         });      

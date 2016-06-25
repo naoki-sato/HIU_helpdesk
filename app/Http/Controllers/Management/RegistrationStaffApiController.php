@@ -9,20 +9,20 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Carbon\Carbon;
-use App\Models\User;
+use App\Models\Admin;
 
 class RegistrationStaffApiController extends Controller
 {
 
-    private $validation_rules;
+    public $validation_rules;
 
     public function __construct()
     {
         $this->validation_rules = [
-                'staff_name' => 'sometimes|required|unique:users,name',
-                'staff_no'   => 'sometimes|required|unique:users,staff_no',
-                'phone_no'=> 'sometimes|required',
-                'email' => 'sometimes|required|email|max:255|unique:users,email',
+                'staff_name' => 'sometimes|required',
+                'staff_cd'   => 'sometimes|required|unique:admins,staff_cd',
+                'phone_no'=> 'sometimes|required|unique:admins,phone_no|numeric',
+                'email' => 'sometimes|required|email|max:255|unique:admins,email',
                 'password' => 'sometimes|required|min:6|confirmed',
                 'staff_id' => 'sometimes|required',
                 'role' => 'sometimes|required|in:admin,manager,staff'];
@@ -36,7 +36,7 @@ class RegistrationStaffApiController extends Controller
      */
     public function index()
     {
-        $data = User::all();
+        $data = Admin::all();
         return response()->json($data);
     }
 
@@ -63,7 +63,7 @@ class RegistrationStaffApiController extends Controller
         $email      = $post['email'];
 
         try{
-            $staff = new User;
+            $staff = new Admin;
             $staff->name       = $staff_name;
             $staff->staff_no   = $staff_no;
             $staff->password   = bcrypt($password);
@@ -85,7 +85,7 @@ class RegistrationStaffApiController extends Controller
      */
     public function show($id)
     {
-        $data = User::where('id', '=', $id)
+        $data = Admin::where('id', '=', $id)
                 ->get();
         $result = null;
 
@@ -115,7 +115,7 @@ class RegistrationStaffApiController extends Controller
         $id         = $post['id'];
 
         try{
-            User::where('id', '=', $id)
+            Admin::where('id', '=', $id)
                 ->update(['role' => $role]);
         } catch(\Exception $e) {
             return false;
@@ -142,7 +142,7 @@ class RegistrationStaffApiController extends Controller
         $id   = $post['staff_id'];
 
         try{
-            User::find($id)->delete();
+            Admin::find($id)->delete();
         } catch(\Exception $e) {
             return false;
         }

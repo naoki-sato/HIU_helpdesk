@@ -45,6 +45,33 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        return parent::render($request, $e);
+        if($this->isHttpException($e)){
+
+            switch ($e->getStatusCode()) {
+
+                case '404':
+                    \Log::error($e);
+                    return \Response::view('errors.404');
+                break;
+
+                case '403':
+                    \Log::error($e);
+                    return \Response::view('errors.403');
+                break;
+
+                case '500':
+                    \Log::error($exception);
+                    return \Response::view('errors.500');   
+                break;
+
+                default:
+                    return $this->renderHttpException($e);
+                break;
+            }
+
+        }else{
+
+            return parent::render($request, $e);
+        }
     }
 }

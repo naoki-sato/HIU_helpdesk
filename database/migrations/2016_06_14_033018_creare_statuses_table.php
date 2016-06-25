@@ -15,9 +15,9 @@ class CreareStatusesTable extends Migration
         Schema::create("statuses", function(Blueprint $table){
             $table->increments("id");
             $table->integer("lended_staff_id")->unsigned();
-            $table->integer("returned_staff_id")->unsigned();
-            $table->integer("lended_student_id")->unsigned();
-            $table->string("item_code");
+            $table->integer("returned_staff_id")->unsigned()->nullable();
+            $table->string("lended_user_cd");
+            $table->string("item_cd");
             $table->string("comment")->nullable();
             $table->softDeletes();
             $table->timestamps();

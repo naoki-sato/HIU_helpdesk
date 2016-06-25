@@ -1,7 +1,7 @@
 <?php
 
 use Carbon\Carbon;
-use App\Models\Student;
+use App\Models\User;
 
 /**
  * 現在の"年度"を取得
@@ -41,19 +41,19 @@ function convertEndFiscalYear($year = null){
 }
 
 /**
- * 学生NOからID取得
+ * ユーザーCodeからID取得
  * @param  int  $no(s1312007 -> db_id)
  * @return id or null
  */
-function convertStudentFromNoToId($no){
+function convertUserFromCodeToId($no){
 
-    $student = Student::where('student_no', mb_convert_kana($no, 'a'))->first();
+    $user = User::where('user_cd', mb_convert_kana($no, 'a'))->first();
 
-    if(empty($student)){
+    if(empty($user)){
         return null;
     }
 
-    return $student->id;
+    return $user->id;
 }
 
 

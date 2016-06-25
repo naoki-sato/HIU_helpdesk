@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Admin;
 
 class SettingController extends Controller
 {
@@ -27,7 +27,7 @@ class SettingController extends Controller
      * @return view
      */
     public function index(Request $request){
-        return view('auth.setting', ['data' => User::find($request->user()['id'])]);
+        return view('auth.setting', ['data' => Admin::find($request->user()['id'])]);
     }
 
     /**
@@ -47,14 +47,14 @@ class SettingController extends Controller
         $id         = $request->user()['id'];
 
         try{
-            User::where('id', '=', $id)
+            Admin::where('id', '=', $id)
                 ->update([
                     'phone_no' => $phone_no,
                     'email' => $email
                 ]);
         } catch(\Exception $e) {
 
-            session()->flash('alert_message', '<h3>更新できませんでした。</h3>');
+            session()->flash('alert_message', '<h3>既にメールアドレスが登録されています。更新できませんでした。</h3>');
             return redirect()->back();
         }
 

@@ -25,7 +25,7 @@ class StatusController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getIndex()
     {
         return view('status.index');
     }
@@ -37,64 +37,19 @@ class StatusController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function postLend(Request $request)
     {
+        $this->validate($request, $this->lend_item_api->validation_rules);
 
         $success = $this->lend_item_api->store($request);
 
         if($success){
             session()->flash('success_message', '<h3>貸出登録しました。</h3>');
         }else{
-            session()->flash('alert_message', '<h3>貸出登録できませんでした。</h3>');
+            session()->flash('alert_message', '<h3>既に貸出済みの機材等があり，貸出登録できませんでした。</h3>');
         }
         return redirect()->back();
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return view
-     */
-    public function show($id)
-    {
-        // $json = $this->lend_item_api->show($id);
-        // $data = json_decode($json->content(), true);
-
-
-        // if(empty($data)){
-        //     session()->flash('alert_message', '<h3>お探しのスタッフは見つかりませでした。</h3>');
-        //     return view('errors.error_msg');
-        // }
-
-        // return view('management.staff.show', ['data' => $data['data']]);
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return redirect
-     */
-    public function update(Request $request){
-        
-
-        // $post = $request->all();
-
-        // $success = $this->lend_item_api->update($request);
-
-        // if($success){
-        //     session()->flash('success_message', '<h3>正常に更新しました。</h3>');
-        // }else{
-        //     session()->flash('alert_message', '<h3>更新できませんでした。</h3>');
-        // }
-
-        // return redirect()->back();
-
-    }
-
 
     /**
      * Remove the specified resource from storage.
@@ -103,19 +58,19 @@ class StatusController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return redirect
      */
-    public function destroy(Request $request)
+    public function postReturn(Request $request)
     {
 
-        dd('des');
+        $this->validate($request, $this->lend_item_api->validation_rules);
 
         $success = $this->lend_item_api->destroy($request);
 
         if($success){
             session()->flash('success_message', '<h3>正常に引渡処理が完了しました。</h3>');
         }else{
-            session()->flash('alert_message', '<h3>処理ができませんでした。</h3>');
+            session()->flash('alert_message', '<h3>貸出していない機材等があり，処理ができませんでした。</h3>');
         }
         
-        return redirect()->route('registration-staff.index');
+        return redirect()->back();
     }
 }

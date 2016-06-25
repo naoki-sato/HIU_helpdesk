@@ -75,19 +75,20 @@ class ExportController extends Controller
 
         /* Eloquentだと上手くExcelにexportできないため，queryをゴリゴリ書いた */
         $data = LostItem::withTrashed()
-            ->leftJoin('users', 'users.id', '=', 'lost_items.reciept_staff_id')
-            ->leftJoin('students', 'students.id', '=', 'lost_items.student_id')
+            ->leftJoin('admins', 'admins.id', '=', 'lost_items.reciept_staff_id')
+            ->leftJoin('users', 'users.user_cd', '=', 'lost_items.user_cd')
             ->leftJoin('places', 'places.id', '=', 'lost_items.place_id')
-            ->leftJoin('users as A', 'A.id', '=', 'lost_items.delivery_staff_id')
+            ->leftJoin('admins as A', 'A.id', '=', 'lost_items.delivery_staff_id')
             ->select('lost_items.id AS 番号',
                     'lost_items.created_at AS 受取日',
                     'lost_items.lost_item_name AS アイテム名',
                     'places.room_name AS 場所',
-                    'users.name AS 受取担当者',
+                    'admins.name AS 受取担当者',
                     'lost_items.note AS 備考',
                     'lost_items.deleted_at AS 引渡日',
                     'A.name AS 引渡担当者',
-                    'students.student_name AS 落し物主'
+                    'users.user_cd AS 落し物主番号',
+                    'users.user_name AS 落し物主氏名'
                     )
             ->whereBetween('lost_items.created_at', 
                     [convertBeginningFiscalYear($year), convertEndFiscalYear($year)])

@@ -13,14 +13,14 @@ use App\Models\Item;
 
 class RegistrationItemApiController extends Controller
 {
-    private $validation_rules;
+    public $validation_rules;
 
     public function __construct()
     {
         $this->validation_rules = [
-                'item_code'     => 'sometimes|required|unique:items,item_code',
-                'serial_code'   => 'sometimes|required',
-                'description'   => 'sometimes|required'];
+                'item_cd'     => 'sometimes|required|unique:items,item_code',
+                'serial_cd'   => 'sometimes|required',
+                'description' => 'sometimes|required'];
     }
 
 
@@ -49,8 +49,8 @@ class RegistrationItemApiController extends Controller
         if($validation->fails()) return false;
 
         $post = $request->all();
-        $item_code   = mb_convert_kana($post['item_code'], 'sa');
-        $serial_code = mb_convert_kana($post['serial_code'], 'sa');
+        $item_code   = mb_convert_kana($post['item_cd'], 'sa');
+        $serial_code = mb_convert_kana($post['serial_cd'], 'sa');
         $description = $post['description'];
 
         try{
@@ -97,14 +97,14 @@ class RegistrationItemApiController extends Controller
 
         $post = $request->all();
         $id          = $post['id'];
-        $item_code   = mb_convert_kana($post['item_code'], 'sa');
-        $serial_code = mb_convert_kana($post['serial_code'], 'sa');
+        $item_code   = mb_convert_kana($post['item_cd'], 'sa');
+        $serial_code = mb_convert_kana($post['serial_cd'], 'sa');
         $description = $post['description'];
 
         try{
             Item::where('id', '=', $id)
-                ->update(['item_code'   => $item_code,
-                          'serial_code' => $serial_code,
+                ->update(['item_cd'   => $item_code,
+                          'serial_cd' => $serial_code,
                           'description' => $description]);
         } catch(\Exception $e) {
             return false;

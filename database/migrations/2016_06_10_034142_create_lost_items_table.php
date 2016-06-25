@@ -18,7 +18,7 @@ class CreateLostItemsTable extends Migration
             $table->integer('reciept_staff_id')->unsigned();
             $table->integer('delivery_staff_id')->unsigned()->nullable();
             $table->integer('place_id')->unsigned();
-            $table->integer('student_id')->unsigned()->nullable();
+            $table->string('user_cd')->nullable();
             $table->text('note')->nullable();
             $table->softDeletes();
             $table->timestamps();

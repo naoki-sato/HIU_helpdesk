@@ -23,10 +23,9 @@ Route::group(['middleware' => ['auth']], function(){
 
     // 貸出アイテム関連
     Route::group(['namespace' => 'Lending'], function(){
-        Route::resource('lend-item', 'StatusController');
+        Route::controller('lend-item', 'StatusController');
         Route::resource('lend-item-api', 'StatusApiController');
         Route::controller('lend-item-export', 'ExportController');
-        
     });
 
     // 落し物関連
@@ -34,14 +33,17 @@ Route::group(['middleware' => ['auth']], function(){
         Route::resource('lost-item', 'LostItemController');
         Route::resource('lost-item-api', 'LostItemApiController');
         Route::controller('lost-item-export', 'ExportController');
-
     });
 
     // スタッフ・学生・品(カメラ・三脚など)の登録や編集
     Route::group(['namespace' => 'Management'], function(){
+        // User登録API
+        Route::resource('registration-user-api', 'RegistrationUserApiController');
 
-        // 学生登録API
-        Route::resource('registration-student-api', 'RegistrationStudentApiController');
+        // すべてのUser登録管理をするため，role:adminの限られた人のみ
+        Route::group(['middleware' => ['admin']], function(){
+            Route::controller('registration-user', 'RegistrationUserController');
+        });
 
         // 権限ある管理者マネージャーのみ (一般スタッフは除く)
         Route::group(['middleware' => ['management']], function(){
@@ -52,9 +54,8 @@ Route::group(['middleware' => ['auth']], function(){
             // 貸出アイテムの登録・編集・削除
             Route::resource('registration-item', 'RegistrationItemController');
             Route::resource('registration-item-api', 'RegistrationItemApiController');
-
+            Route::controller('registration-item-excel', 'RegistrationItemExcelController');
         });
-        
     });
 
     // スタッフ各自がメアド・電話番号を変更

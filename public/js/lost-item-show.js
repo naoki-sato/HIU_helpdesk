@@ -16,25 +16,25 @@ $(function() {
         }
     });
 
-    if (($('#lost-item-owner').val().length == 0) || ($('#student_name').val().length == 0) || ($('#phone').val().length == 0)) {
+    if (($('#lost-item-owner').val().length == 0) || ($('#user_name').val().length == 0) || ($('#phone_no').val().length == 0)) {
         $('#submit_delete').prop('disabled', true);
     }
     $('#lost-item-owner').change(function() {
-        if (($('#lost-item-owner').val().length > 0) && ($('#student_name').val().length > 0) && ($('#phone').val().length > 0)) {
+        if (($('#lost-item-owner').val().length > 0) && ($('#user_name').val().length > 0) && ($('#phone_no').val().length > 0)) {
             $('#submit_delete').prop('disabled', false);
         } else {
             $('#submit_delete').prop('disabled', true);
         }
     });
-    $('#student_name').change(function() {
-        if (($('#lost-item-owner').val().length > 0) && ($('#student_name').val().length > 0) && ($('#phone').val().length > 0)) {
+    $('#user_name').change(function() {
+        if (($('#lost-item-owner').val().length > 0) && ($('#user_name').val().length > 0) && ($('#phone_no').val().length > 0)) {
             $('#submit_delete').prop('disabled', false);
         } else {
             $('#submit_delete').prop('disabled', true);
         }
     });
-    $('#phone').change(function() {
-        if (($('#lost-item-owner').val().length > 0) && ($('#student_name').val().length > 0) && ($('#phone').val().length > 0)) {
+    $('#phone_no').change(function() {
+        if (($('#lost-item-owner').val().length > 0) && ($('#user_name').val().length > 0) && ($('#phone_no').val().length > 0)) {
             $('#submit_delete').prop('disabled', false);
         } else {
             $('#submit_delete').prop('disabled', true);
@@ -43,12 +43,12 @@ $(function() {
 
     $('#lost-item-owner').change(function() {
         $.ajax({
-            url: '/registration-student-api/'+$('#lost-item-owner').val(),
+            url: '/registration-user-api/'+$('#lost-item-owner').val(),
             type: "get",
             dataType: "json",
             success: function(data){
-                $('#student_name').val(data['student_name']);
-                $('#phone').val(data['phone_no']);
+                $('#user_name').val(data['user_name']);
+                $('#phone_no').val(data['phone_no']);
                 $('#submit_delete').prop('disabled', false);
             }
         });      

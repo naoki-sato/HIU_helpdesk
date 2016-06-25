@@ -39,7 +39,9 @@ class RegistrationStaffController extends Controller
      */
     public function store(Request $request)
     {
-        $post = $request->all();
+
+        $this->validate($request, $this->registration_staff_api->validation_rules);
+
         $success = $this->registration_staff_api->store($request);
 
         if($success){
@@ -80,8 +82,7 @@ class RegistrationStaffController extends Controller
      */
     public function update(Request $request){
         
-
-        $post = $request->all();
+        $this->validate($request, $this->registration_staff_api->validation_rules);
 
         $success = $this->registration_staff_api->update($request);
 
@@ -105,11 +106,12 @@ class RegistrationStaffController extends Controller
      */
     public function destroy(Request $request)
     {
-
+        $this->validate($request, $this->registration_staff_api->validation_rules);
+        
         $success = $this->registration_staff_api->destroy($request);
 
         if($success){
-            session()->flash('success_message', '<h3>正常に引渡処理が完了しました。</h3>');
+            session()->flash('success_message', '<h3>正常に処理が完了しました。</h3>');
         }else{
             session()->flash('alert_message', '<h3>処理ができませんでした。</h3>');
         }

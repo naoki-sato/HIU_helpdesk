@@ -7,20 +7,21 @@ use Illuminate\Support\Facades\Validator;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Student;
+use App\Models\User;
 
-class RegistrationStudentApiController extends Controller
+class RegistrationUserApiController extends Controller
 {
 
-     private $validation_rules;
+    public $validation_rules;
 
     public function __construct()
     {
         $this->validation_rules = [
-                'student_name' => 'sometimes|required',
-                'student_no'   => 'sometimes|required|unique:students,student_no',
-                'phone'        => 'sometimes|required'];
+                'user_name' => 'sometimes|required',
+                'user_cd'   => 'sometimes|required|unique:users,user_cd',
+                'phone_no'  => 'sometimes|required|numeric'];
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -36,17 +37,17 @@ class RegistrationStudentApiController extends Controller
         $validation = Validator::make($request->all(), $this->validation_rules);
         if($validation->fails()) return false;
 
-        $post           = $request->all();
-        $student_name   = mb_convert_kana($post['student_name'], 'as');
-        $student_no     = mb_convert_kana($post['student_no'], 'as');
-        $phone_no       = mb_convert_kana($post['phone'], 'as');
+        $post      = $request->all();
+        $user_name = mb_convert_kana($post['user_name'], 'as');
+        $user_cd   = mb_convert_kana($post['user_cd'], 'as');
+        $phone_no  = mb_convert_kana($post['phone_no'], 'as');
 
         try{
-            $student = new Student;
-            $student->student_name  = $student_name;
-            $student->student_no    = $student_no;
-            $student->phone_no      = $phone_no;
-            $student->save();
+            $user = new User;
+            $user->user_name  = $user_name;
+            $user->user_cd    = $user_cd;
+            $user->phone_no   = $phone_no;
+            $user->save();
         } catch(\PDOException $e) {
             return false;
         }
@@ -57,13 +58,13 @@ class RegistrationStudentApiController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $student_no (ex. s1312007)
+     * @param  int  $user_cd (ex. s1312007)
      * @return Json
      */
-    public function show($student_no)
+    public function show($user_cd)
     {
 
-        $data = Student::where('student_no', '=', mb_convert_kana($student_no, 'as'))->first();
+        $data = User::where('user_cd', '=', mb_convert_kana($user_cd, 'as'))->first();
 
         if (!$data) return null;
 
@@ -81,19 +82,15 @@ class RegistrationStudentApiController extends Controller
     public function update(Request $request)
     {
 
-        // バリデーションに引っかかったら, false
-        $validation = Validator::make($request->all(), $this->validation_rules);
-        if($validation->fails()) return false;
-
         $post = $request->all();
-        $student_no     = mb_convert_kana($post['student_no'], 'as');
-        $phone_no       = mb_convert_kana($post['phone'], 'as');
+        $user_cd  = mb_convert_kana($post['user_cd'], 'as');
+        $phone_no = mb_convert_kana($post['phone_no'], 'as');
 
-        $id = Student::where('student_no', '=', $student_no)->first();
+        $id = User::where('user_cd', '=', $user_cd)->first();
         try{
-            Student::where('id', '=', $id->id)
+            User::where('id', '=', $id->id)
                 ->update([
-                    'phone_no' => $phone,
+                    'phone_no' => $phone_no,
                 ]);
         } catch(\Exception $e) {
             return false;
