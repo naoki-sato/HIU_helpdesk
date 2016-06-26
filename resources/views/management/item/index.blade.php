@@ -141,7 +141,7 @@
 
                     <div id="export">
                         <div class="col-md-11 col-md-offset-1">
-                        <form class="form-horizontal" action="/registration-item-export/export" method="POST">
+                        <form class="form-horizontal" action="/registration-item-excel/export" method="POST">
                             {{ csrf_field() }}
                             登録されているアイテムを.csvで出力　
                             <button type="submit" class="btn btn-primary">

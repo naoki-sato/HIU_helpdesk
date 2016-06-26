@@ -40,7 +40,12 @@ class RegistrationStaffController extends Controller
     public function store(Request $request)
     {
 
-        $this->validate($request, $this->registration_staff_api->validation_rules);
+        $this->validate($request,
+                ['staff_name' => 'required',
+                 'staff_cd'   => 'required|unique:admins,staff_cd',
+                 'phone_no'   => 'required|unique:admins,phone_no|numeric',
+                 'email'      => 'required|email|max:255|unique:admins,email',
+                 'password'   => 'required|min:6|confirmed']);
 
         $success = $this->registration_staff_api->store($request);
 
@@ -82,7 +87,9 @@ class RegistrationStaffController extends Controller
      */
     public function update(Request $request){
         
-        $this->validate($request, $this->registration_staff_api->validation_rules);
+        $this->validate($request, 
+                ['role' => 'required|in:admin,manager,staff',
+                 'id'   => 'required|numeric']);
 
         $success = $this->registration_staff_api->update($request);
 
@@ -106,7 +113,7 @@ class RegistrationStaffController extends Controller
      */
     public function destroy(Request $request)
     {
-        $this->validate($request, $this->registration_staff_api->validation_rules);
+        $this->validate($request, ['staff_id' => 'required|numeric']);
         
         $success = $this->registration_staff_api->destroy($request);
 

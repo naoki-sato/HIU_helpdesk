@@ -12,17 +12,6 @@ use App\Models\User;
 class RegistrationUserApiController extends Controller
 {
 
-    public $validation_rules;
-
-    public function __construct()
-    {
-        $this->validation_rules = [
-                'user_name' => 'sometimes|required',
-                'user_cd'   => 'sometimes|required|unique:users,user_cd',
-                'phone_no'  => 'sometimes|required|numeric'];
-    }
-
-
     /**
      * Store a newly created resource in storage.
      *
@@ -34,7 +23,10 @@ class RegistrationUserApiController extends Controller
     {
 
         // バリデーションに引っかかったら, false
-        $validation = Validator::make($request->all(), $this->validation_rules);
+        $validation = Validator::make($request->all(), 
+                ['user_name' => 'required',
+                 'user_cd'   => 'required|unique:users,user_cd',
+                 'phone_no'  => 'required|numeric']);
         if($validation->fails()) return false;
 
         $post      = $request->all();

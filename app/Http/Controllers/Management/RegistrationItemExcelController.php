@@ -16,19 +16,10 @@ use Input;
 class RegistrationItemExcelController extends Controller
 {
     
-    private $validation_rules;
-
-    public function __construct()
-    {
-        $this->validation_rules = [
-                'file_input' => 'required'
-                ];
-    }
-
     public function postImport(Request $request)
     {
 
-        $this->validate($request, $this->validation_rules);
+        $this->validate($request, ['file_input' => 'required']);
 
         if(Input::hasFile('file_input')){
             $path = Input::file('file_input')->getRealPath();

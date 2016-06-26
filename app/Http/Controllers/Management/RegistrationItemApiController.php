@@ -13,17 +13,6 @@ use App\Models\Item;
 
 class RegistrationItemApiController extends Controller
 {
-    public $validation_rules;
-
-    public function __construct()
-    {
-        $this->validation_rules = [
-                'item_cd'     => 'sometimes|required|unique:items,item_code',
-                'serial_cd'   => 'sometimes|required',
-                'description' => 'sometimes|required'];
-    }
-
-
     /**
      * Display a listing of the resource.
      *
@@ -45,68 +34,24 @@ class RegistrationItemApiController extends Controller
     {
 
         // バリデーションに引っかかったら, false
-        $validation = Validator::make($request->all(), $this->validation_rules);
+        $validation = Validator::make($request->all(),
+                ['item_cd'     => 'required|unique:items,item_cd',
+                 'serial_cd'   => 'required',
+                 'description' => 'required']);
         if($validation->fails()) return false;
 
         $post = $request->all();
-        $item_code   = mb_convert_kana($post['item_cd'], 'sa');
-        $serial_code = mb_convert_kana($post['serial_cd'], 'sa');
+        $item_cd   = mb_convert_kana($post['item_cd'], 'sa');
+        $serial_cd = mb_convert_kana($post['serial_cd'], 'sa');
         $description = $post['description'];
 
         try{
             $item = new Item;
-            $item->item_code   = $item_code;
-            $item->serial_code = $serial_code;
+            $item->item_cd   = $item_cd;
+            $item->serial_cd = $serial_cd;
             $item->description = $description;
             $item->save();
         } catch(\PDOException $e) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Json
-     */
-    public function show($id)
-    {
-        $data = Item::where('id', '=', $id)
-                ->get();
-        $result = null;
-
-        if (!$data->isEmpty()) {
-            $result = ['data' => $data[0]];
-        }
-
-        return response()->json($result);
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return success : true, fail : false
-     */
-    public function update(Request $request)
-    {
-
-        $post = $request->all();
-        $id          = $post['id'];
-        $item_code   = mb_convert_kana($post['item_cd'], 'sa');
-        $serial_code = mb_convert_kana($post['serial_cd'], 'sa');
-        $description = $post['description'];
-
-        try{
-            Item::where('id', '=', $id)
-                ->update(['item_cd'   => $item_code,
-                          'serial_cd' => $serial_code,
-                          'description' => $description]);
-        } catch(\Exception $e) {
             return false;
         }
         return true;

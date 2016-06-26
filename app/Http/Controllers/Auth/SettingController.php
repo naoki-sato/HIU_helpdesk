@@ -10,16 +10,6 @@ use App\Models\Admin;
 
 class SettingController extends Controller
 {
-
-    private $validation_rules;
-
-    public function __construct()
-    {
-        $this->validation_rules = [
-                //update
-                'email'    => 'sometimes|required|email',
-                'phone_no' => 'sometimes|required|numeric'];
-    }
     
     /** 
      * getアクセス時
@@ -38,9 +28,8 @@ class SettingController extends Controller
      */
     public function store(Request $request){
 
-
-        $this->validate($request, $this->validation_rules);
-
+        $this->validate($request, ['email'    => 'unique:admins,email,' . $request->user()['id'],
+                                   'phone_no' => 'required|numeric']);
         $post       = $request->all();
         $phone_no   = $post['phone_no'];
         $email      = $post['email'];
@@ -62,6 +51,5 @@ class SettingController extends Controller
         return redirect()->back();
 
     }
-
 
 }

@@ -39,7 +39,10 @@ class StatusController extends Controller
      */
     public function postLend(Request $request)
     {
-        $this->validate($request, $this->lend_item_api->validation_rules);
+        $this->validate($request, 
+                ['user_name'   => 'required',
+                 'user_cd'     => 'required',
+                 'phone_no'    => 'required|numeric']);
 
         $success = $this->lend_item_api->store($request);
 
@@ -60,8 +63,6 @@ class StatusController extends Controller
      */
     public function postReturn(Request $request)
     {
-
-        $this->validate($request, $this->lend_item_api->validation_rules);
 
         $success = $this->lend_item_api->destroy($request);
 

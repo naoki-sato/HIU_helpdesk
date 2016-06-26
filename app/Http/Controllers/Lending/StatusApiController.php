@@ -17,16 +17,10 @@ use App\Http\Controllers\Management\RegistrationUserApiController;
 class StatusApiController extends Controller
 {
     
-    public $validation_rules;
     private $registration_user_api;
 
     public function __construct()
     {
-        $this->validation_rules = [
-                'user_name'   => 'sometimes|required',
-                'user_cd'     => 'sometimes|required',
-                'phone_no'    => 'sometimes|required|numeric'];
-
         $this->registration_user_api = new RegistrationUserApiController();
     }
 
@@ -68,7 +62,10 @@ class StatusApiController extends Controller
     {
 
         // バリデーションに引っかかったら, false
-        $validation = Validator::make($request->all(), $this->validation_rules);
+        $validation = Validator::make($request->all(), 
+                ['user_name'   => 'required',
+                 'user_cd'     => 'required',
+                 'phone_no'    => 'required|numeric']);
         if($validation->fails()) return false;
 
         $post = $request->all();
@@ -78,6 +75,8 @@ class StatusApiController extends Controller
         $lend_items = $post['lend_item'];
         $lended_staff_id = $request->user()['id'];
         $comment    = $post['note'];
+
+
         $is_already_user = User::where('user_cd', '=', $user_cd)->first();
 
         if(!$is_already_user){
@@ -116,12 +115,8 @@ class StatusApiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return success : true, fail : false
      */
-    public function destroy($request)
+    public function destroy(Request $request)
     {
-
-        // バリデーションに引っかかったら, false
-        $validation = Validator::make($request->all(), $this->validation_rules);
-        if($validation->fails()) return false;
 
         $return_items = $request->get('return_item');
         $checked_list = self::checkReturnedItems($return_items);

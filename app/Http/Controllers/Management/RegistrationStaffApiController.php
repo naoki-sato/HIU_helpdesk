@@ -14,21 +14,6 @@ use App\Models\Admin;
 class RegistrationStaffApiController extends Controller
 {
 
-    public $validation_rules;
-
-    public function __construct()
-    {
-        $this->validation_rules = [
-                'staff_name' => 'sometimes|required',
-                'staff_cd'   => 'sometimes|required|unique:admins,staff_cd',
-                'phone_no'=> 'sometimes|required|unique:admins,phone_no|numeric',
-                'email' => 'sometimes|required|email|max:255|unique:admins,email',
-                'password' => 'sometimes|required|min:6|confirmed',
-                'staff_id' => 'sometimes|required',
-                'role' => 'sometimes|required|in:admin,manager,staff'];
-    }
-
-
     /**
      * Display a listing of the resource.
      *
@@ -50,13 +35,18 @@ class RegistrationStaffApiController extends Controller
     {
 
         // バリデーションに引っかかったら, false
-        $validation = Validator::make($request->all(), $this->validation_rules);
+        $validation = Validator::make($request->all(), 
+                ['staff_name' => 'required',
+                 'staff_cd'   => 'required|unique:admins,staff_cd',
+                 'phone_no'   => 'required|unique:admins,phone_no|numeric',
+                 'email'      => 'required|email|max:255|unique:admins,email',
+                 'password'   => 'required|min:6|confirmed']);
         if($validation->fails()) return false;
 
 
         $post = $request->all();
         $staff_name = $post['staff_name'];
-        $staff_no   = mb_convert_kana($post['staff_no'], 'sa');
+        $staff_cd   = mb_convert_kana($post['staff_cd'], 'sa');
         $password   = $post['password'];
         $role       = 'staff';
         $phone_no   = mb_convert_kana($post['phone_no'], 'sa');
@@ -65,7 +55,7 @@ class RegistrationStaffApiController extends Controller
         try{
             $staff = new Admin;
             $staff->name       = $staff_name;
-            $staff->staff_no   = $staff_no;
+            $staff->staff_cd   = $staff_cd;
             $staff->password   = bcrypt($password);
             $staff->role       = $role;
             $staff->phone_no   = $phone_no;
@@ -107,7 +97,9 @@ class RegistrationStaffApiController extends Controller
     public function update(Request $request)
     {
         // バリデーションに引っかかったら, false
-        $validation = Validator::make($request->all(), $this->validation_rules);
+        $validation = Validator::make($request->all(), 
+                ['role' => 'required|in:admin,manager,staff',
+                 'id'   => 'required|numeric']);
         if($validation->fails()) return false;
 
         $post       = $request->all();
@@ -134,10 +126,9 @@ class RegistrationStaffApiController extends Controller
     {
 
         // バリデーションに引っかかったら, false
-        $validation = Validator::make($request->all(), $this->validation_rules);
+        $validation = Validator::make($request->all(), ['staff_id' => 'required|numeric']);
         if($validation->fails()) return false;
 
-        // 落し物主と引渡担当者noを更新してソフト削除
         $post = $request->all();
         $id   = $post['staff_id'];
 

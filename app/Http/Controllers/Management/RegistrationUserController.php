@@ -14,15 +14,6 @@ use Input;
 class RegistrationUserController extends Controller
 {
     
-    private $validation_rules;
-
-    public function __construct()
-    {
-        $this->validation_rules = [
-                'user_name' => 'sometimes|required',
-                'user_cd'   => 'sometimes|required|unique:users,user_cd'];
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -44,7 +35,9 @@ class RegistrationUserController extends Controller
      */
     public function postRegister(Request $request){
 
-        $this->validate($request, $this->validation_rules);
+        $this->validate($request, [
+                'user_name' => 'required',
+                'user_cd'   => 'required|unique:users,user_cd']);
 
         $post      = $request->all();
         $user_name = mb_convert_kana($post['user_name'], 'as');
@@ -77,23 +70,20 @@ class RegistrationUserController extends Controller
 
         if(Input::hasFile('file_input')){
             $path = Input::file('file_input')->getRealPath();
-            $data = Excel::load($path, function($reader) {
-            })->get();
+            $data = Excel::load($path, function($reader) {})->get();
 
             if(!empty($data) && $data->count()){
-
-                User::truncate();
-
                 foreach ($data as $key => $value) {
-                    try{
-                        $user = new User;
-                        $user->user_cd      = $value->user_cd;
-                        $user->user_name    = $value->user_name;
-                        $user->save();
-                    } catch(\PDOException $e) {
-
-                        session()->flash('alert_message', '<h3>[user_cd]が重複しているか，形式が間違っているため，Importできませんでした。</h3>');
-                        return back();
+                    if(!User::where('user_cd', '=', $value->user_cd)->first()){
+                        try{
+                            $user = new User;
+                            $user->user_cd      = $value->user_cd;
+                            $user->user_name    = $value->user_name;
+                            $user->save();
+                        } catch(\PDOException $e) {
+                            session()->flash('alert_message', '<h3>形式が間違っているため，Importできませんでした。</h3>');
+                            return back();
+                        }
                     }
                 }
             }
