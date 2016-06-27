@@ -17,7 +17,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">Setting</div>
             <div class="panel-body">
-                <form class="form-horizontal" role="form" method="POST" action="{{ url('setting')}}">
+                <form class="form-horizontal" role="form" method="POST" action="{{ url('setting/edit')}}">
                 {{ csrf_field() }}
 
                     {{-- 学籍番号・職員番号 --}}
@@ -73,6 +73,76 @@
             </div>
         </div>
     </div>
+
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading">Reset Password</div>
+            <div class="panel-body">
+
+                <form class="form-horizontal" role="form" action="{{ url('setting/reset-password') }}" method="post">
+                {{ csrf_field() }}
+
+                    <div class="form-group">
+                        <label for="password" class="col-md-4 control-label">現在のパスワード</label>
+                        <div class="col-md-6">
+                            <input type="password" name="password" class="form-control" placeholder="password"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <label for="password" class="col-md-4 control-label">Password</label>
+
+                        <div class="col-md-6">
+                            <input id="password" type="password" class="form-control" name="password">
+
+                            @if ($errors->has('password'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('password') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+                        <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
+                        <div class="col-md-6">
+                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
+
+                            @if ($errors->has('password_confirmation'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('password_confirmation') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-4">
+                            <button type="submit" class="btn btn-primary pull-right">
+                                <i class="glyphicon glyphicon-refresh"></i> Reset Password
+                            </button>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
 @endsection
 
 @section('script')

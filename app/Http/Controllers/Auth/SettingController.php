@@ -16,7 +16,7 @@ class SettingController extends Controller
      * @param Request
      * @return view
      */
-    public function index(Request $request){
+    public function getIndex(Request $request){
         return view('auth.setting', ['data' => Admin::find($request->user()['id'])]);
     }
 
@@ -26,7 +26,7 @@ class SettingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return redirect
      */
-    public function store(Request $request){
+    public function postEdit(Request $request){
 
         $this->validate($request, ['email'    => 'unique:admins,email,' . $request->user()['id'],
                                    'phone_no' => 'required|numeric']);
@@ -49,6 +49,11 @@ class SettingController extends Controller
 
         session()->flash('success_message', '<h3>正常に更新しました。</h3>');
         return redirect()->back();
+
+    }
+
+    public function postResetPassword(Request $request){
+        dd("ok");
 
     }
 

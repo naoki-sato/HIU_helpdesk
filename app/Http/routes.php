@@ -60,6 +60,6 @@ Route::group(['middleware' => ['auth']], function(){
 
     // スタッフ各自がメアド・電話番号を変更
     Route::group(['namespace' => 'Auth', 'prefix' => 'setting'], function(){
-        Route::resource('/', 'SettingController');
+        Route::controller('/', 'SettingController');
     });
 });
