@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Hash;
+use Mail;
 
 class SettingController extends Controller
 {
@@ -52,7 +53,12 @@ class SettingController extends Controller
         return redirect()->back();
 
     }
-
+    /**
+     * スタッフ各自のパスワードリセット
+     *
+     * @param  Request  $request
+     * @return redirect
+     */
     public function postResetPassword(Request $request){
 
 
@@ -61,12 +67,17 @@ class SettingController extends Controller
              'password' => 'required|min:6|confirmed']);
 
         $post = $request->all();
-        $db_pw = Admin::find($request->user()['id'])->select('password')->first()['password'];
+        $db_pw = Admin::where('id', '=', $request->user()['id'])->select('password')->first()['password'];
+
 
         // 現在のパスワードと入力されたパスワードが同じ場合は更新
         if(Hash::check($post['pw'], $db_pw)){
 
-            Admin::find($request->user()['id'])->update(['password' => Hash::make($post['password'])]);
+            $admin = Admin::findOrFail($request->user()['id']);
+            $admin->fill([
+                'password' => Hash::make($request->password)
+            ])->save();
+
             session()->flash('success_message', '<h3>パスワードを更新しました。</h3>');
             return redirect()->back();
         }else{
@@ -74,7 +85,6 @@ class SettingController extends Controller
             session()->flash('alert_message', '<h3>パスワードが間違っています。</h3>');
             return redirect()->back();
         }
-
 
     }
 
