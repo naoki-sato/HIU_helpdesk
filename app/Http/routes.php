@@ -61,11 +61,6 @@ Route::group(['middleware' => ['auth']], function(){
                 Route::controller('registration-item-excel', 'RegistrationItemExcelController');
             });
         });
-
-        // etc.
-        Route::group(['namespace' => 'Etcetera', 'prefix' => 'etc'], function(){
-            Route::resource('/', 'EtceteraController');
-        });
     });
 
     // スタッフ各自がメアド・電話番号を変更

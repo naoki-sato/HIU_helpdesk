@@ -41,9 +41,9 @@
                     <ul class="nav navbar-nav">
                         <li><a href="{{ url('/lend-item') }}"><i class="glyphicon glyphicon-transfer"></i> 貸出 / 返却</a></li>
                         <li><a href="{{ url('/lost-item') }}"><i class="glyphicon glyphicon-question-sign"></i> 落し物</a></li>
-                        <li><a href="{{ url('/etc') }}"><i class="glyphicon glyphicon-apple"></i> etc.</a></li>
                     </ul>
 
+                    @if(in_array(Auth::user()->role, ['admin', 'manager']))
                     <ul class="nav navbar-nav">         
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -52,14 +52,12 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 {{-- 管理人かマネージャーのみ表示 (スタッフは除く) --}}
-                                @if(in_array(Auth::user()->role, ['admin', 'manager']))
-                                    <li>
-                                        <a href="{{ url('/registration-item') }}"><i class="glyphicon glyphicon-share-alt"></i> 貸出アイテム</a></li>
-                                    <li>
-                                        <a href="{{ url('/registration-staff') }}">
-                                        <i class="glyphicon glyphicon-user"></i> スタッフ</a>
-                                    </li>
-                                @endif
+                                <li>
+                                    <a href="{{ url('/registration-item') }}"><i class="glyphicon glyphicon-share-alt"></i> 貸出アイテム</a></li>
+                                <li>
+                                    <a href="{{ url('/registration-staff') }}">
+                                    <i class="glyphicon glyphicon-user"></i> スタッフ</a>
+                                </li>
                                 {{-- 管理人のみ表示 (マネージャ，スタッフは除く) --}}
                                 @if(in_array(Auth::user()->role, ['admin']))
                                     <li>
@@ -70,6 +68,7 @@
                             </ul>
                         </li>
                     </ul>
+                    @endif
 
                 @endif
 
@@ -98,38 +97,41 @@
     </nav>
 
     {{-- main --}}
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            {{-- フラッシュメッセージの表示 --}}
-            {{-- お知らせメッセージ --}}
-            @if(Session::has('info_message'))
-                <div class="alert alert-info">{!! Session::get('info_message') !!}</div>
-            @endif
-            {{-- 成功メッセージ --}}
-            @if(Session::has('success_message'))
-                <div class="alert alert-success">{!! Session::get('success_message') !!}</div>
-            @endif
-            {{-- 警告メッセージ --}}
-            @if(Session::has('alert_message'))
-                <div class="alert alert-danger">{!! Session::get('alert_message') !!}</div>
-            @endif
+    <div id="wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {{-- フラッシュメッセージの表示 --}}
+                {{-- お知らせメッセージ --}}
+                @if(Session::has('info_message'))
+                    <div class="alert alert-info">{!! Session::get('info_message') !!}</div>
+                @endif
+                {{-- 成功メッセージ --}}
+                @if(Session::has('success_message'))
+                    <div class="alert alert-success">{!! Session::get('success_message') !!}</div>
+                @endif
+                {{-- 警告メッセージ --}}
+                @if(Session::has('alert_message'))
+                    <div class="alert alert-danger">{!! Session::get('alert_message') !!}</div>
+                @endif
 
-            {{-- content --}}
-            @yield('content')
+                {{-- content --}}
+                @yield('content')
+                </div>
             </div>
         </div>
     </div>
 
     {{-- footer --}}
     <footer class="footer">
-        <div class="container contents_top_margin">
-            <div class="col-md-6">
+        <div class="container">
+            <div class="col-md-12">
 
+                @if (!Auth::guest())
                 <table class="table-condensed">
                     <thead>
                         <tr>
-                            <th><i class="glyphicon glyphicon-link"></i> Link</th>
+                            <th><i class="glyphicon glyphicon-link"></i> Links</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -144,8 +146,9 @@
                         </tr>
                     </tbody>
                 </table>
+                @endif
 
-                <p class="text-muted">&copy; nakajima.lab 2016 - {{ date("Y") }}</p>
+                <p class="text-muted pull-right">&copy; 2016 - {{ date("Y") }} nakajima.lab</p>
             </div>
         </div>
     </footer>

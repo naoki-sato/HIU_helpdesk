@@ -8,21 +8,29 @@ body {
 
 /* navbar*/
 .navbar-brand {
-/*  background: url("../images/logo.png") no-repeat left center;
+  /*background: url("../images/logo.png") no-repeat left center;*/
   background-size: contain;
   height: 50px;
-  width: 150px;*/
+  width: 150px;
 }
 
 /* footer */
 .footer {
   position: absolute;
   bottom: 0;
+  padding-top: 20px;
   width: 100%;
-  height: 210px;
+  /*height: 210px;*/
   background-color: #F5F5F5;
   border-top: solid 1px #E7E7E7;
   border-bottom: solid 1px #E7E7E7;
+}
+
+#wrap {
+  min-height: 100%;
+  height: auto;
+  margin: 0 auto;
+  padding: 0 0 210px;
 }
 
 .container .text-muted {
@@ -31,14 +39,6 @@ body {
 
 .table{
   margin-top: 20px;
-}
-
-/* lost-item-page */
-.tab-pane{
-  margin-top: 30px;
-  margin-bottom: 30px;
-  /*padding-top: 30px;*/
-  /*padding-bottom: 50px;*/
 }
 
 .year_select{
@@ -55,7 +55,6 @@ body {
 
 .contents_top_margin{
   margin-top: 30px;
-/*  margin-top: 30px;*/
 }
 
 .breadcrumb > li + li:before {
