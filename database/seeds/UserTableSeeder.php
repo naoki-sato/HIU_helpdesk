@@ -22,9 +22,8 @@ class UserTableSeeder extends Seeder
         for ($i=2000; $i < 3500; $i++) { 
             User::create([
                 'user_name' => $faker->name,
-                'user_cd' => 's131'. $i,
-                // 'user_cd' => 's'. $faker->numberBetween($min = 1310000, $max = 1610000),
-                'phone_no' => $faker->phoneNumber,
+                'user_cd' => '131'. $i,
+                'phone_no' => $faker->randomElement(['090', '080']) . $faker->numberBetween($min = 10000000, $max = 99999999),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
 
