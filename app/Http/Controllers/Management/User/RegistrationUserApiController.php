@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Management;
+namespace App\Http\Controllers\Management\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -25,7 +25,7 @@ class RegistrationUserApiController extends Controller
         // バリデーションに引っかかったら, false
         $validation = Validator::make($request->all(), 
                 ['user_name' => 'required',
-                 'user_cd'   => 'required|unique:users,user_cd',
+                 'user_cd'   => 'required|unique:users,user_cd|numeric',
                  'phone_no'  => 'required|numeric']);
         if($validation->fails()) return false;
 

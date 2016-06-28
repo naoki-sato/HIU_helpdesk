@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Management;
+namespace App\Http\Controllers\Management\Staff;
 
 use Illuminate\Http\Request;
 
@@ -42,7 +42,7 @@ class RegistrationStaffController extends Controller
 
         $this->validate($request,
                 ['staff_name' => 'required',
-                 'staff_cd'   => 'required|unique:admins,staff_cd',
+                 'staff_cd'   => 'required|unique:admins,staff_cd|numeric',
                  'phone_no'   => 'required|unique:admins,phone_no|numeric',
                  'email'      => 'required|email|max:255|unique:admins,email',
                  'password'   => 'required|min:6|confirmed']);

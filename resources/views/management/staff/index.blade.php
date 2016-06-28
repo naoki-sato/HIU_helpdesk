@@ -28,7 +28,7 @@
                             <label class="col-md-4 control-label">Staff No</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="staff_cd" value="{{ old('staff_cd') }}" placeholder="s学籍番号 or 教職員番号">
+                                <input type="text" class="form-control" name="staff_cd" value="{{ old('staff_cd') }}" placeholder="学籍(sなし) or 職員番号">
 
                                 @if ($errors->has('staff_cd'))
                                     <span class="help-block">

@@ -41,7 +41,7 @@ class StatusController extends Controller
     {
         $this->validate($request, 
                 ['user_name'   => 'required',
-                 'user_cd'     => 'required',
+                 'user_cd'     => 'required|numeric',
                  'phone_no'    => 'required|numeric']);
 
         $success = $this->lend_item_api->store($request);

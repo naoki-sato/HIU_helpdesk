@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Management;
+namespace App\Http\Controllers\Management\Staff;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -37,7 +37,7 @@ class RegistrationStaffApiController extends Controller
         // バリデーションに引っかかったら, false
         $validation = Validator::make($request->all(), 
                 ['staff_name' => 'required',
-                 'staff_cd'   => 'required|unique:admins,staff_cd',
+                 'staff_cd'   => 'required|unique:admins,staff_cd|numeric',
                  'phone_no'   => 'required|unique:admins,phone_no|numeric',
                  'email'      => 'required|email|max:255|unique:admins,email',
                  'password'   => 'required|min:6|confirmed']);

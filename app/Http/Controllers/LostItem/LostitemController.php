@@ -10,7 +10,7 @@ use App\Models\LostItem;
 use App\Models\Place;
 use App\Models\User;
 use App\Models\Admin;
-use App\Http\Controllers\Management\RegistrationUserApiController;
+use App\Http\Controllers\Management\User\RegistrationUserApiController;
 
 class LostitemController extends Controller
 {
@@ -44,7 +44,11 @@ class LostitemController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, $this->lost_item_api->validation_rules);
+        $this->validate($request, 
+            ['item_name'         => 'required|string',
+             'place_id'          => 'required|numeric',
+             'staff_id'          => 'required|numeric'
+            ]);
         $post = $request->all();
         $success = $this->lost_item_api->store($request);
 
@@ -92,7 +96,9 @@ class LostitemController extends Controller
      */
     public function update(Request $request, $id){
 
-        $this->validate($request, $this->lost_item_api->validation_rules);
+        $this->validate($request, [
+             'item_name'         => 'required|string',
+             'place_id'          => 'required|numeric']);
         
         $success = $this->lost_item_api->update($request, $id);
 
@@ -115,7 +121,11 @@ class LostitemController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $this->validate($request, $this->lost_item_api->validation_rules);
+        $this->validate($request, [
+                'delivery_staff_id' => 'required|numeric',
+                'user_cd'           => 'required|numeric',
+                'user_name'         => 'required|string',
+                'phone_no'          => 'required|numeric']);
 
         $is_empty = $this->registration_user_api->show($request->get('user_cd'));
 

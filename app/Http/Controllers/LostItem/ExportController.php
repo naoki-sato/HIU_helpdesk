@@ -15,22 +15,13 @@ use App\Models\LostItem;
 class ExportController extends Controller
 {
 
-    private $validation_rules;
-
-    public function __construct()
-    {
-        $this->validation_rules = [
-                'start_number' => 'sometimes|required|numeric',
-                'end_number'   => 'sometimes|required|numeric',
-                'year'         => 'sometimes|required|numeric'];
-    }
-
-
     public function postSerial(Request $request)
     {
 
         $post = $request->all();
-        $this->validate($request, $this->validation_rules);
+        $this->validate($request, [
+                'start_number' => 'required|numeric',
+                'end_number'   => 'required|numeric']);
 
         $start = min($post['start_number'], $post['end_number']);
         $end   = max($post['start_number'], $post['end_number']);
@@ -70,7 +61,7 @@ class ExportController extends Controller
     {
 
         $post = $request->all();
-        $this->validate($request, $this->validation_rules);
+        $this->validate($request, ['year' => 'required|numeric']);
         $year = $post['year'];
 
         /* Eloquentだと上手くExcelにexportできないため，queryをゴリゴリ書いた */

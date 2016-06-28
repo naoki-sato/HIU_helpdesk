@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Helpdesk_Sys(仮)</title>
+    <title>Helpdesk</title>
 
     {{-- Fonts --}}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
@@ -41,6 +41,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="{{ url('/lend-item') }}"><i class="glyphicon glyphicon-transfer"></i> 貸出 / 返却</a></li>
                         <li><a href="{{ url('/lost-item') }}"><i class="glyphicon glyphicon-question-sign"></i> 落し物</a></li>
+                        <li><a href="{{ url('/etc') }}"><i class="glyphicon glyphicon-apple"></i> etc.</a></li>
                     </ul>
 
                     <ul class="nav navbar-nav">         

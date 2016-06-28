@@ -26,7 +26,7 @@
                     <div class="form-group{{ $errors->has('user_cd') ? ' has-error' : '' }}">
                         <label for="lost-item-owner" class="col-md-3 control-label">落し物主</label>
                         <div class="col-md-8">
-                            <input type="text" class="form-control" id="lost-item-owner" placeholder="s学籍番号 or 教職員番号" name="user_cd" value="{{$data['user_cd'] or old('user_cd')}}">
+                            <input type="text" class="form-control" id="lost-item-owner" placeholder="学籍(sなし) or 教職員番号" name="user_cd" value="{{$data['user_cd'] or old('user_cd')}}">
                             @if ($errors->has('user_cd'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('user_cd') }}</strong>
@@ -51,7 +51,7 @@
                     <div class="form-group{{ $errors->has('phone_no') ? ' has-error' : '' }}">
                         <label for="phone_no" class="col-md-3 control-label">電話番号</label>
                         <div class="col-md-8">
-                            <input type="tel" class="form-control" id="phone_no" name="phone_no" placeholder="電話番号(ハイフンなし)" value="{{$data['student_phone_no_no'] or ''}}">
+                            <input type="tel" class="form-control" id="phone_no" name="phone_no" placeholder="電話番号(ハイフンなし)" value="{{$data['phone_no'] or old('phone_no')}}">
                             @if ($errors->has('phone_no'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('phone_no') }}</strong>

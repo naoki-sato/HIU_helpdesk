@@ -167,5 +167,5 @@
 @endsection
 
 @section('script')
-    <script type="text/javascript" src="{{URL::asset('/js/lost-item-show.js')}}"></script>
+    <script type="text/javascript" src="{{URL::asset('/js/management-staff.js')}}"></script>
 @endsection

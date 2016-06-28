@@ -12,7 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Status;
 use App\Models\Item;
-use App\Http\Controllers\Management\RegistrationUserApiController;
+use App\Http\Controllers\Management\User\RegistrationUserApiController;
 
 class StatusApiController extends Controller
 {
@@ -64,7 +64,7 @@ class StatusApiController extends Controller
         // バリデーションに引っかかったら, false
         $validation = Validator::make($request->all(), 
                 ['user_name'   => 'required',
-                 'user_cd'     => 'required',
+                 'user_cd'     => 'required|numeric',
                  'phone_no'    => 'required|numeric']);
         if($validation->fails()) return false;
 

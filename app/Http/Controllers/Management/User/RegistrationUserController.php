@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Management;
+namespace App\Http\Controllers\Management\User;
 
 use Illuminate\Http\Request;
 
@@ -37,7 +37,7 @@ class RegistrationUserController extends Controller
 
         $this->validate($request, [
                 'user_name' => 'required',
-                'user_cd'   => 'required|unique:users,user_cd']);
+                'user_cd'   => 'required|unique:users,user_cd|numeric']);
 
         $post      = $request->all();
         $user_name = mb_convert_kana($post['user_name'], 'as');

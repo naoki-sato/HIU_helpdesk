@@ -28,7 +28,7 @@
                             <label class="col-md-4 control-label">学籍/職員番号</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="user_cd" value="{{ old('user_cd') }}" id="user_cd" placeholder="s学籍番号 or 職員番号" value="{{$data['user_cd'] or ''}}" required>
+                                <input type="text" class="form-control" name="user_cd" value="{{ old('user_cd') }}" id="user_cd" placeholder="学籍(sなし) or 職員番号" value="{{$data['user_cd'] or ''}}" required>
 
                                 @if ($errors->has('user_cd'))
                                     <span class="help-block">

@@ -14,21 +14,6 @@ use App\Models\Place;
 
 class LostItemApiController extends Controller
 {
-    public $validation_rules;
-
-    public function __construct()
-    {
-        $this->validation_rules = [
-                // store + update
-                'item_name'         => 'sometimes|required|string',
-                'place_id'          => 'sometimes|required|numeric',
-                'staff_id'          => 'sometimes|required|numeric',
-                // destroy
-                'delivery_staff_id' => 'sometimes|required|numeric',
-                'user_cd'           => 'sometimes|required|string',
-                'phone_no'          => 'sometimes|required|numeric'];
-    }
-
 
     /**
      * Display a listing of the resource.
@@ -84,7 +69,11 @@ class LostItemApiController extends Controller
     public function store(Request $request)
     {
         // バリデーションに引っかかったら, false
-        $validation = Validator::make($request->all(), $this->validation_rules);
+        $validation = Validator::make($request->all(), 
+            ['item_name'         => 'required|string',
+             'place_id'          => 'required|numeric',
+             'staff_id'          => 'required|numeric'
+            ]);
         if($validation->fails()) return false;
 
         $post      = $request->all();
@@ -166,7 +155,10 @@ class LostItemApiController extends Controller
     {
 
         // バリデーションに引っかかったら, false
-        $validation = Validator::make($request->all(), $this->validation_rules);
+        $validation = Validator::make($request->all(), 
+            ['item_name'         => 'required|string',
+             'place_id'          => 'required|numeric'
+            ]);
         if($validation->fails()) return false;
 
         $post       = $request->all();
@@ -198,7 +190,9 @@ class LostItemApiController extends Controller
     {
 
         // バリデーションに引っかかったら, false
-        $validation = Validator::make($request->all(), $this->validation_rules);
+        $validation = Validator::make($request->all(), 
+                ['delivery_staff_id' => 'required|numeric',
+                 'user_cd'           => 'required|numeric']);
         if($validation->fails()) return false;
 
         // 落し物主と引渡担当者noを更新してソフト削除

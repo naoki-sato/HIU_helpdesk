@@ -17,8 +17,6 @@ Route::get('/', function () {
 
 Route::auth();
 
-
-
 Route::group(['middleware' => ['auth']], function(){
 
     // 貸出アイテム関連
@@ -35,26 +33,38 @@ Route::group(['middleware' => ['auth']], function(){
         Route::controller('lost-item-export', 'ExportController');
     });
 
-    // スタッフ・学生・品(カメラ・三脚など)の登録や編集
+    // スタッフ・User・品(カメラ・三脚など)の登録や編集
     Route::group(['namespace' => 'Management'], function(){
-        // User登録API
-        Route::resource('registration-user-api', 'RegistrationUserApiController');
 
-        // すべてのUser登録管理をするため，role:adminの限られた人のみ
-        Route::group(['middleware' => ['admin']], function(){
-            Route::controller('registration-user', 'RegistrationUserController');
+        // User
+        Route::group(['namespace' => 'User'], function(){
+            // User登録API
+            Route::resource('registration-user-api', 'RegistrationUserApiController');
+
+            // すべてのUser登録管理をするため，role:adminの限られた人のみ
+            Route::group(['middleware' => ['admin']], function(){
+                Route::controller('registration-user', 'RegistrationUserController');
+            });
         });
 
         // 権限ある管理者マネージャーのみ (一般スタッフは除く)
         Route::group(['middleware' => ['management']], function(){
-            // スタッフの登録・編集・削除
-            Route::resource('registration-staff', 'RegistrationStaffController');
-            Route::resource('registration-staff-api', 'RegistrationStaffApiController');
+            Route::group(['namespace' => 'Staff'], function(){
+                // スタッフの登録・編集・削除
+                Route::resource('registration-staff', 'RegistrationStaffController');
+                Route::resource('registration-staff-api', 'RegistrationStaffApiController');
+            });
+            Route::group(['namespace' => 'Item'], function(){
+                // 貸出アイテムの登録・編集・削除
+                Route::resource('registration-item', 'RegistrationItemController');
+                Route::resource('registration-item-api', 'RegistrationItemApiController');
+                Route::controller('registration-item-excel', 'RegistrationItemExcelController');
+            });
+        });
 
-            // 貸出アイテムの登録・編集・削除
-            Route::resource('registration-item', 'RegistrationItemController');
-            Route::resource('registration-item-api', 'RegistrationItemApiController');
-            Route::controller('registration-item-excel', 'RegistrationItemExcelController');
+        // etc.
+        Route::group(['namespace' => 'Etcetera', 'prefix' => 'etc'], function(){
+            Route::resource('/', 'EtceteraController');
         });
     });
 
