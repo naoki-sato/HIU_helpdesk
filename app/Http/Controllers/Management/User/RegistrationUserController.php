@@ -94,7 +94,7 @@ class RegistrationUserController extends Controller
 
     public function postExample(Request $request){
 
-        $users = [['user_cd', 'user_name'], ['s1234567', '情報 太郎'], ['s1312007', '佐藤 直己']];
+        $users = [['user_cd', 'user_name'], ['1234567', '情報 太郎'], ['1312007', '佐藤 直己']];
 
         Excel::create('user_import_example', function($excel) use($users) {
             $excel->sheet('1', function($sheet) use($users){

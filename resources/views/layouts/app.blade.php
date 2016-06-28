@@ -123,8 +123,30 @@
 
     {{-- footer --}}
     <footer class="footer">
-        <div class="container">
-            <p class="text-muted">&copy; nakajima.lab 2016 - {{ date("Y") }}</p>
+        <div class="container contents_top_margin">
+            <div class="col-md-6">
+
+                <table class="table-condensed">
+                    <thead>
+                        <tr>
+                            <th><i class="glyphicon glyphicon-link"></i> Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="https://groups.google.com/a/s.do-johodai.ac.jp/forum/#!forum/helpdesk" target="_blank"><i class="glyphicon glyphicon-triangle-right"></i> Helpdesk Google Group</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="{{url('/wikipedia')}}" target="_blank"><i class="glyphicon glyphicon-triangle-right"></i> Helpdesk Wikipedia</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="http://account.do-johodai.ac.jp" target="_blank"><i class="glyphicon glyphicon-triangle-right"></i> 総合認証システム</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p class="text-muted">&copy; nakajima.lab 2016 - {{ date("Y") }}</p>
+            </div>
         </div>
     </footer>
 
