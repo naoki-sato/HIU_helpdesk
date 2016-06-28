@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use Hash;
 
 class SettingController extends Controller
 {
@@ -53,7 +54,27 @@ class SettingController extends Controller
     }
 
     public function postResetPassword(Request $request){
-        dd("ok");
+
+
+        $this->validate($request, 
+            ['pw'       => 'required', 
+             'password' => 'required|min:6|confirmed']);
+
+        $post = $request->all();
+        $db_pw = Admin::find($request->user()['id'])->select('password')->first()['password'];
+
+        // 現在のパスワードと入力されたパスワードが同じ場合は更新
+        if(Hash::check($post['pw'], $db_pw)){
+
+            Admin::find($request->user()['id'])->update(['password' => Hash::make($post['password'])]);
+            session()->flash('success_message', '<h3>パスワードを更新しました。</h3>');
+            return redirect()->back();
+        }else{
+
+            session()->flash('alert_message', '<h3>パスワードが間違っています。</h3>');
+            return redirect()->back();
+        }
+
 
     }
 

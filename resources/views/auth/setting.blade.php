@@ -15,7 +15,7 @@
     {{-- 更新 --}}
     <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
-            <div class="panel-heading">Setting</div>
+            <div class="panel-heading">Change Phone and Mail</div>
             <div class="panel-body">
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('setting/edit')}}">
                 {{ csrf_field() }}
@@ -65,7 +65,7 @@
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
                             <button type="submit" id="submit" class="btn btn-primary pull-right">
-                                <i class="glyphicon glyphicon-edit"></i> Rewriting
+                                <i class="glyphicon glyphicon-edit"></i> Change
                             </button>
                         </div>
                     </div>
@@ -82,18 +82,23 @@
                 <form class="form-horizontal" role="form" action="{{ url('setting/reset-password') }}" method="post">
                 {{ csrf_field() }}
 
-                    <div class="form-group">
-                        <label for="password" class="col-md-4 control-label">現在のパスワード</label>
+                    <div class="form-group{{ $errors->has('pw') ? ' has-error' : '' }}">
+                        <label for="pw" class="col-md-4 control-label">現在のパスワード</label>
                         <div class="col-md-6">
-                            <input type="password" name="password" class="form-control" placeholder="password"/>
+                            <input type="password" name="pw" class="form-control" placeholder="現在のパスワード"/>
+                            @if ($errors->has('pw'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('pw') }}</strong>
+                                </span>
+                            @endif
                         </div>
                     </div>
 
                     <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                        <label for="password" class="col-md-4 control-label">Password</label>
+                        <label for="password" class="col-md-4 control-label">New Password</label>
 
                         <div class="col-md-6">
-                            <input id="password" type="password" class="form-control" name="password">
+                            <input id="password" type="password" class="form-control" name="password" placeholder="新しいパスワード">
 
                             @if ($errors->has('password'))
                                 <span class="help-block">
@@ -106,7 +111,7 @@
                     <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
                         <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
                         <div class="col-md-6">
-                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
+                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="新しいパスワード(再確認)">
 
                             @if ($errors->has('password_confirmation'))
                                 <span class="help-block">
@@ -119,7 +124,7 @@
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
                             <button type="submit" class="btn btn-primary pull-right">
-                                <i class="glyphicon glyphicon-refresh"></i> Reset Password
+                                <i class="glyphicon glyphicon-refresh"></i> Reset
                             </button>
                         </div>
                     </div>
