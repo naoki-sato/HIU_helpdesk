@@ -15,6 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// 外部用の簡易版落し物リスト
+Route::group(['middleware' => ['web'], 'namespace' => 'External'], function(){
+    Route::controller('lost-property', 'LostPropertyController');
+});
+
 Route::auth();
 
 Route::group(['middleware' => ['auth']], function(){

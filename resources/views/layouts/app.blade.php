@@ -37,6 +37,11 @@
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
+                @if (Auth::guest())
+                    <ul class="nav navbar-nav">
+                        <li><a href="{{ url('/lost-property') }}"><i class="glyphicon glyphicon-question-sign"></i> 落し物一覧</a></li>
+                    </ul>
+                @endif
                 @if (!Auth::guest())
                     <ul class="nav navbar-nav">
                         <li><a href="{{ url('/lend-item') }}"><i class="glyphicon glyphicon-transfer"></i> 貸出 / 返却</a></li>

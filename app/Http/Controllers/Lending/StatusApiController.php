@@ -151,7 +151,7 @@ class StatusApiController extends Controller
     private function checkLendedItems($items)
     {
 
-        $items = array_filter($items);
+        $items = self::removeBlank($items);
 
         foreach ($items as $key => $value) {
             // 貸出中のアイテムが混じっていないか
@@ -162,8 +162,8 @@ class StatusApiController extends Controller
             $is_check = Item::where('item_cd', '=', $value)->first();
             if(empty($is_check)) return false;
         }
-        return $items;
 
+        return $items;
     }
 
     /*
@@ -174,8 +174,8 @@ class StatusApiController extends Controller
      */
     private function checkReturnedItems($items)
     {
-
-        $items = array_filter($items);
+        
+        $items = self::removeBlank($items);
 
         foreach ($items as $key => $value) {
             // 貸出中のアイテムが混じっていないか
@@ -188,5 +188,19 @@ class StatusApiController extends Controller
         }
         return $items;
 
+    }
+
+    /*
+     * 半角・全角の空白を削除
+     */
+    private function removeBlank($array){
+
+        foreach ($array as $key => $value) {
+            $temp[] = trim(mb_convert_kana($value, "s"));
+        }
+
+        $items = array_filter($temp);
+
+        return $items;
     }
 }
