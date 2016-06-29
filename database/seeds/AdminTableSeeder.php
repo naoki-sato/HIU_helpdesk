@@ -16,21 +16,21 @@ class AdminTableSeeder extends Seeder
 
         $developers = [
             '1' => ['name'      => '今田 翔',
-                    'email'     => '1581105@s.do-johodai.ac.jp',
+                    'email'     => 's1581105@s.do-johodai.ac.jp',
                     'staff_cd'  => '1581105',
                     'role'      => 'manager',
                     'phone'     => '',
                     'password'  => bcrypt('password')],
 
             '2' => ['name'      => '工藤 剛',
-                    'email'     => '1312092@s.do-johodai.ac.jp',
+                    'email'     => 's1312092@s.do-johodai.ac.jp',
                     'staff_cd'  => '1312092',
                     'role'      => 'manager',
                     'phone'     => '',
                     'password'  => bcrypt('password')], 
 
             '3' => ['name'      => '佐藤 直己',
-                    'email'     => '1312007@s.do-johodai.ac.jp',
+                    'email'     => 's1312007@s.do-johodai.ac.jp',
                     'staff_cd'  => '1312007',
                     'role'      => 'manager',
                     'phone'     => '',
