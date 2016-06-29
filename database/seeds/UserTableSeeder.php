@@ -19,7 +19,7 @@ class UserTableSeeder extends Seeder
 
         // insert
         $faker = Faker::create('ja_JP');
-        for ($i=2000; $i < 3500; $i++) { 
+        for ($i=2000; $i < 3000; $i++) { 
             User::create([
                 'user_name' => $faker->name,
                 'user_cd' => '131'. $i,
