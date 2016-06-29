@@ -12,6 +12,7 @@ use App\Models\LostItem;
 use App\Models\Place;
 use Storage;
 use Image;
+use Input;
 
 
 class LostItemApiController extends Controller
@@ -86,7 +87,7 @@ class LostItemApiController extends Controller
             ['item_name'   => 'required|string',
              'place_id'    => 'required|numeric',
              'staff_id'    => 'required|numeric',
-             'file_input'  => 'required|image|mimes:jpeg,jpg,png,gif'
+             'file_input'  => 'image|mimes:jpeg,jpg,png,gif'
             ]);
 
         if($validation->fails()) return false;
@@ -97,15 +98,15 @@ class LostItemApiController extends Controller
         $place     = $post['place_id'];
         $staff_id  = $post['staff_id'];
         $item_name = $post['item_name'];
-        $image     = $post['file_input'];
+        $name      = 'no_image';
 
-
-        // ファイル名をランダムに生成
-        $name = md5(sha1(uniqid(mt_rand(), true))) . '.' . $image->getClientOriginalExtension();
-
-        $send_image_path = storage_path('app/images_store/lost-item/') . $name;
-
-        self::saveImage($name ,$image);
+        if(Input::hasFile('file_input')){
+            $image     = $post['file_input'];
+            // ファイル名をランダムに生成
+            $name = md5(sha1(uniqid(mt_rand(), true))) . '.' . $image->getClientOriginalExtension();
+            $send_image_path = storage_path('app/images_store/lost-item/') . $name;
+            self::saveImage($name ,$image);
+        }
 
 
         try{
@@ -160,7 +161,8 @@ class LostItemApiController extends Controller
                     'A.name AS delivery_staff_name',
                     'users.user_cd AS user_no',
                     'users.phone_no AS student_phone_no',
-                    'users.user_name AS user_name'
+                    'users.user_name AS user_name',
+                    'lost_items.file_name AS file_name'
                     )
             ->get();
 
@@ -183,8 +185,9 @@ class LostItemApiController extends Controller
 
         // バリデーションに引っかかったら, false
         $validation = Validator::make($request->all(), 
-            ['item_name'         => 'required|string',
-             'place_id'          => 'required|numeric'
+            ['item_name'   => 'required|string',
+             'place_id'    => 'required|numeric',
+             'file_input'  => 'image|mimes:jpeg,jpg,png,gif'
             ]);
         if($validation->fails()) return false;
 
@@ -192,14 +195,25 @@ class LostItemApiController extends Controller
         $item_name  = $post['item_name'];
         $place_id   = $post['place_id'];
         $note       = $post['note'];
+        $name       = 'no_image.jpg';
+        $update     = [
+                       'lost_item_name' => $item_name,
+                       'place_id'       => $place_id,
+                       'note'           => $note
+                       ];
+
+        if(Input::hasFile('file_input')){
+            $image     = $post['file_input'];
+            // ファイル名をランダムに生成
+            $name = md5(sha1(uniqid(mt_rand(), true))) . '.' . $image->getClientOriginalExtension();
+            $send_image_path = storage_path('app/images_store/lost-item/') . $name;
+            self::saveImage($name ,$image);
+            $update += ['file_name'      => $name];
+        }
 
         try{
             LostItem::where('id', '=', $id)
-                ->update([
-                    'lost_item_name' => $item_name,
-                    'place_id' => $place_id,
-                    'note' => $note
-                ]);
+                ->update($update);
         } catch(\Exception $e) {
             return false;
         }

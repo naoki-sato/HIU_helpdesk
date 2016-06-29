@@ -75,7 +75,7 @@
                 <hr>
 
                 {{-- 更新 --}}
-                <form class="form-horizontal" role="form" method="POST" aaction="{{ url('lost-item').'/'.$data['id']}}">
+                <form class="form-horizontal" enctype="multipart/form-data" role="form" method="POST" action="{{ url('lost-item').'/'.$data['id']}}">
                 {{ csrf_field() }}
                 <input name="_method" type="hidden" value="PUT">
           
@@ -136,12 +136,41 @@
                         </div>
                     </div>
 
+                    {{-- 画像 --}}
+                    <div class="form-group{{ $errors->has('file_input') ? ' has-error' : '' }}">
+                        <label for="note" class="col-md-3 control-label">画像</label>
+                        <div class="col-md-2">
+                            @if($data['file_name'])
+                                {{-- */$img_path = "image/" . $data['file_name']/* --}}
+                            @else
+                                {{-- */$img_path = "image/noimage.jpg"/* --}}
+                            @endif
+                            <img class="thumbnail" src="{{ URL::to($img_path) }}" height=75>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="file" id="file_input" name="file_input" style="display: none;">
+                            <div class="input-group col-md-12">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" onclick="$('#file_input').click();"><i class="glyphicon glyphicon-folder-open"></i></button>
+                                </span>
+                                <input id="dummy_file" type="text" class="form-control" placeholder="select file..." disabled>
+                            </div>
+                            @if ($errors->has('file_input'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('file_input') }}</strong>
+                                </span>
+                            @endif  
+                            <div>*注意 : 上書きされます。</div>
+                        </div>
+                    </div>
+
                     {{-- 送信ボタン (アイテム名を記入しないと押せない)--}}
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-5">
                             <button type="submit" id="submit" class="btn btn-primary pull-right">
                                 <i class="glyphicon glyphicon-ok"></i> SUBMIT
-                                </button>
+                            </button>
                         </div>
                     </div>
                 </form>

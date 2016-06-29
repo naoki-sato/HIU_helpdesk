@@ -11,6 +11,7 @@ use App\Models\Place;
 use App\Models\User;
 use App\Models\Admin;
 use App\Http\Controllers\Management\User\RegistrationUserApiController;
+use Input;
 
 class LostitemController extends Controller
 {
@@ -48,7 +49,7 @@ class LostitemController extends Controller
             ['item_name'   => 'required|string',
              'place_id'    => 'required|numeric',
              'staff_id'    => 'required|numeric',
-             'file_input'  => 'required|image|mimes:jpeg,jpg,png,gif'
+             'file_input'  => 'image|mimes:jpeg,jpg,png,gif'
             ]);
         $post = $request->all();
         $success = $this->lost_item_api->store($request);
@@ -98,8 +99,10 @@ class LostitemController extends Controller
     public function update(Request $request, $id){
 
         $this->validate($request, [
-             'item_name'         => 'required|string',
-             'place_id'          => 'required|numeric']);
+             'item_name'   => 'required|string',
+             'place_id'    => 'required|numeric',
+             'file_input'  => 'image|mimes:jpeg,jpg,png,gif'
+             ]);
         
         $success = $this->lost_item_api->update($request, $id);
 

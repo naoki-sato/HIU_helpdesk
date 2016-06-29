@@ -85,6 +85,7 @@
                             </div>
                         </div>
 
+                        {{-- 画像 --}}
                         <div class="form-group{{ $errors->has('file_input') ? ' has-error' : '' }}">
                             <label class="control-label col-md-3">画像</label>
                             <div class="col-md-8">
@@ -100,7 +101,7 @@
                                         <span class="help-block">
                                             <strong>{{ $errors->first('file_input') }}</strong>
                                         </span>
-                                    @endif   
+                                    @endif 
                                 </div>
                             </div>
                         </div>
@@ -184,8 +185,6 @@
                                         </button>
                                     </div>
                                 </div>
-
-
                             </form>
                         </div>
                     </div>{{-- serial_number_contents --}}

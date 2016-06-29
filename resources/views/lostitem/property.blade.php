@@ -29,12 +29,12 @@
                     @if($value->file_name)
                         {{-- */$img_path = "image/" . $value->file_name/* --}}
                         <a href="{{ URL::to($img_path) }}" data-lity="data-lity">
-                            <img src="{{ URL::to($img_path) }}" height=75>
+                            <img class="thumbnail" src="{{ URL::to($img_path) }}" height=75>
                         </a>
                     @else
                         {{-- */$img_path = "image/noimage.jpg"/* --}}
                         <a href="{{ URL::to($img_path) }}" data-lity="data-lity">
-                            <img src="{{ URL::to($img_path) }}" height=75>
+                            <img class="thumbnail" src="{{ URL::to($img_path) }}" height=75>
                         </a>
                     @endif
                     </td>

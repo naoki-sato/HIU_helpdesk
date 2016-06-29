@@ -124,6 +124,20 @@
                         </div>
                     </div>
 
+                    {{-- 画像 --}}
+                    <div class="form-group">
+                        <label for="note" class="col-md-3 control-label">画像</label>
+                        <div class="col-md-2">
+                            @if($data['file_name'])
+                                {{-- */$img_path = "image/" . $data['file_name']/* --}}
+                                <img class="thumbnail" src="{{ URL::to($img_path) }}" height=75>
+                            @else
+                                {{-- */$img_path = "image/noimage.jpg"/* --}}
+                                <img class="thumbnail" src="{{ URL::to($img_path) }}" height=75>
+                            @endif
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-5">
                             <button type="submit" id="delete" class="btn btn-default disabled pull-right">

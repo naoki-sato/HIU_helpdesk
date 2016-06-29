@@ -13,8 +13,8 @@ class LostPropertyController extends Controller
     
     public function getIndex(){
 
-        $data = LostItem::withTrashed()
-            ->select('lost_items.id AS id',
+        $data = LostItem::
+            select('lost_items.id AS id',
                     'lost_items.created_at AS created_at',
                     'lost_items.lost_item_name AS lost_item_name',
                     'places.room_name AS room_name',
