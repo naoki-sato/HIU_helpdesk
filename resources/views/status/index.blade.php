@@ -89,7 +89,7 @@
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" id="submit_lend" class="btn btn-primary pull-right">
+                                <button type="button" onclick="submit();" id="submit_lend" class="btn btn-primary pull-right">
                                     <i class="glyphicon glyphicon-edit"></i> Register
                                 </button>
                             </div>
@@ -134,7 +134,7 @@
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" id="submit_lend" class="btn btn-primary pull-right">
+                                <button type="button" onclick="submit();" id="submit_lend" class="btn btn-primary pull-right">
                                     <i class="glyphicon glyphicon-edit"></i> Register
                                 </button>
                             </div>

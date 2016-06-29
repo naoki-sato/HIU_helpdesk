@@ -73,3 +73,12 @@ Route::group(['middleware' => ['auth']], function(){
         Route::controller('/', 'SettingController');
     });
 });
+
+// file request to strage
+Route::get('image/{filename}', function ($filename = 'noimage.jpg'){
+    $file_path = storage_path('app/images_store/lost-item/') . $filename;
+    if(file_exists($file_path)){
+        return Image::make($file_path)->response();
+    }
+    return Image::make(public_path('images/noimage.jpg'))->response();
+});

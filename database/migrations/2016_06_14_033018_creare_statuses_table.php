@@ -16,7 +16,7 @@ class CreareStatusesTable extends Migration
             $table->increments("id");
             $table->integer("lended_staff_id")->unsigned();
             $table->integer("returned_staff_id")->unsigned()->nullable();
-            $table->string("lended_user_cd");
+            $table->integer("lended_user_cd");
             $table->string("item_cd");
             $table->string("comment")->nullable();
             $table->softDeletes();

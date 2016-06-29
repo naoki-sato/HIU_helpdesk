@@ -119,10 +119,10 @@
                                     <div class="form-group {{ $errors->has('file_input') ? ' has-error' : '' }}">
                                         <div class="input-group col-md-12">
                                             <input type="file" id="file_input" name="file_input" style="display: none;">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-default" type="button" onclick="$('#file_input').click();"><i class="glyphicon glyphicon-folder-open"></i></button>
-                                            </span>
                                             <div class="input-group">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="button" onclick="$('#file_input').click();"><i class="glyphicon glyphicon-folder-open"></i></button>
+                                                </span>
                                                 <input id="dummy_file" type="text" class="form-control" placeholder="select file..." disabled>       
                                             </div>
                                         </div>

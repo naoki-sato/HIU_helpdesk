@@ -45,9 +45,10 @@ class LostitemController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, 
-            ['item_name'         => 'required|string',
-             'place_id'          => 'required|numeric',
-             'staff_id'          => 'required|numeric'
+            ['item_name'   => 'required|string',
+             'place_id'    => 'required|numeric',
+             'staff_id'    => 'required|numeric',
+             'file_input'  => 'required|image|mimes:jpeg,jpg,png,gif'
             ]);
         $post = $request->all();
         $success = $this->lost_item_api->store($request);

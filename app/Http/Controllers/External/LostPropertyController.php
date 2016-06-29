@@ -18,7 +18,8 @@ class LostPropertyController extends Controller
                     'lost_items.created_at AS created_at',
                     'lost_items.lost_item_name AS lost_item_name',
                     'places.room_name AS room_name',
-                    'lost_items.note AS note'
+                    'lost_items.note AS note',
+                    'file_name AS file_name'
                     )
             ->leftJoin('places', 'places.id', '=', 'lost_items.place_id')
             ->whereBetween('lost_items.created_at', 

@@ -10,10 +10,23 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use App\Models\LostItem;
 use App\Models\Place;
+use Storage;
+use Image;
 
 
 class LostItemApiController extends Controller
 {
+
+
+    public function __construct(){
+
+        // 指定されたディレクトリは存在するか確認、無ければ作成
+        if(!Storage::disk('local')->exists('images_store/lost-item')) {
+            Storage::makeDirectory('images_store/lost-item', 0755);
+        }
+    }
+
+
 
     /**
      * Display a listing of the resource.
@@ -70,24 +83,38 @@ class LostItemApiController extends Controller
     {
         // バリデーションに引っかかったら, false
         $validation = Validator::make($request->all(), 
-            ['item_name'         => 'required|string',
-             'place_id'          => 'required|numeric',
-             'staff_id'          => 'required|numeric'
+            ['item_name'   => 'required|string',
+             'place_id'    => 'required|numeric',
+             'staff_id'    => 'required|numeric',
+             'file_input'  => 'required|image|mimes:jpeg,jpg,png,gif'
             ]);
+
         if($validation->fails()) return false;
+
 
         $post      = $request->all();
         $note      = $post['note'];
         $place     = $post['place_id'];
         $staff_id  = $post['staff_id'];
         $item_name = $post['item_name'];
+        $image     = $post['file_input'];
+
+
+        // ファイル名をランダムに生成
+        $name = md5(sha1(uniqid(mt_rand(), true))) . '.' . $image->getClientOriginalExtension();
+
+        $send_image_path = storage_path('app/images_store/lost-item/') . $name;
+
+        self::saveImage($name ,$image);
+
 
         try{
             $item = new LostItem;
-            $item->lost_item_name = $item_name;
+            $item->lost_item_name   = $item_name;
             $item->reciept_staff_id = $staff_id;
-            $item->place_id = $place;
-            $item->note = $note;
+            $item->place_id         = $place;
+            $item->note             = $note;
+            $item->file_name        = $name;
             $item->save();
         } catch(\PDOException $e) {
             return false;
@@ -210,6 +237,26 @@ class LostItemApiController extends Controller
         }
         
         return true;
+    }
+
+    /**
+     * 画像をstorageに保存する
+     * 画像はwidth300に変換
+     * @param $name
+     * @param $image
+     */
+    private function saveImage($name, $image){
+
+
+        $image_path  = storage_path('app/images_store/lost-item/') . $name;
+
+        $img = Image::make($image);
+
+        $img->orientate()
+            ->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();})
+            ->save($image_path);
+
     }
 
 }

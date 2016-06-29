@@ -25,7 +25,7 @@
                 <div class="panel-body">
 
 
-                    <form class="form-horizontal" role="form" method="POST">
+                    <form class="form-horizontal" enctype="multipart/form-data" role="form" method="POST">
                     {{ csrf_field() }}
       
                         {{-- 受取日 --}}
@@ -84,6 +84,27 @@
                                 <textarea name="note" class="form-control" rows="3" id="note" placeholder="備考"></textarea>
                             </div>
                         </div>
+
+                        <div class="form-group{{ $errors->has('file_input') ? ' has-error' : '' }}">
+                            <label class="control-label col-md-3">画像</label>
+                            <div class="col-md-8">
+                                <div class="input-group col-md-12">
+                                    <input type="file" id="file_input" name="file_input" style="display: none;">
+                                    <div class="input-group col-md-12">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" onclick="$('#file_input').click();"><i class="glyphicon glyphicon-folder-open"></i></button>
+                                        </span>
+                                        <input id="dummy_file" type="text" class="form-control" placeholder="select file..." disabled>  
+                                    </div>
+                                    @if ($errors->has('file_input'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('file_input') }}</strong>
+                                        </span>
+                                    @endif   
+                                </div>
+                            </div>
+                        </div>
+
 
                         {{-- 送信ボタン (アイテム名を記入しないと押せない)--}}
                         <div class="form-group">
@@ -232,6 +253,9 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
+        $('#file_input').change(function() {
+            $('#dummy_file').val($(this).val());
         });
 
         $('#lost_item_list').dataTable({

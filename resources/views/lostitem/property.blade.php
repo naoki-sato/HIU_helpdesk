@@ -2,6 +2,7 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ URL::asset('css/dataTables.bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ URL::asset('css/lity.min.css') }}" />
 @endsection
 
 
@@ -13,6 +14,7 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th>画像</th>
                 <th>登録日時</th>
                 <th>アイテム</th>
                 <th>場所</th>
@@ -23,6 +25,19 @@
             @foreach ($data as $value)
                 <tr>
                     <td>{{$value->id}}</td>
+                    <td><a href="image-1.jpg" data-lity="data-lity">
+                    @if($value->file_name)
+                        {{-- */$img_path = "image/" . $value->file_name/* --}}
+                        <a href="{{ URL::to($img_path) }}" data-lity="data-lity">
+                            <img src="{{ URL::to($img_path) }}" height=75>
+                        </a>
+                    @else
+                        {{-- */$img_path = "image/noimage.jpg"/* --}}
+                        <a href="{{ URL::to($img_path) }}" data-lity="data-lity">
+                            <img src="{{ URL::to($img_path) }}" height=75>
+                        </a>
+                    @endif
+                    </td>
                     <td>{{$value->created_at}}</td>
                     <td>{{$value->lost_item_name}}</td>
                     <td>{{$value->room_name}}</td>
@@ -37,6 +52,7 @@
 @section('script')
     <script type="text/javascript" src="{{URL::asset('/js/datatables.min.js')}}"></script>
     <script type="text/javascript" src="{{URL::asset('/js/dataTables.bootstrap.min.js')}}"></script>
+    <script type="text/javascript" src="{{URL::asset('/js/lity.min.js')}}"></script>
     <script>
     $(function(){
         $('#lost_item_list').dataTable({
@@ -46,14 +62,6 @@
             searching:true,
             lengthChange:false,
             order: [[0,'desc']], // ID
-            columns: [
-                { data: "id", defaultContent: "", "title": "ID"},
-                { data: "created_at", defaultContent: "", "title": "受取日"},
-                { data: "lost_item_name", defaultContent: "", "title": "アイテム" },
-                { data: "room_name", defaultContent: "", "title": "場所"},
-                { data: "note", defaultContent: "", "title": "備考"},
-
-            ],
             deferRender: true,
         });
     });

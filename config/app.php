@@ -168,6 +168,11 @@ return [
          */
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
+        /*
+         * For Thumbnail Image
+         */
+        Intervention\Image\ImageServiceProvider::class,
+
     ],
 
     /*
@@ -215,6 +220,7 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Input'     => Illuminate\Support\Facades\Input::class,
         'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
+        'Image' => Intervention\Image\Facades\Image::class,
 
     ],
 
