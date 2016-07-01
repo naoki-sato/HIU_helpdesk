@@ -30,8 +30,11 @@ class SettingController extends Controller
      */
     public function postEdit(Request $request){
 
-        $this->validate($request, ['email'    => 'unique:admins,email,' . $request->user()['id'],
-                                   'phone_no' => 'required|numeric']);
+        $this->validate($request, [
+            'email'    => 'unique:admins,email,' . $request->user()['id'],
+            'phone_no' => 'required|numeric']);
+
+
         $post       = $request->all();
         $phone_no   = $post['phone_no'];
         $email      = $post['email'];
@@ -61,22 +64,27 @@ class SettingController extends Controller
      */
     public function postResetPassword(Request $request){
 
-
         $this->validate($request, 
             ['pw'       => 'required', 
              'password' => 'required|min:6|confirmed']);
 
+        
         $post = $request->all();
-        $db_pw = Admin::where('id', '=', $request->user()['id'])->select('password')->first()['password'];
-
+        $admin = Admin::findOrFail($request->user()['id']);
 
         // 現在のパスワードと入力されたパスワードが同じ場合は更新
-        if(Hash::check($post['pw'], $db_pw)){
+        if(Hash::check($post['pw'], $admin['password'])){
 
-            $admin = Admin::findOrFail($request->user()['id']);
             $admin->fill([
                 'password' => Hash::make($request->password)
             ])->save();
+
+            // メール送信
+            $data[] = null;
+            Mail::queue('auth.emails.passwordchange', $data, function($message) use($admin)
+            {
+                $message->to($admin['email'], $admin['name'])->subject('Helpdesk Password Changed');
+            });
 
             session()->flash('success_message', '<h3>パスワードを更新しました。</h3>');
             return redirect()->back();
