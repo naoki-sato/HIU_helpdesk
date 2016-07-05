@@ -62,33 +62,6 @@
                     <div>貸出の際には，本人の学生証と連絡先(携帯電話の番号など)が必要となります。</div> 
                 </div>
             </div>
-
-
-            <div class="panel panel-info">
-                <div class="panel-heading">ログイン(消し忘れ注意:本番では消します)</div>
-
-                <div class="panel-body">
-                    <div>
-                        E-Mail Address
-                        <ul>
-                            <li>s1312007@s.do-johodai.ac.jp</li>
-                            <li>s1412501@s.do-johodai.ac.jp</li>
-                            <li>s1323130@s.do-johodai.ac.jp</li>
-                            <li>s1323147@s.do-johodai.ac.jp</li>
-                            <li>s1123030@s.do-johodai.ac.jp</li>
-                            <li>s1523129@s.do-johodai.ac.jp</li>
-                            <li>s1523131@s.do-johodai.ac.jp</li>
-                            <li>s1523114@s.do-johodai.ac.jp</li>
-                            <li>s1423042@s.do-johodai.ac.jp</li>
-                            <li>s1581105@s.do-johodai.ac.jp</li>
-                            <li>helpdesk@s.do-johodai.ac.jp</li>
-                        </ul>
-                    </div>
-                    <div>
-                        共通で初期パスワードは 「password」 です。早めに各自パスワード変更してください。
-                    </div>
-                </div>
-            </div>
             @endif
 
 

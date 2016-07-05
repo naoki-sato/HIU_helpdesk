@@ -3,6 +3,7 @@
 @section('css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ URL::asset('css/dataTables.bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ URL::asset('css/lity.min.css') }}" />
 @endsection
 
 
@@ -246,6 +247,7 @@
 @section('script')
     <script type="text/javascript" src="{{URL::asset('/js/datatables.min.js')}}"></script>
     <script type="text/javascript" src="{{URL::asset('/js/dataTables.bootstrap.min.js')}}"></script>
+    <script type="text/javascript" src="{{URL::asset('/js/lity.min.js')}}"></script>
     <script>
     $(function(){
         $.ajaxSetup({
@@ -266,6 +268,9 @@
             order: [[0,'desc']], // ID
             columns: [
                 { data: "id", defaultContent: "", "title": "ID"},
+                { data: "file_name", "render": function (data, type, row, meta) {
+        return '<a href="{{url('image').'/'}}' + data + '" data-lity="data-lity"><img src="{{url('image').'/'}}' + data + '" class="thumbnail" height=50></a>';
+                    }, "title": "画像"},
                 { data: "created_at", defaultContent: "", "title": "受取日"},
                 { data: "lost_item_name", defaultContent: "", "title": "アイテム" },
                 { data: "room_name", defaultContent: "", "title": "場所"},

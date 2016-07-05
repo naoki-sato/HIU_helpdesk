@@ -59,7 +59,8 @@ class LostItemApiController extends Controller
                     'lost_items.note AS note',
                     'lost_items.deleted_at AS deleted_at',
                     'A.name AS delivery_staff_name',
-                    'users.user_name AS user_name'
+                    'users.user_name AS user_name',
+                    'lost_items.file_name AS file_name'
                     )
             ->leftJoin('admins', 'admins.id', '=', 'lost_items.reciept_staff_id')
             ->leftJoin('users', 'users.user_cd', '=', 'lost_items.user_cd')
