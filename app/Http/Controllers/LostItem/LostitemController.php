@@ -13,7 +13,7 @@ use App\Models\Admin;
 use App\Http\Controllers\Management\User\RegistrationUserApiController;
 use Input;
 
-class LostitemController extends Controller
+class LostItemController extends Controller
 {
     private $lost_item_api;
     private $registration_user_api;

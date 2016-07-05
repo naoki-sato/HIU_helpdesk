@@ -65,27 +65,27 @@
 
 
             <div class="panel panel-info">
-                <div class="panel-heading">ログイン(消し忘れ注意)</div>
+                <div class="panel-heading">ログイン(消し忘れ注意:本番では消します)</div>
 
                 <div class="panel-body">
                     <div>
-                        php artisan db:seed してから下記でログインしてください。
-                    </div>
-                    <div>
                         E-Mail Address
                         <ul>
-                            <li>s1581105@s.do-johodai.ac.jp</li>
-                            <li>s1312092@s.do-johodai.ac.jp</li>
                             <li>s1312007@s.do-johodai.ac.jp</li>
-                            <li>Helpdesk@s.do-johodai.ac.jp</li>
-                            <li>hoge_staff@s.do-johodai.ac.jp</li>
+                            <li>s1412501@s.do-johodai.ac.jp</li>
+                            <li>s1323130@s.do-johodai.ac.jp</li>
+                            <li>s1323147@s.do-johodai.ac.jp</li>
+                            <li>s1123030@s.do-johodai.ac.jp</li>
+                            <li>s1523129@s.do-johodai.ac.jp</li>
+                            <li>s1523131@s.do-johodai.ac.jp</li>
+                            <li>s1523114@s.do-johodai.ac.jp</li>
+                            <li>s1423042@s.do-johodai.ac.jp</li>
+                            <li>s1581105@s.do-johodai.ac.jp</li>
+                            <li>helpdesk@s.do-johodai.ac.jp</li>
                         </ul>
                     </div>
                     <div>
-                        共通でパスワードは password です。
-                    </div>
-                    <div>
-                        詳しくは detabase > seeds > UserTableSeeder.php をみてください。
+                        共通で初期パスワードは 「password」 です。早めに各自パスワード変更してください。
                     </div>
                 </div>
             </div>
@@ -95,27 +95,27 @@
             {{-- ログイン時 --}}
             @if(!Auth::guest())
             <div class="panel panel-info">
-                <div class="panel-heading">ログイン(消し忘れ注意)</div>
+                <div class="panel-heading">ログイン(消し忘れ注意:本番では消します)</div>
 
                 <div class="panel-body">
                     <div>
-                        php artisan db:seed してから下記でログインしてください。
-                    </div>
-                    <div>
                         E-Mail Address
                         <ul>
-                            <li>s1581105@s.do-johodai.ac.jp</li>
-                            <li>s1312092@s.do-johodai.ac.jp</li>
                             <li>s1312007@s.do-johodai.ac.jp</li>
+                            <li>s1412501@s.do-johodai.ac.jp</li>
+                            <li>s1323130@s.do-johodai.ac.jp</li>
+                            <li>s1323147@s.do-johodai.ac.jp</li>
+                            <li>s1123030@s.do-johodai.ac.jp</li>
+                            <li>s1523129@s.do-johodai.ac.jp</li>
+                            <li>s1523131@s.do-johodai.ac.jp</li>
+                            <li>s1523114@s.do-johodai.ac.jp</li>
+                            <li>s1423042@s.do-johodai.ac.jp</li>
+                            <li>s1581105@s.do-johodai.ac.jp</li>
                             <li>Helpdesk@s.do-johodai.ac.jp</li>
-                            <li>hoge_staff@s.do-johodai.ac.jp</li>
                         </ul>
                     </div>
                     <div>
-                        共通でパスワードは password です。
-                    </div>
-                    <div>
-                        詳しくは detabase > seeds > UserTableSeeder.php をみてください。
+                        共通で初期パスワードは 「password」 です。早めに各自パスワード変更してください。
                     </div>
                 </div>
             </div>
