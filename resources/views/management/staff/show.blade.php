@@ -155,7 +155,7 @@
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" id="delete" class="btn btn-link btn-xs pull-right">
                                     <i class="glyphicon glyphicon-remove"></i> DELETE
-                                    </button>
+                                </button>
                             </div>
                         </div>
                     </form>

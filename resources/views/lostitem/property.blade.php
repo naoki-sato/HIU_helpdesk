@@ -28,15 +28,12 @@
                     <td><a href="image-1.jpg" data-lity="data-lity">
                     @if($value->file_name)
                         {{-- */$img_path = "image/" . $value->file_name/* --}}
-                        <a href="{{ URL::to($img_path) }}" data-lity="data-lity">
-                            <img class="thumbnail" src="{{ URL::to($img_path) }}" height=75>
-                        </a>
                     @else
                         {{-- */$img_path = "image/noimage.jpg"/* --}}
+                    @endif
                         <a href="{{ URL::to($img_path) }}" data-lity="data-lity">
                             <img class="thumbnail" src="{{ URL::to($img_path) }}" height=75>
                         </a>
-                    @endif
                     </td>
                     <td>{{$value->created_at}}</td>
                     <td>{{$value->lost_item_name}}</td>

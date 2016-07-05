@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
+    <link rel="stylesheet" href="{{ URL::asset('css/lity.min.css') }}" />
 @endsection
 
 
@@ -145,7 +146,9 @@
                             @else
                                 {{-- */$img_path = "image/noimage.jpg"/* --}}
                             @endif
-                            <img class="thumbnail" src="{{ URL::to($img_path) }}" height=75>
+                            <a href="{{ URL::to($img_path) }}" data-lity="data-lity">
+                                <img class="thumbnail" src="{{ URL::to($img_path) }}" height=75>
+                            </a>
                         </div>
 
                         <div class="col-md-6">
@@ -182,4 +185,5 @@
 
 @section('script')
     <script type="text/javascript" src="{{URL::asset('/js/lost-item-show.js')}}"></script>
+    <script type="text/javascript" src="{{URL::asset('/js/lity.min.js')}}"></script>
 @endsection

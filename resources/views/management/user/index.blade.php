@@ -10,7 +10,7 @@
     <div>
         <ol class="breadcrumb">
             <li><a href="{{url('/')}}">Top</a></li>
-            <li class="active">学生</li>
+            <li class="active">ユーザ</li>
         </ol>
     </div>
 
