@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::resource('/', 'IndexController', [
+  'only' => ['index']
+]);
 
 // 外部用の簡易版落し物リスト
 Route::group(['middleware' => ['web'], 'namespace' => 'External'], function(){
@@ -23,6 +23,10 @@ Route::group(['middleware' => ['web'], 'namespace' => 'External'], function(){
 Route::auth();
 
 Route::group(['middleware' => ['auth']], function(){
+
+    Route::resource('/', 'IndexController', [
+        'except' => ['index']
+    ]);
 
     // 貸出アイテム関連
     Route::group(['namespace' => 'Lending'], function(){

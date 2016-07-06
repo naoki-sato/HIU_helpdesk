@@ -144,9 +144,6 @@
                             <td><a href="https://groups.google.com/a/s.do-johodai.ac.jp/forum/#!forum/helpdesk" target="_blank"><i class="glyphicon glyphicon-triangle-right"></i> Helpdesk Google Group</a></td>
                         </tr>
                         <tr>
-                            <td><a href="{{url('http://helon.do-johodai.ac.jp/wiki/')}}" target="_blank"><i class="glyphicon glyphicon-triangle-right"></i> Helpdesk Wikipedia</a></td>
-                        </tr>
-                        <tr>
                             <td><a href="http://account.do-johodai.ac.jp" target="_blank"><i class="glyphicon glyphicon-triangle-right"></i> 総合認証システム</a></td>
                         </tr>
                     </tbody>
