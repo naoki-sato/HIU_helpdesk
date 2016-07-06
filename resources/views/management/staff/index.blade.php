@@ -182,6 +182,11 @@
                                 </tr>
                             </tbody>
                         </table>
+
+
+                        <div>
+                            引退したスタッフを復帰させたい場合は<a href="{{ url('/return-staff') }}">こちら</a>
+                        </div>
                     </div>
                 </div>
             </div>

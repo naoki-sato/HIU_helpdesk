@@ -58,6 +58,9 @@ Route::group(['middleware' => ['auth']], function(){
                 // スタッフの登録・編集・削除
                 Route::resource('registration-staff', 'RegistrationStaffController');
                 Route::resource('registration-staff-api', 'RegistrationStaffApiController');
+                // スタッフの復帰
+                Route::resource('return-staff', 'ReturnStaffController');
+                Route::resource('return-staff-api', 'ReturnStaffApiController');
             });
             Route::group(['namespace' => 'Item'], function(){
                 // 貸出アイテムの登録・編集・削除
