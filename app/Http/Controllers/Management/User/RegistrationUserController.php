@@ -26,6 +26,27 @@ class RegistrationUserController extends Controller
         return view('management.user.index', ['data' => $data]);
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return success : true, fail : false
+     */
+    public function postDelete(Request $request){
+
+        $this->validate($request, ['delete_user_cd'   => 'required|exists:users,user_cd|numeric']);
+
+        $user_api = new RegistrationUserApiController();
+        $success = $user_api->destroy($request);
+
+        if($success){
+            session()->flash('success_message', '<h3>ユーザを削除しました。</h3>');
+        }else{
+            session()->flash('alert_message', '<h3>ユーザを削除できませんでした。</h3>');
+        }
+        return redirect()->back();
+    }
+
 
     /**
      * Store a newly created resource in storage.

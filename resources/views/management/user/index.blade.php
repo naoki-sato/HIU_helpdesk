@@ -63,7 +63,29 @@
                         </form>
                     </div>
 
-                    
+                    <div class="col-md-12"><hr></div>
+                    <div class="col-md-12">
+                        <form class="form-horizontal" role="form" method="POST" action="{{ url('/registration-user/delete') }}">
+                            {!! csrf_field() !!}
+
+
+                            <label class="col-md-4 control-label">学籍/職員番号</label>
+                            <div class="input-group{{ $errors->has('delete_user_cd') ? ' has-error' : '' }}">
+
+                                <input type="text" class="form-control" name="delete_user_cd" value="{{ old('delete_user_cd') }}" placeholder="ex. s1234567" required>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">削除</button>
+                                </span>
+                            </div>
+                            <div class="col-md-offset-4 col-md-8">
+                                @if ($errors->has('delete_user_cd'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('delete_user_cd') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,7 +107,7 @@
                                 </ul>
                             </div> 
                             <div class="col-md-11 pull-right">
-                                <form class="form-inline" enctype="multipart/form-data" action="/registration-user/import" name="form" method="post">
+                                <form class="form-inline" enctype="multipart/form-data" action="{{url('/registration-user/import')}}" name="form" method="post">
                                 {{ csrf_field() }}
                                     <div class="form-group {{ $errors->has('file_input') ? ' has-error' : '' }}">
                                         <div class="input-group col-md-12">
@@ -107,7 +129,7 @@
                                     @endif
                                 </form>
 
-                                <form class="form-inline" action="/registration-user/example" name="form" method="post">
+                                <form class="form-inline" action="{{url('/registration-user/example')}}" name="form" method="post">
                                 {{ csrf_field() }}
                                     <button type="submit" class="btn btn-link btn-sm"><i class="glyphicon glyphicon-download-alt"></i> example</button>
                                 </form>

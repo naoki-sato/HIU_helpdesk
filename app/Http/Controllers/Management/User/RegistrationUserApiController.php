@@ -77,16 +77,41 @@ class RegistrationUserApiController extends Controller
         $post = $request->all();
         $user_cd  = mb_convert_kana($post['user_cd'], 'as');
         $phone_no = mb_convert_kana($post['phone_no'], 'as');
-
-        $id = User::where('user_cd', '=', $user_cd)->first();
+        
         try{
-            User::where('id', '=', $id->id)
+            User::where('user_cd', '=', $user_cd)
                 ->update([
                     'phone_no' => $phone_no,
                 ]);
         } catch(\Exception $e) {
             return false;
         }
+        return true;
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return success : true, fail : false
+     */
+    public function destroy($request)
+    {
+
+        // バリデーションに引っかかったら, false
+        $validation = Validator::make($request->all(), 
+            ['delete_user_cd'   => 'required|exists:users,user_cd|numeric']);
+        if($validation->fails()) return false;
+
+        $post      = $request->all();
+        $user_cd   = $post['delete_user_cd'];
+
+        try{
+            User::where('user_cd', '=', $user_cd)->forceDelete();
+        } catch(\Exception $e) {
+            return false;
+        }
+        
         return true;
     }
 
