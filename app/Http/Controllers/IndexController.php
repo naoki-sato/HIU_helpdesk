@@ -10,9 +10,6 @@ use Carbon\Carbon;
 
 class IndexController extends Controller
 {
-    
-
-
 
     public function index(){
 
@@ -22,10 +19,6 @@ class IndexController extends Controller
                             ->leftJoin('admins', 'admins.id', '=', 'messages.staff_id')
                             ->where('messages.created_at', '>', Carbon::now()->subDay(30))->get();
 
-
-        // dd($info_mes);
-
-        // dd($info_mes);
         return view('welcome', ['info_mes' => $info_mes]);
     }
 
@@ -33,8 +26,16 @@ class IndexController extends Controller
     public function store(Request $request){
 
         $post = $request->all();
-        // dd($post['info_mes']);
-        $request->session()->flash('info_message', $post['info_mes']);
-        return view('welcome');
+
+        try{
+            $message = new Message;
+            $message->description   = $post['info_mes'];
+            $message->staff_id      = $request->user()['id'];
+            $message->save();
+        } catch(\PDOException $e) {
+            $request->session()->flash('alert_message', '投稿失敗しました。');
+        }
+
+        return redirect('/');
     }
 }
