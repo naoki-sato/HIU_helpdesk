@@ -1,18 +1,23 @@
 <?php
 
+/**
+ * @version 2017/01/21
+ * @author  naoki.s 1312007
+ */
+
 namespace App\Http\Controllers\Lending;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Models\Status;
+use App\Eloquents\Status;
 
 class ExportController extends Controller
 {
 
-    public function postExport(){
+    /**
+     * 機材貸出履歴をexcelファイルにエクスポート
+     */
+    public function store(){
 
         $data = Status::withTrashed()
             ->select(

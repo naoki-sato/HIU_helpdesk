@@ -185,7 +185,7 @@
 
 
                         <div>
-                            引退したスタッフを復帰させたい場合は<a href="{{ url('/return-staff') }}">こちら</a>
+                            引退したスタッフを復帰させたい場合は<a href="{{ action('Management\Staff\BeBackStaffController@index') }}">こちら</a>
                         </div>
                     </div>
                 </div>
@@ -194,8 +194,28 @@
 
         {{-- list --}}
         <table id="lost_item_list" class="table table-striped table-bordered" cellspacing="0" width="100%">
-            <thead></thead>
-            <tbody></tbody>
+            <thead>
+                <tr>
+                    <th>氏名</th>
+                    <th>学籍番号/教職員番号</th>
+                    <th>電話番号</th>
+                    <th>役割</th>
+                    <th>メールアドレス</th>
+                    <th>Show & Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($data as $staff)
+                    <tr>
+                        <th>{{$staff['name']}}</th>
+                        <th>{{$staff['staff_cd']}}</th>
+                        <th>{{$staff['phone_no']}}</th>
+                        <th>{{$staff['role']}}</th>
+                        <th>{{$staff['email']}}</th>
+                        <th><a href="{{url('registration-staff') . '/' . $staff['id']}}" class="btn btn-default btn-block btn-sm"><i class="glyphicon glyphicon-link"></i>link</a></th>
+                    </tr>
+                @endforeach
+            </tbody>
         </table>
     </div>
 
@@ -206,12 +226,6 @@
     <script type="text/javascript" src="{{URL::asset('/js/dataTables.bootstrap.min.js')}}"></script>
     <script>
     $(function(){
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
         $('#lost_item_list').dataTable({
             processing: true,
             pageLength: 25, 
@@ -219,26 +233,8 @@
             searching:true,
             lengthChange:false,
             order: [[0,'desc']], // ID
-            columns: [
-                { data: "name", defaultContent: "", "title": "名前"},
-                { data: "staff_cd", defaultContent: "", "title": "学籍番号/教職員番号" },
-                { data: "phone_no", defaultContent: "", "title": "電話番号"},
-                { data: "role", defaultContent: "", "title": "役割" },
-                { data: "email", defaultContent: "", "title": "メールアドレス"},
-                { data: "id", "render": function (data, type, row, meta) {
-                return '<a href="{{url('registration-staff').'/'}}' + data + '" class="btn btn-default btn-block btn-sm"><i class="glyphicon glyphicon-link"></i> ' + 'link' + '</a>';
-                    }, "title": "show & edit"},
-            ],
             deferRender: true,
-            ajax: {
-               url: "{{url('/registration-staff-api')}}", 
-               dataSrc: "", {{-- 消してはダメ(わざと空白) --}}
-               type: "GET"
-            }
         });
-
-
     });
     </script>
-
 @endsection

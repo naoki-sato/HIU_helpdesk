@@ -18,8 +18,37 @@
 
     {{-- list --}}
     <table id="return_staff_list" class="table table-striped table-bordered" cellspacing="0" width="100%">
-        <thead></thead>
-        <tbody></tbody>
+        <thead>
+            <tr>
+                <th>名前</th>
+                <th>学籍番号/教職員番号</th>
+                <th>電話番号</th>
+                <th>役割</th>
+                <th>メールアドレス</th>
+                <th>Can Be Back</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($data as $staff)
+                <tr>
+                    <td>{{$staff['name']}}</td>
+                    <td>{{$staff['staff_cd']}}</td>
+                    <td>{{$staff['phone_no']}}</td>
+                    <td>{{$staff['role']}}</td>
+                    <td>{{$staff['email']}}</td>
+                    <td>
+                        <form action="{{url('can-be-back-staff').'/'.$staff['id']}}" method="post">
+                            <input name="_method" type="hidden" value="PUT">
+                            {!! csrf_field() !!}
+                            <input name="id" type="hidden" value="{{$staff['id']}}">
+                            <button type="submit" id="submit" class="btn btn-default btn-block btn-sm">
+                                <i class="glyphicon glyphicon-heart-empty"></i> Be Back
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
     </table>
 
 @endsection
@@ -36,25 +65,8 @@
             searching:true,
             lengthChange:false,
             order: [[0,'desc']], // ID
-            columns: [
-                { data: "name", defaultContent: "", "title": "名前"},
-                { data: "staff_cd", defaultContent: "", "title": "学籍番号/教職員番号" },
-                { data: "phone_no", defaultContent: "", "title": "電話番号"},
-                { data: "role", defaultContent: "", "title": "役割" },
-                { data: "email", defaultContent: "", "title": "メールアドレス"},
-                { data: "id", "render": function (data, type, row, meta) {
-                return '<form action="{{url('return-staff').'/'}}'+ data +'" method="post"><input name="_method" type="hidden" value="PUT">{!! csrf_field() !!}<input name="id" type="hidden" value="'+data+'"><button type="submit" id="submit" class="btn btn-default btn-block btn-sm"><i class="glyphicon glyphicon-heart-empty"></i>'+ ' Return' + '</button></form>';
-                    }, "title": "Work Return"},
-            ],
             deferRender: true,
-            ajax: {
-               url: "{{url('/return-staff-api')}}", 
-               dataSrc: "", {{-- 消してはダメ(わざと空白) --}}
-               type: "GET"
-            }
         });
-
-
     });
     </script>
 

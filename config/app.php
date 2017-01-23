@@ -110,7 +110,7 @@ return [
 
     'log' => env('APP_LOG', 'single'),
 
-'log_level' => env('APP_LOG_LEVEL', 'debug'),
+    'log_level' => env('APP_LOG_LEVEL', 'debug'),
 
     /*
     |--------------------------------------------------------------------------
@@ -220,7 +220,7 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Input'     => Illuminate\Support\Facades\Input::class,
         'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
-        'Image' => Intervention\Image\Facades\Image::class,
+        'Image'     => Intervention\Image\Facades\Image::class,
 
     ],
 

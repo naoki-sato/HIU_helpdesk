@@ -21,9 +21,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">貸出</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('lend-item/lend')}}">
-                    {{ csrf_field() }}
-              
+                    <form class="form-horizontal" role="form" method="POST" action="{{ url('lend-item/rental')}}">
+                        {{ csrf_field() }}
                         <div class="form-group{{ $errors->has('user_cd') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">学籍/職員番号</label>
 
@@ -69,11 +68,11 @@
                         <hr>
 
                         {{-- 貸出アイテム --}}
-                        <div class="form-group{{ $errors->has('lend_item') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('rental_item') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">貸出アイテム</label>
                             <div class="col-md-6">
                                 @for ($i = 0; $i < 5; $i++)
-                                    <input type="text" class="form-control" name="lend_item[]"  placeholder="貸出アイテム" id="lend_item">
+                                    <input type="text" class="form-control" name="rental_item[]"  placeholder="貸出アイテム" id="rental_item">
                                 @endfor
                             </div>
                         </div>
@@ -112,9 +111,6 @@
             </div>
         </div>
 
-
-
-
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">返却</div>
@@ -151,7 +147,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="col-md-10">
-                        <form class="form-horizontal pull-right" action="/lend-item-export/export" method="POST">
+                        <form class="form-horizontal pull-right" action="/lend-item-export" method="POST">
                             {{ csrf_field() }}
                             返却済みの処理も含む。　
                             <button type="submit" class="btn btn-primary pull-right btn-sm">
@@ -168,8 +164,34 @@
 
     {{-- 貸出リスト --}}
     <table id="lend_item_list" class="table table-striped table-bordered" cellspacing="0" width="100%">
-        <thead></thead>
-        <tbody></tbody>
+        <thead>
+            <tr>
+                <th>受付</th>
+                <th>機材コード</th>
+                <th>説明</th>
+                <th>学籍番号</th>
+                <th>氏名</th>
+                <th>電話番号</th>
+                <th>貸出担当</th>
+                <th>貸出日付</th>
+                <th>備考</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($data as $item)
+                <tr>
+                    <th>{{$item->id}}</th>
+                    <th>{{$item->item_cd}}</th>
+                    <th>{{$item->description}}</th>
+                    <th>{{$item->user_cd}}</th>
+                    <th>{{$item->user_name}}</th>
+                    <th>{{$item->phone_no}}</th>
+                    <th>{{$item->lended_staff_name}}</th>
+                    <th>{{$item->created_at}}</th>
+                    <th>{{$item->comment}}</th>
+                </tr>
+            @endforeach
+        </tbody>
     </table>
 @endsection
 
@@ -178,36 +200,14 @@
     <script type="text/javascript" src="{{URL::asset('/js/dataTables.bootstrap.min.js')}}"></script>
     <script>
     $(function(){
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
         $('#lend_item_list').dataTable({
             processing: true,
-            pageLength: 25, 
+            pageLength: 25,
             orderClasses: false,
             searching:true,
             lengthChange:false,
             order: [[0,'desc']], // ID
-            columns: [
-                { data: "id", defaultContent: "", "title": "受付"},
-                { data: "item_cd", defaultContent: "", "title": "機材コード"},
-                { data: "description", defaultContent: "", "title": "説明"},
-                { data: "user_cd", defaultContent: "", "title": "学籍番号" },
-                { data: "user_name", defaultContent: "", "title": "氏名"},
-                { data: "phone_no", defaultContent: "", "title": "電話番号"},
-                { data: "lended_staff_name", defaultContent: "", "title": "貸出担当"},
-                { data: "created_at", defaultContent: "", "title": "貸出日時"},
-                { data: "comment", defaultContent: "", "title": "備考"},
-            ],
             deferRender: true,
-            ajax: {
-               url: "{{url('/lend-item-api'). app('request')->input('year')}}", 
-               dataSrc: "", {{-- 消してはダメ(わざと空白) --}}
-               type: "GET"
-            }
         });
     });
     </script>

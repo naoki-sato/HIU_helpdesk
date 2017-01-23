@@ -67,7 +67,7 @@
                                 @if(in_array(Auth::user()->role, ['admin']))
                                     <li>
                                         <a href="{{ url('/registration-user') }}">
-                                        <i class="glyphicon glyphicon-education"></i> ユーザ</a>
+                                        <i class="glyphicon glyphicon-education"></i> 学生/職員</a>
                                     </li>
                                 @endif
                             </ul>

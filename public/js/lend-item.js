@@ -11,9 +11,6 @@ $(function() {
             }
         });      
     });
-
-
-    
     
     $("#lent_item").EnterTab({Enter:true,Tab:true});
     $("#return_item").EnterTab({Enter:true,Tab:true});

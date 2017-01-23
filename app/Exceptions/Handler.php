@@ -60,7 +60,7 @@ class Handler extends ExceptionHandler
                 break;
 
                 case '500':
-                    \Log::error($exception);
+                    \Log::error($e);
                     return \Response::view('errors.500');   
                 break;
 

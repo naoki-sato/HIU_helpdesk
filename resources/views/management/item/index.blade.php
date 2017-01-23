@@ -157,10 +157,26 @@
 
 
     
-    {{-- 貸出アイテム一覧 --}}
+    {{-- アイテム一覧 --}}
     <table id="item_list" class="table table-striped table-bordered" cellspacing="0" width="100%">
-        <thead></thead>
-        <tbody></tbody>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Item Code</th>
+                <th>Serial Code</th>
+                <th>Descripon</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach($data as $item)
+            <tr>
+                <td>{{$item['id']}}</td>
+                <td>{{$item['item_cd']}}</td>
+                <td>{{$item['serial_cd']}}</td>
+                <td>{{$item['description']}}</td>
+            </tr>
+        @endforeach
+        </tbody>
     </table>
 @endsection
 
@@ -169,12 +185,6 @@
     <script type="text/javascript" src="{{URL::asset('/js/dataTables.bootstrap.min.js')}}"></script>
     <script>
     $(function(){
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
         $('#item_list').dataTable({
             processing: true,
             pageLength: 25, 
@@ -182,21 +192,8 @@
             searching:true,
             lengthChange:false,
             order: [[0,'desc']], // ID
-            columns: [
-                { data: "id", defaultContent: "", "title": "ID"},
-                { data: "item_cd", defaultContent: "", "title": "Item Code" },
-                { data: "serial_cd", defaultContent: "", "title": "Serial Code"},
-                { data: "description", defaultContent: "", "title": "Description" },
-            ],
             deferRender: true,
-            ajax: {
-               url: "{{url('/registration-item-api')}}", 
-               dataSrc: "", {{-- 消してはダメ(わざと空白) --}}
-               type: "GET"
-            }
         });
-
-
     });
     </script>
     <script type="text/javascript" src="{{URL::asset('/js/registration-item.js')}}"></script>

@@ -2,18 +2,25 @@
 
 namespace App\Http\Controllers\Management\User;
 
+use App\Models\User\RegistrationModel;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Facades\Excel;
 use Input;
 
 class RegistrationUserController extends Controller
 {
-    
+
+
+    private $registration_model;
+
+    /**
+     * RegistrationUserController constructor.
+     */
+    public function __construct()
+    {
+        $this->registration_model = new RegistrationModel();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,56 +28,78 @@ class RegistrationUserController extends Controller
      */
     public function getIndex()
     {
-
-        $data = User::all();
+        // 登録されている全てのユーザを取得する
+        $data = $this->registration_model->getUserAll();
         return view('management.user.index', ['data' => $data]);
     }
 
+
     /**
-     * Remove the specified resource from storage.
+     * ポストされたユーザをDBから削除する処理
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return success : true, fail : false
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function postDelete(Request $request){
 
+        $post               = null;  // ポストされた全データ
+        $user_cd            = null;  // 学籍番号
+        $is_deletable_user  = false; // ユーザ削除できるかどうか
+
+        // バリデーション
         $this->validate($request, ['delete_user_cd'   => 'required|exists:users,user_cd|numeric']);
 
-        $user_api = new RegistrationUserApiController();
-        $success = $user_api->destroy($request);
+        $post    = $request->all();
+        $user_cd = $post['delete_user_cd'];
 
-        if($success){
-            session()->flash('success_message', '<h3>ユーザを削除しました。</h3>');
-        }else{
-            session()->flash('alert_message', '<h3>ユーザを削除できませんでした。</h3>');
+        // 指定されてユーザを削除
+        $is_deletable_user = $this->registration_model->dalete($user_cd);
+
+        // 削除できたかどうか
+        if ($is_deletable_user) {
+            session()->flash('success_message', '<h3>ユーザ削除しました。</h3>');
+        } else {
+            session()->flash('alert_message', '<h3>ユーザ削除できませんでした。</h3>');
         }
+
         return redirect()->back();
     }
 
 
     /**
-     * Store a newly created resource in storage.
+     * ポストされた学籍番号と氏名をDBに登録する
      *
+     * @note 未登録->新規登録，既に登録済み->アップデート(*電話番号は消える)
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function postRegister(Request $request){
 
-        $this->validate($request, [
+
+        $post      = null; // ポストされた全データ
+        $user_name = null; // ユーザ氏名
+        $user_cd   = null; // 学籍番号
+
+        // バリデーション
+        $this->validate($request,
+            [
                 'user_name' => 'required',
-                'user_cd'   => 'required|unique:users,user_cd|numeric']);
+                // unique:users,user_cd　バリデートしてもしなくても
+                // 'user_cd'   => 'required|unique:users,user_cd|numeric'
+                'user_cd'   => 'required|numeric'
+            ]);
 
         $post      = $request->all();
         $user_name = mb_convert_kana($post['user_name'], 'as');
         $user_cd   = mb_convert_kana($post['user_cd'], 'as');
 
-        try{
-            $user = new User;
-            $user->user_name  = $user_name;
-            $user->user_cd    = $user_cd;
-            $user->save();
+        try {
+            // 未登録なら新規に登録，登録済みならアップデート(ただし，電話番号はnullになる)
+            $this->registration_model->replace($user_name, $user_cd, null);
+
         } catch(\PDOException $e) {
             session()->flash('alert_message', '<h3>登録できませんでした。</h3>');
+            return redirect()->back()->withInput();
         }
 
         session()->flash('success_message', '<h3>正常に登録しました。</h3>');
@@ -83,45 +112,36 @@ class RegistrationUserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     *
+     * @note TODO::リファクタしたほうがいい
      */
     public function postImport(Request $request)
     {
 
+        $is_import_success = false;
+
+        // バリデーション
         $this->validate($request, ['file_input'=> 'required']);
 
-        if(Input::hasFile('file_input')){
-            $path = Input::file('file_input')->getRealPath();
-            $data = Excel::load($path, function($reader) {})->get();
 
-            if(!empty($data) && $data->count()){
-                foreach ($data as $key => $value) {
-                    if(!User::where('user_cd', '=', $value->user_cd)->first()){
-                        try{
-                            $user = new User;
-                            $user->user_cd      = $value->user_cd;
-                            $user->user_name    = $value->user_name;
-                            $user->save();
-                        } catch(\PDOException $e) {
-                            session()->flash('alert_message', '<h3>形式が間違っているため，Importできませんでした。</h3>');
-                            return back();
-                        }
-                    }
-                }
-            }
+        $is_import_success = $this->registration_model->importCSV($request);
+
+        // インポートできたかどうか
+        if ($is_import_success) {
+            session()->flash('success_message', '<h3>正常にImportできました。</h3>');
+        } else {
+            session()->flash('alert_message', '<h3>Error: Importできませんでした。</h3>');
         }
-        session()->flash('success_message', '<h3>正常にImportできました。</h3>');
+
         return back();
     }
 
-    public function postExample(Request $request){
+    /**
+     * CSVの書き方の例をエクスポートする
+     */
+    public function postExample() {
 
-        $users = [['user_cd', 'user_name'], ['1234567', '情報 太郎'], ['1312007', '佐藤 直己']];
-
-        Excel::create('user_import_example', function($excel) use($users) {
-            $excel->sheet('1', function($sheet) use($users){
-                $sheet->fromArray($users, null, 'A1', false, false);
-            });
-         })->export('csv');
+        $this->registration_model->exportCSV();
     }
 
 

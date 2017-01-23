@@ -238,8 +238,38 @@
     </div>
     {{-- list --}}
     <table id="lost_item_list" class="table table-striped table-bordered" cellspacing="0" width="100%">
-        <thead></thead>
-        <tbody></tbody>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>画像</th>
+                <th>受取日</th>
+                <th>アイテム</th>
+                <th>場所</th>
+                <th>受取担当</th>
+                <th>備考</th>
+                <th>引渡日</th>
+                <th>引渡担当</th>
+                <th>落とし主</th>
+                <th>show&edit</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach($data as $item)
+            <tr>
+                <td>{{$item['id']}}</td>
+                <td><a href="{{url('image') . '/' . $item['file_name']}}" data-lity="data-lity"><img src="{{url('image') . '/'. $item['file_name']}}" class="thumbnail" height=50></a></td>
+                <td>{{$item['created_at']}}</td>
+                <td>{{$item['lost_item_name']}}</td>
+                <td>{{$item['room_name']}}</td>
+                <td>{{$item['reciept_staff_name']}}</td>
+                <td>{{$item['note']}}</td>
+                <td>{{$item['deleted_at']}}</td>
+                <td>{{$item['delivery_staff_name']}}</td>
+                <td>{{$item['user_name']}}</td>
+                <td><a href="{{url('lost-item') . '/' . $item['id']}}" class="btn btn-default btn-block"><i class="glyphicon glyphicon-link"></i>link</a></td>
+            </tr>
+        @endforeach
+        </tbody>
     </table>
 
 @endsection
@@ -250,11 +280,6 @@
     <script type="text/javascript" src="{{URL::asset('/js/lity.min.js')}}"></script>
     <script>
     $(function(){
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
         $('#file_input').change(function() {
             $('#dummy_file').val($(this).val());
         });
@@ -266,29 +291,7 @@
             searching:true,
             lengthChange:false,
             order: [[0,'desc']], // ID
-            columns: [
-                { data: "id", defaultContent: "", "title": "ID"},
-                { data: "file_name", "render": function (data, type, row, meta) {
-        return '<a href="{{url('image').'/'}}' + data + '" data-lity="data-lity"><img src="{{url('image').'/'}}' + data + '" class="thumbnail" height=50></a>';
-                    }, "title": "画像"},
-                { data: "created_at", defaultContent: "", "title": "受取日"},
-                { data: "lost_item_name", defaultContent: "", "title": "アイテム" },
-                { data: "room_name", defaultContent: "", "title": "場所"},
-                { data: "reciept_staff_name", defaultContent: "", "title": "受取担当" },
-                { data: "note", defaultContent: "", "title": "備考"},
-                { data: "deleted_at", defaultContent: "", "title": "引渡日"},
-                { data: "delivery_staff_name", defaultContent: "", "title": "引渡担当"},
-                { data: "user_name", defaultContent: "", "title": "落し物主"},
-                { data: "id", "render": function (data, type, row, meta) {
-        return '<a href="{{url('lost-item').'/'}}' + data + '" class="btn btn-default btn-block"><i class="glyphicon glyphicon-link"></i> ' + 'link' + '</a>';
-                    }, "title": "show & edit"},
-            ],
             deferRender: true,
-            ajax: {
-               url: "{{url('/lost-item-api?year='). app('request')->input('year')}}", 
-               dataSrc: "", {{-- 消してはダメ(わざと空白) --}}
-               type: "GET"
-            }
         });
     });
     </script>

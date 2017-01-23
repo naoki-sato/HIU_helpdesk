@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\External;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\LostItem;
+use App\Eloquents\LostItem;
 
 class LostPropertyController extends Controller
 {
     
-    public function getIndex(){
+    public function index(){
 
+        // 現在の年度で，まだ落し物主に渡っていない，落し物一覧を取得する。
         $data = LostItem::
             select('lost_items.id AS id',
                     'lost_items.created_at AS created_at',
@@ -25,7 +23,6 @@ class LostPropertyController extends Controller
             ->whereBetween('lost_items.created_at', 
                     [convertBeginningFiscalYear(null), convertEndFiscalYear(null)])
             ->get();
-
 
         return view('lostitem.property', ['data' => $data]);
 

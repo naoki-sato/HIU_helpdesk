@@ -1,7 +1,10 @@
 <?php
+/**
+ * @version 2017/01/21
+ * @author  naoki.s 1312007
+ */
 
 use Carbon\Carbon;
-use App\Models\User;
 
 /**
  * 現在の"年度"を取得
@@ -44,6 +47,8 @@ function convertEndFiscalYear($year = null){
  * ユーザーCodeからID取得
  * @param  int  $no(s1312007 -> db_id)
  * @return id or null
+ *
+ * TODO これ使用してる？か調べる
  */
 function convertUserFromCodeToId($no){
 
