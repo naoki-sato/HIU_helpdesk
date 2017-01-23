@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @version 2017/01/23
+ * @author  naoki.s 1312007
+ */
+
 namespace App\Http\Controllers\External;
 
 use App\Http\Controllers\Controller;

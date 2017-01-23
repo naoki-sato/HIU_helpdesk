@@ -1,11 +1,15 @@
 <?php
 
+/**
+ * @version 2017/01/23
+ * @author  naoki.s 1312007
+ */
+
 namespace App\Http\Controllers\Auth;
 
 use App\Eloquents\Admin;
 use App\Models\Auth\SettingModel;
 use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
 use Hash;
 use Mail;
@@ -69,6 +73,7 @@ class SettingController extends Controller
         $id         = $request->user()['id'];
 
 
+        // スタッフ自身の電話番号とメールアドレスを更新
         $is_update_success = $this->setting_model->updateAuthInfo($id, $phone_no, $email);
 
         if (!$is_update_success) {

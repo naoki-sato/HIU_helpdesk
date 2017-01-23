@@ -1,13 +1,15 @@
 <?php
 
+/**
+ * @version 2017/01/23
+ * @author  naoki.s 1312007
+ */
+
 namespace App\Http\Controllers\Management\Staff;
 
 use App\Models\Management\Staff\RegistrationStaffModel;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Auth;
 
 class RegistrationStaffController extends Controller
@@ -15,6 +17,9 @@ class RegistrationStaffController extends Controller
 
     private $registration_staff_model;
 
+    /**
+     * RegistrationStaffController constructor.
+     */
     public function __construct()
     {
         $this->registration_staff_model = new RegistrationStaffModel();
@@ -28,10 +33,12 @@ class RegistrationStaffController extends Controller
      */
     public function index()
     {
-
+        // 現在のスタッフを格納する
         $data = null;
 
+        // 現在のスタッフ一覧の取得
         $data = $this->registration_staff_model->getStaffListData();
+
         return view('management.staff.index', ['data' => $data]);
     }
 
@@ -45,10 +52,10 @@ class RegistrationStaffController extends Controller
     public function store(Request $request)
     {
 
+        // 新スタッフを登録できたかどうか
         $is_insert_success = false;
 
-
-
+        // バリデーション
         $this->validate($request,
                 [
                     'staff_name' => 'required',
@@ -58,6 +65,7 @@ class RegistrationStaffController extends Controller
                     'password'   => 'required|min:6|confirmed'
                 ]);
 
+        // 新スタッフをDBに登録
         $is_insert_success = $this->registration_staff_model->insertStaff($request);
 
         if ($is_insert_success) {
@@ -76,12 +84,13 @@ class RegistrationStaffController extends Controller
      */
     public function show($id)
     {
+        // スタッフ情報
         $staff = null;
 
-
+        // IDからスタッフを取得
         $staff = $this->registration_staff_model->show($id);
 
-
+        // データが空の場合は，スタッフは存在しない
         if (empty($staff)) {
             session()->flash('alert_message', '<h3>お探しのスタッフは見つかりませでした。</h3>');
             return view('errors.error_msg');
@@ -92,20 +101,20 @@ class RegistrationStaffController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
+     * スタッフのロールを変更
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return redirect
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request){
 
+        $post               = null;  // ポストされた全データ
+        $role               = null;  // 役割
+        $id                 = null;  // ID
+        $is_update_success  = false; // 変更できたかどうか
 
-        $post               = null;
-        $role               = null;
-        $id                 = null;
-        $is_update_success  = false;
-        
+
+        // バリデーション
         $this->validate($request,
                 ['role' => 'required|in:admin,manager,staff',
                  'id'   => 'required|numeric']);
@@ -114,6 +123,7 @@ class RegistrationStaffController extends Controller
         $role       = $post['role'];
         $id         = $post['id'];
 
+        // スタッフの役割を更新
         $is_update_success = $this->registration_staff_model->updateRole($id, $role);
 
         if ($is_update_success) {
@@ -128,15 +138,15 @@ class RegistrationStaffController extends Controller
 
 
     /**
-     * Remove the specified resource from storage.
+     * スタッフを引退させる(ソフトデリート)
      *
-     * @param  int  $id
-     * @param  \Illuminate\Http\Request  $request
-     * @return redirect
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request)
     {
 
+        // 削除ができたかどうか
         $is_delete_success = false;
 
         $this->validate($request, ['staff_id' => 'required|numeric']);

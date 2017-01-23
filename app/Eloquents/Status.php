@@ -2,6 +2,11 @@
 
 namespace App\Eloquents;
 
+/**
+ * @version 2017/01/23
+ * @author  naoki.s 1312007
+ */
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 

@@ -32,7 +32,7 @@ class SettingModel extends Model
 
 
     /**
-     * Update the email and phone
+     * スタッフ自身の電話番号とメールの更新
      *
      * @param $id
      * @param $phone_no

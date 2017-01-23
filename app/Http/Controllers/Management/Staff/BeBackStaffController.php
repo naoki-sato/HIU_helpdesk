@@ -1,51 +1,68 @@
 <?php
 
+/**
+ * @version 2017/01/23
+ * @author  naoki.s 1312007
+ */
+
 namespace App\Http\Controllers\Management\Staff;
 
 use App\Models\Management\Staff\BeBackStaffModel;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 class BeBackStaffController extends Controller
 {
 
-
     private $back_staff_model;
 
+
+    /**
+     * BeBackStaffController constructor.
+     */
     public function __construct()
     {
         $this->back_staff_model = new BeBackStaffModel();
     }
 
 
-    public function index(){
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function index()
+    {
 
+        // 引退したスタッフのデータ格納
         $data = null;
 
+        // 引退したスタッフのデータ一覧取得
         $data = $this->back_staff_model->getDaletedStaff();
+
         return view('management.staff.return', ['data' => $data]);
     }
 
 
     /**
-     * Update the specified resource in storage.
+     * 引退したスタッフを復帰させる
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return redirect
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request){
+    public function update(Request $request)
+    {
 
 
-        $is_back_success = false;
-        
+        $post            = null;  // ポストされた全データ
+        $id              = null;  // スタッフID
+        $is_back_success = false; // スタッフを復帰させることができたかどうか
+
+        // バリデーション
         $this->validate($request, ['id' => 'required|numeric']);
 
         $post = $request->all();
-        $id = $post['id'];
+        $id   = $post['id'];
 
+        // スタッフを復帰させる
         $is_back_success = $this->back_staff_model->beBack($id);
 
         if ($is_back_success) {
@@ -57,7 +74,5 @@ class BeBackStaffController extends Controller
         return redirect()->back();
 
     }
-
-
 
 }

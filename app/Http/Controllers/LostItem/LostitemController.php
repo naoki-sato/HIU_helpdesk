@@ -146,6 +146,7 @@ class LostItemController extends Controller
     public function destroy(Request $request, $id)
     {
 
+        /* 変数部 */
         $post               = null; // ポストされた全データ
         $user_cd            = null; // 学籍番号
         $user_name          = null; // 氏名
