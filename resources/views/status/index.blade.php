@@ -180,15 +180,15 @@
         <tbody>
             @foreach($data as $item)
                 <tr>
-                    <th>{{$item->id}}</th>
-                    <th>{{$item->item_cd}}</th>
-                    <th>{{$item->description}}</th>
-                    <th>{{$item->user_cd}}</th>
-                    <th>{{$item->user_name}}</th>
-                    <th>{{$item->phone_no}}</th>
-                    <th>{{$item->lended_staff_name}}</th>
-                    <th>{{$item->created_at}}</th>
-                    <th>{{$item->comment}}</th>
+                    <td>{{$item->id}}</td>
+                    <td>{{$item->item_cd}}</td>
+                    <td>{{$item->description}}</td>
+                    <td>{{$item->user_cd}}</td>
+                    <td>{{$item->user_name}}</td>
+                    <td>{{$item->phone_no}}</td>
+                    <td>{{$item->lended_staff_name}}</td>
+                    <td>{{$item->created_at}}</td>
+                    <td>{{$item->comment}}</td>
                 </tr>
             @endforeach
         </tbody>

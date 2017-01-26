@@ -48,6 +48,11 @@ Route::group(['middlewareGroups' => ['web']], function(){
         // スタッフ・User・品(カメラ・三脚など)・シフトスケジュールの登録や編集
         Route::group(['namespace' => 'Management'], function(){
 
+            Route::group(['namespace' => 'Shift'], function(){
+                // シフト表の表示
+                Route::resource('shift-table', 'ShiftController', ['only' => ['index']]);
+            });
+
             // User
             Route::group(['namespace' => 'User'], function(){
                 // User登録API
@@ -61,6 +66,12 @@ Route::group(['middlewareGroups' => ['web']], function(){
 
             // 権限ある管理者マネージャーのみ (一般スタッフは除く)
             Route::group(['middleware' => ['management']], function(){
+
+                Route::group(['namespace' => 'Shift'], function(){
+                    // シフト表の変更
+                    Route::resource('shift-table', 'ShiftController', ['only' => ['store']]);
+                });
+
                 Route::group(['namespace' => 'Staff'], function(){
                     // スタッフの登録・編集・削除
                     Route::resource('registration-staff', 'RegistrationStaffController');
@@ -87,10 +98,15 @@ Route::group(['middlewareGroups' => ['web']], function(){
     // file request to strage
     Route::get('image/{filename}', function ($filename = 'noimage.jpg'){
         $file_path = storage_path('app/images_store/lost-item/') . $filename;
-        if(file_exists($file_path)){
+        $file_path2 = storage_path('app/images_store/shift_table/') . $filename;
+
+        if(file_exists($file_path)) {
             return Image::make($file_path)->response();
+        } elseif (file_exists($file_path2)) {
+            return Image::make($file_path2)->response();
+        } else {
+            return Image::make(public_path('images/noimage.jpg'))->response();
         }
-        return Image::make(public_path('images/noimage.jpg'))->response();
     });
 
 });

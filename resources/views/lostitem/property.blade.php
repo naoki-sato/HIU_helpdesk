@@ -23,7 +23,7 @@
         </thead>
         <tbody>
             @foreach ($data as $value)
-                @if (isset($value->deleted_at))
+                @if (!isset($value->deleted_at))
                 <tr>
                     <td>{{$value->id}}</td>
                     <td>

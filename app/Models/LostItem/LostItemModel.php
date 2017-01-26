@@ -93,19 +93,23 @@ class LostItemModel extends Model
                 $file_name = md5(sha1(uniqid(mt_rand(), true))) . '.' . $image->getClientOriginalExtension();
                 // 画像をストレージに保存
                 self::saveImage($file_name ,$image);
+
+                // DBにインサート
+                LostItem::insert(
+                    [
+                        'lost_item_name'    => $item_name,
+                        'reciept_staff_id'  => $staff_id,
+                        'place_id'          => $place,
+                        'note'              => $note,
+                        'file_name'         => $file_name,
+                        'created_at'        => Carbon::now(),
+                        'updated_at'        => Carbon::now(),
+                    ]);
+
+            } else {
+                return false;
             }
 
-            // DBにインサート
-            LostItem::insert(
-                [
-                    'lost_item_name'    => $item_name,
-                    'reciept_staff_id'  => $staff_id,
-                    'place_id'          => $place,
-                    'note'              => $note,
-                    'file_name'         => $file_name,
-                    'created_at'        => Carbon::now(),
-                    'updated_at'        => Carbon::now(),
-                ]);
 
         } catch(\PDOException $e) {
             return false;
