@@ -23,23 +23,27 @@
         </thead>
         <tbody>
             @foreach ($data as $value)
+                @if (isset($value->deleted_at))
                 <tr>
                     <td>{{$value->id}}</td>
-                    <td><a href="image-1.jpg" data-lity="data-lity">
-                    @if($value->file_name)
-                        {{-- */$img_path = "image/" . $value->file_name/* --}}
-                    @else
-                        {{-- */$img_path = "image/noimage.jpg"/* --}}
-                    @endif
-                        <a href="{{ URL::to($img_path) }}" data-lity="data-lity">
-                            <img class="thumbnail" src="{{ URL::to($img_path) }}" height=75>
+                    <td>
+                        <a href="image-1.jpg" data-lity="data-lity">
+                            @if($value->file_name)
+                                {{-- */$img_path = "image/" . $value->file_name/* --}}
+                            @else
+                                {{-- */$img_path = "image/noimage.jpg"/* --}}
+                            @endif
+                            <a href="{{ URL::to($img_path) }}" data-lity="data-lity">
+                                <img class="thumbnail" src="{{ URL::to($img_path) }}" height=75 >
+                            </a>
                         </a>
                     </td>
                     <td>{{$value->created_at}}</td>
                     <td>{{$value->lost_item_name}}</td>
                     <td>{{$value->room_name}}</td>
                     <td>{{$value->note}}</td>
-                </tr>  
+                </tr>
+                @endif
             @endforeach
         </tbody>
     </table>

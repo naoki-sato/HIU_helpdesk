@@ -12,6 +12,7 @@ use App\Models\User\RegistrationModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Place;
+use Illuminate\Support\Facades\Auth;
 use Input;
 
 class LostItemController extends Controller
@@ -39,10 +40,16 @@ class LostItemController extends Controller
      */
     public function index()
     {
+
         // インデックスページのテーブル情報
         $table_data = $this->lost_item_model->getIndexTableData();
 
-        return view('lostitem.index', ['places' => $this->places, 'data' => $table_data]);
+        if (Auth::guest()) {
+            return view('lostitem.property', ['data' => $table_data]);
+        } else {
+            return view('lostitem.index', ['places' => $this->places, 'data' => $table_data]);
+        }
+
     }
 
     /**
