@@ -23,7 +23,7 @@ Route::group(['middlewareGroups' => ['web']], function(){
 
     // 外部用の簡易版落し物リスト(guest時のみ)
     Route::group(['namespace' => 'LostItem'], function(){
-        Route::resource('lost-item', 'LostItemController', ['only' => ['index']]);
+        Route::resource('lost-item', 'LostitemController', ['only' => ['index']]);
     });
     
     // ログイン機能
@@ -41,7 +41,7 @@ Route::group(['middlewareGroups' => ['web']], function(){
 
         // 落し物関連
         Route::group(['namespace' => 'LostItem'], function(){
-            Route::resource('lost-item', 'LostItemController', ['only' => ['store', 'show', 'update', 'destroy']]);
+            Route::resource('lost-item', 'LostitemController', ['only' => ['store', 'show', 'update', 'destroy']]);
             Route::controller('lost-item-export', 'ExportController');
         });
 
