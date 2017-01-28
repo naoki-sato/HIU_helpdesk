@@ -137,15 +137,18 @@
                         </div>
                     </div>
 
+
+
                     {{-- 画像 --}}
                     <div class="form-group{{ $errors->has('file_input') ? ' has-error' : '' }}">
                         <label for="note" class="col-md-3 control-label">画像</label>
                         <div class="col-md-2">
-                            @if($data['file_name'])
-                                {{-- */$img_path = "image/" . $data['file_name']/* --}}
+                            @if($data['file_name'] != 'no_image.jpg')
+                                {{-- */$img_path = url('images_store/lost-item') .'/'. $data['file_name']/* --}}
                             @else
-                                {{-- */$img_path = "image/noimage.jpg"/* --}}
+                                {{-- */$img_path = url('images/noimage.jpg')/* --}}
                             @endif
+
                             <a href="{{ URL::to($img_path) }}" data-lity="data-lity">
                                 <img class="thumbnail" src="{{ URL::to($img_path) }}" height=75>
                             </a>

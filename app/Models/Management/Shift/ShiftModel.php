@@ -5,7 +5,7 @@ namespace App\Models\Management\Shift;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Http\Request;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 use App\Eloquents\Shift;
 use Input;
 use Image;
@@ -14,27 +14,44 @@ use Carbon\Carbon;
 class ShiftModel extends Model
 {
 
+    private $save_path;
+
     /**
      * ShiftModel constructor.
      */
     public function __construct()
     {
+        $this->save_path = 'images_store/shift_table/';
+
         // 指定されたディレクトリは存在するか確認、無ければ作成
-        if(!Storage::disk('local')->exists('images_store/shift_table')) {
-            Storage::makeDirectory('images_store/shift_table', 0755);
+        if(!Storage::disk('public')->exists($this->save_path)) {
+            Storage::makeDirectory($this->save_path, 0755);
         }
     }
 
 
     /**
-     * DBから一番新しいシフト表のファイル情報を取得
+     * DBから一番新しいシフト表のファイルパスを取得
      *
      * @return mixed
      */
-    public function getNowImageName()
+    public function getNowImagePath()
     {
-        // 新しいシフトを取得
-        return Shift::select('file_name')->orderBy('id', 'DESC')->first();
+
+        // ファイル名を取得
+        $file_name = Shift::select('file_name')->orderBy('id', 'DESC')->first();
+        $file_name = $file_name['file_name'];
+
+        // ファイルが存在している場合
+        if (Storage::disk('public')->exists($this->save_path . $file_name)) {
+
+            return $this->save_path . $file_name;
+
+        } else {
+
+            return url('images/noimage.jpg');
+        }
+
     }
 
 
@@ -55,12 +72,12 @@ class ShiftModel extends Model
             // 画像がポストされていた場合
             if(Input::hasFile('file_input')){
 
+
                 $image     = $post['file_input'];
                 // ファイル名をランダムに生成
                 $file_name = md5(sha1(uniqid(mt_rand(), true))) . '.' . $image->getClientOriginalExtension();
                 // 画像をストレージに保存
                 self::saveImage($file_name ,$image);
-
 
                 // DBにインサート
                 Shift::insert(
@@ -88,7 +105,7 @@ class ShiftModel extends Model
      */
     private function saveImage($name, $image){
 
-        $image_path  = storage_path('app/images_store/shift_table/') . $name;
+        $image_path  = storage_path('app/public/images_store/shift_table/') . $name;
 
         $img = Image::make($image);
 

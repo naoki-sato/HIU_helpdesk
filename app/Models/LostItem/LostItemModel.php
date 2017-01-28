@@ -18,15 +18,21 @@ use Input;
 class LostItemModel extends Model
 {
 
+    private $save_path;
+
     /**
      * LostItemModel constructor.
      */
     public function __construct()
     {
+
+        $this->save_path = 'images_store/lost-item/';
         // 指定されたディレクトリは存在するか確認、無ければ作成
-        if(!Storage::disk('local')->exists('images_store/lost-item')) {
-            Storage::makeDirectory('images_store/lost-item', 0755);
+        // 指定されたディレクトリは存在するか確認、無ければ作成
+        if(!Storage::disk('public')->exists($this->save_path)) {
+            Storage::makeDirectory($this->save_path, 0755);
         }
+
     }
 
 
@@ -80,7 +86,7 @@ class LostItemModel extends Model
         $place     = $post['place_id'];  // 落とした場所
         $staff_id  = $post['staff_id'];  // 引受担当
         $item_name = $post['item_name']; // 落し物名
-        $file_name = 'no_image';         // 落し物画像
+        $file_name = 'no_image.jpg';     // 落し物画像
 
 
         try {
@@ -94,21 +100,19 @@ class LostItemModel extends Model
                 // 画像をストレージに保存
                 self::saveImage($file_name ,$image);
 
-                // DBにインサート
-                LostItem::insert(
-                    [
-                        'lost_item_name'    => $item_name,
-                        'reciept_staff_id'  => $staff_id,
-                        'place_id'          => $place,
-                        'note'              => $note,
-                        'file_name'         => $file_name,
-                        'created_at'        => Carbon::now(),
-                        'updated_at'        => Carbon::now(),
-                    ]);
-
-            } else {
-                return false;
             }
+
+            // DBにインサート
+            LostItem::insert(
+                [
+                    'lost_item_name'    => $item_name,
+                    'reciept_staff_id'  => $staff_id,
+                    'place_id'          => $place,
+                    'note'              => $note,
+                    'file_name'         => $file_name,
+                    'created_at'        => Carbon::now(),
+                    'updated_at'        => Carbon::now(),
+                ]);
 
 
         } catch(\PDOException $e) {
@@ -236,18 +240,18 @@ class LostItemModel extends Model
 
     /**
      * 画像をstorageに保存する
-     * 画像はwidth300に変換
+     * 画像はwidth500に変換
      * @param $name
      * @param $image
      */
     private function saveImage($name, $image){
 
-        $image_path  = storage_path('app/images_store/lost-item/') . $name;
+        $image_path  = storage_path('app/public/images_store/lost-item/') . $name;
 
         $img = Image::make($image);
 
         $img->orientate()
-            ->resize(300, null, function ($constraint) {
+            ->resize(500, null, function ($constraint) {
                 $constraint->aspectRatio();})
             ->save($image_path);
 

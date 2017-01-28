@@ -128,13 +128,13 @@
                     <div class="form-group">
                         <label for="note" class="col-md-3 control-label">画像</label>
                         <div class="col-md-2">
-                            @if($data['file_name'])
-                                {{-- */$img_path = "image/" . $data['file_name']/* --}}
-                                <img class="thumbnail" src="{{ URL::to($img_path) }}" height=75>
+                            @if($data['file_name'] != 'no_image.jpg')
+                                {{-- */$img_path = url('images_store/lost-item') .'/'. $data['file_name']/* --}}
                             @else
-                                {{-- */$img_path = "image/noimage.jpg"/* --}}
-                                <img class="thumbnail" src="{{ URL::to($img_path) }}" height=75>
+                                {{-- */$img_path = url('images/noimage.jpg')/* --}}
                             @endif
+
+                            <img class="thumbnail" src="{{ URL::to($img_path) }}" height=75>
                         </div>
                     </div>
 

@@ -254,10 +254,17 @@
             </tr>
         </thead>
         <tbody>
+
+
         @foreach($data as $item)
+            @if($item['file_name'] != 'no_image.jpg')
+                {{-- */$img_path = url('images_store/lost-item') .'/'. $item['file_name']/* --}}
+            @else
+                {{-- */$img_path = url('images/noimage.jpg')/* --}}
+            @endif
             <tr>
                 <td>{{$item['id']}}</td>
-                <td><a href="{{url('image') . '/' . $item['file_name']}}" data-lity="data-lity"><img src="{{url('image') . '/'. $item['file_name']}}" class="thumbnail" height=50></a></td>
+                <td><a href="{{URL::to($img_path)}}" data-lity="data-lity"><img src="{{URL::to($img_path)}}" class="thumbnail" height=50></a></td>
                 <td>{{$item['created_at']}}</td>
                 <td>{{$item['lost_item_name']}}</td>
                 <td>{{$item['room_name']}}</td>

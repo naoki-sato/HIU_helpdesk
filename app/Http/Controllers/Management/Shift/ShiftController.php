@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Management\Shift;
 use App\Models\Management\Shift\ShiftModel;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Storage;
 use Image;
@@ -34,9 +33,9 @@ class ShiftController extends Controller
 
         $file_name = null;
 
-        $file_name = $this->shift_model->getNowImageName();
+        $file_name = $this->shift_model->getNowImagePath();
 
-        return view('management.shift.index', ['image_name' => $file_name['file_name']]);
+        return view('management.shift.index', ['image_name' => $file_name]);
     }
 
 

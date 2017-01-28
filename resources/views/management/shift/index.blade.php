@@ -13,10 +13,8 @@
             <li class="active">シフト表</li>
         </ol>
     </div>
-    
     <div>
-        {{-- */$img_path = "image/" . $image_name/* --}}
-        <img class="thumbnail" src="{{ URL::to($img_path)}}" width="100%">
+        <img class="thumbnail" src="{{asset($image_name)}}" width="100%">
     </div>
 
 
