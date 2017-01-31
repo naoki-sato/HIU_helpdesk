@@ -55,9 +55,9 @@ class ShiftController extends Controller
 
 
         if ($is_insert_success) {
-            session()->flash('success_message', '<h3>落し物の新規登録しました。</h3>');
+            session()->flash('success_message', '<h3>アップロード成功しました。</h3>');
         } else {
-            session()->flash('alert_message', '<h3>落し物の新規登録できませんでした。</h3>');
+            session()->flash('alert_message', '<h3>アップロード失敗しました。</h3>');
         }
 
         return redirect()->back();

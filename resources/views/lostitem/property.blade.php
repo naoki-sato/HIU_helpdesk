@@ -31,10 +31,10 @@
                             @if($value->file_name != 'no_image.jpg')
                                 {{-- */$img_path = "images_store/lost-item/" . $value->file_name/* --}}
                             @else
-                                {{-- */$img_path = url('images/noimage.jpg')/* --}}
+                                {{-- */$img_path = 'images/noimage.jpg'/* --}}
                             @endif
                             <a href="{{ URL::to($img_path) }}" data-lity="data-lity">
-                                <img class="thumbnail" src="{{ URL::to($img_path) }}" height=75 >
+                                <img class="thumbnail" src="{{asset($img_path)}}" height=75>
                             </a>
                         </a>
                     </td>
