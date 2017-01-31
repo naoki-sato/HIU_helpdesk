@@ -86,7 +86,7 @@ class LostItemModel extends Model
         $place     = $post['place_id'];  // 落とした場所
         $staff_id  = $post['staff_id'];  // 引受担当
         $item_name = $post['item_name']; // 落し物名
-        $file_name = 'no_image.jpg';     // 落し物画像
+        $file_name = 'no_image';     // 落し物画像
 
 
         try {
@@ -179,7 +179,7 @@ class LostItemModel extends Model
         $item_name  = $post['item_name'];
         $place_id   = $post['place_id'];
         $note       = $post['note'];
-        $image_name = 'no_image.jpg';
+        $image_name = 'no_image';
         $update     = [
             'lost_item_name' => $item_name,
             'place_id'       => $place_id,

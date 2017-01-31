@@ -257,7 +257,7 @@
 
 
         @foreach($data as $item)
-            @if($item['file_name'] != 'no_image.jpg')
+            @if($item['file_name'] != 'no_image')
                 {{-- */$img_path = 'images_store/lost-item' .'/'. $item['file_name']/* --}}
             @else
                 {{-- */$img_path = 'images/noimage.jpg'/* --}}
