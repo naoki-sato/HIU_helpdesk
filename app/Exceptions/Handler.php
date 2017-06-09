@@ -45,6 +45,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+
+        if ( $e instanceof \Illuminate\Session\TokenMismatchException ) {
+            return redirect()->route('login');
+        }
+
         if($this->isHttpException($e)){
 
             switch ($e->getStatusCode()) {

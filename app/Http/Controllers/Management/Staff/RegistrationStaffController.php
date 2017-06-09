@@ -123,8 +123,15 @@ class RegistrationStaffController extends Controller
         $role       = $post['role'];
         $id         = $post['id'];
 
-        // スタッフの役割を更新
-        $is_update_success = $this->registration_staff_model->updateRole($id, $role);
+        // 不正にpostされていないかどうか
+        $is_update_success = $this->postRoleCheck($request->user()['role'], $role);
+
+
+        if ($is_update_success) {
+            // スタッフの役割を更新
+            $is_update_success = $this->registration_staff_model->updateRole($id, $role);
+        }
+
 
         if ($is_update_success) {
             session()->flash('success_message', '<h3>正常に更新しました。</h3>');
@@ -166,6 +173,28 @@ class RegistrationStaffController extends Controller
         }
         
         return redirect()->route('registration-staff.index');
+    }
+
+
+    private function postRoleCheck($my_role, $post_role) {
+
+
+        if($my_role == 'staff' && $post_role != 'staff') {
+            return false;
+
+        } elseif ($my_role == 'manager' && $post_role == 'admin') {
+            return false;
+
+        } elseif ($my_role == 'admin') {
+            return true;
+
+        }else {
+            return false;
+
+        }
+
+        return true;
+
     }
 
 
