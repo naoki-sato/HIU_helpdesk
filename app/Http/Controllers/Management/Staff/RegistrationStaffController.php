@@ -178,22 +178,17 @@ class RegistrationStaffController extends Controller
 
     private function postRoleCheck($my_role, $post_role) {
 
-
-        if($my_role == 'staff' && $post_role != 'staff') {
-            return false;
-
-        } elseif ($my_role == 'manager' && $post_role == 'admin') {
-            return false;
-
-        } elseif ($my_role == 'admin') {
+        if ($my_role == 'admin') {
             return true;
 
-        }else {
-            return false;
+        } elseif($my_role == 'manager' && $post_role != 'admin') {
+            return true;
 
+        } elseif($my_role == 'staff') {
+            return false;
         }
 
-        return true;
+        return false;
 
     }
 
