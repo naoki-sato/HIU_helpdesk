@@ -128,8 +128,8 @@
                     <div class="form-group">
                         <label for="note" class="col-md-3 control-label">画像</label>
                         <div class="col-md-2">
-                            @if($item['file_name'] != 'no_image')
-                                {{-- */$img_path = 'images_store/lost-item' .'/'. $item['file_name']/* --}}
+                            @if($data['file_name'] != 'no_image')
+                                {{-- */$img_path = 'images_store/lost-item' .'/'. $data['file_name']/* --}}
                             @else
                                 {{-- */$img_path = 'images/noimage.jpg'/* --}}
                             @endif
