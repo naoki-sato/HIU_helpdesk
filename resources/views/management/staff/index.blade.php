@@ -15,8 +15,10 @@
         </ol>
     </div>
     
+
+    {{-- 登録 --}}
+    @if(in_array(Auth::user()->role, ['admin', 'manager']))
     <div class="row">
-        {{-- 登録 --}}
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">Register</div>
@@ -120,6 +122,7 @@
             </div>
         </div>
 
+
         {{-- お知らせ --}}
         <div class="col-md-6">
             <div class="panel panel-default">
@@ -191,6 +194,7 @@
                 </div>
             </div>
         </div>
+    @endif
 
         {{-- list --}}
         <table id="lost_item_list" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -199,9 +203,11 @@
                     <th>氏名</th>
                     <th>学籍番号/教職員番号</th>
                     <th>電話番号</th>
-                    <th>役割</th>
                     <th>メールアドレス</th>
-                    <th>Show & Edit</th>
+                    @if(in_array(Auth::user()->role, ['admin', 'manager']))
+                        <th>役割</th>
+                        <th>Show & Edit</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -210,9 +216,11 @@
                         <th>{{$staff['name']}}</th>
                         <th>{{$staff['staff_cd']}}</th>
                         <th>{{$staff['phone_no']}}</th>
-                        <th>{{$staff['role']}}</th>
                         <th>{{$staff['email']}}</th>
-                        <th><a href="{{url('registration-staff') . '/' . $staff['id']}}" class="btn btn-default btn-block btn-sm"><i class="glyphicon glyphicon-link"></i>link</a></th>
+                        @if(in_array(Auth::user()->role, ['admin', 'manager']))
+                            <th>{{$staff['role']}}</th>
+                            <th><a href="{{url('registration-staff') . '/' . $staff['id']}}" class="btn btn-default btn-block btn-sm"><i class="glyphicon glyphicon-link"></i>link</a></th>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>

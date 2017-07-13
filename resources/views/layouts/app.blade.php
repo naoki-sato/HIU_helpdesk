@@ -47,6 +47,10 @@
                         <li><a href="{{ url('/lend-item') }}"><i class="glyphicon glyphicon-transfer"></i> 貸出 / 返却</a></li>
                         <li><a href="{{ url('/lost-item') }}"><i class="glyphicon glyphicon-question-sign"></i> 落し物</a></li>
                         <li><a href="{{ url('/shift-table') }}"><i class="glyphicon glyphicon-calendar"></i> シフト表</a></li>
+                        @if(in_array(Auth::user()->role, ['staff']))
+                            <li><a href="{{ url('/staff') }}"><i class="glyphicon glyphicon-user"></i> スタッフ</a></li>
+                        @endif
+
                     </ul>
 
                     @if(in_array(Auth::user()->role, ['admin', 'manager']))

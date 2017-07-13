@@ -45,6 +45,11 @@ Route::group(['middlewareGroups' => ['web']], function(){
             Route::controller('lost-item-export', 'ExportController');
         });
 
+        // スタッフ一覧表示
+        Route::group(['namespace' => 'Management\Staff'], function(){
+            Route::resource('staff', 'RegistrationStaffController', ['only' => ['index']]);
+        });
+
         // スタッフ・User・品(カメラ・三脚など)・シフトスケジュールの登録や編集
         Route::group(['namespace' => 'Management'], function(){
 
