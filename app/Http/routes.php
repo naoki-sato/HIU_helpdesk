@@ -45,6 +45,11 @@ Route::group(['middlewareGroups' => ['web']], function(){
             Route::controller('lost-item-export', 'ExportController');
         });
 
+        // 各種ダウンロード
+        Route::group(['namespace' => 'Download'], function(){
+            Route::resource('etc-download', 'DownloadController');
+        });
+
         // スタッフ一覧表示
         Route::group(['namespace' => 'Management\Staff'], function(){
             Route::resource('staff', 'RegistrationStaffController', ['only' => ['index']]);

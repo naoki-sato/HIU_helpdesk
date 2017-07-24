@@ -42,6 +42,14 @@ class ShiftController extends Controller
     public function store(Request $request)
     {
 
+
+        // アクセス権の確認
+        if(!in_array($request->user()['role'], ['admin', 'manager'])) {
+            session()->flash('alert_message', '<h3>アクセス権がありません</h3>');
+            return redirect()->back();
+        }
+
+
         // 保存処理が正常にできたか
         $is_insert_success = false;
 
