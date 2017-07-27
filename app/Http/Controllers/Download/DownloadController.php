@@ -131,6 +131,8 @@ class DownloadController extends Controller
         // バリデーション
         $this->validate($request, ['file_input'  => 'required']);
 
+
+
         try {
 
             // 画像がポストされていた場合
@@ -138,8 +140,14 @@ class DownloadController extends Controller
 
                 $file = $request['file_input'];
 
+
+
                 // ファイルをストレージに保存
-                Storage::put('/etc/' . $file->getClientOriginalName(), $file);
+
+//                $request->fil
+//                $request->file->store('public/avatar');
+                Storage::put('/etc/' . $file->getClientOriginalName(), fopen( $file->getRealPath(), 'r'));
+
             }
 
         } catch(\Exception $e) {
